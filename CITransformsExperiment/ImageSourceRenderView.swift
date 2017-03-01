@@ -19,7 +19,7 @@ class ImageSourceRenderView: GLKView {
 	}
 
 	private let glContext = EAGLContext(api: .openGLES2)!
-	private var ciContext: CIContext!
+	var ciContext: CIContext!
 
 	var drawableBounds: CGRect {
 		return CGRect(x: 0, y: 0,

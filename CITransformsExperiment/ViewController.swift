@@ -196,6 +196,19 @@ class ImageStageController: NSObject {
 		renderView.display()
 	}
 
+	func renderToImage(withSize size: CGSize) -> UIImage? {
+		// TODO: Use to save buffer behind image plane
+		return renderView.ciImage
+			.flatMap { ciImage in
+				let cropRect = renderView.bounds
+					.applying(renderView.cameraCenteringTransform.inverted())
+					.applying(renderView.cameraScalingTransform)
+				return renderView.ciContext.createCGImage(ciImage, from: cropRect)
+			}
+			.map { UIImage(cgImage: $0) }
+	}
+
+
 	func applyCamera(to image: CIImage) -> CIImage {
 		func renderWorkspace(around image: CIImage) -> CIImage {
 			let checkerboard =
