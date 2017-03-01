@@ -53,4 +53,12 @@ class ViewController: UIViewController {
 
 		}
 	}
+
+	@IBAction func freezeImage(_ sender: Any) {
+		guard let render = stageController.renderToImage() else {
+			fatalError("Implement me")
+		}
+
+		print(render)
+	}
 }

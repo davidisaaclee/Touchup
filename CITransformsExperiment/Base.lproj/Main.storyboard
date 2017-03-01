@@ -32,13 +32,22 @@
                                     <action selector="toggleMode:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="nF3-Xg-Vhc"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g07-hL-uCi">
+                                <rect key="frame" x="325" y="617" width="30" height="30"/>
+                                <state key="normal" title="❄️"/>
+                                <connections>
+                                    <action selector="freezeImage:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="4Mn-1W-F6U"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="03a-BL-rW2"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EEG-9N-JMr"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="g07-hL-uCi" secondAttribute="bottom" constant="20" id="ZuZ-Uq-fdm"/>
                             <constraint firstItem="oWz-jA-1o1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="cQt-Bf-DB7"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="mOj-lc-Huz"/>
+                            <constraint firstAttribute="trailing" secondItem="g07-hL-uCi" secondAttribute="trailing" constant="20" id="nwp-7p-3GK"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="wy6-KE-oM2"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="oWz-jA-1o1" secondAttribute="bottom" constant="20" id="zFQ-6o-szA"/>
                         </constraints>

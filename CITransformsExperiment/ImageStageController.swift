@@ -181,9 +181,8 @@ class ImageStageController: NSObject {
 		renderView.display()
 	}
 
-	func renderToImage(withSize size: CGSize) -> UIImage? {
-		// TODO: Use to save buffer behind image plane
-		return renderView.ciImage
+	func renderToImage() -> UIImage? {
+		return image
 			.flatMap { ciImage in
 				let cropRect = renderView.bounds
 					.applying(renderView.cameraCenteringTransform.inverted())
