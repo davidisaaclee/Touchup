@@ -14,6 +14,7 @@
 		634F260D1E662A4F00028893 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 634F260B1E662A4F00028893 /* LaunchScreen.storyboard */; };
 		634F26151E662A6500028893 /* ImageSourceRenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26141E662A6500028893 /* ImageSourceRenderView.swift */; };
 		63BCF56C1E667D62006D46DD /* MultitouchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */; };
+		63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BCF56D1E673C10006D46DD /* ImageStageController.swift */; };
 		64F055ACCE7C0F7A463A485C /* Pods_CITransformsExperiment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C44B02945F929009729274A2 /* Pods_CITransformsExperiment.framework */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		634F260E1E662A4F00028893 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		634F26141E662A6500028893 /* ImageSourceRenderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSourceRenderView.swift; sourceTree = "<group>"; };
 		63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultitouchGestureRecognizer.swift; sourceTree = "<group>"; };
+		63BCF56D1E673C10006D46DD /* ImageStageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageStageController.swift; sourceTree = "<group>"; };
 		C44B02945F929009729274A2 /* Pods_CITransformsExperiment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CITransformsExperiment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D01A31C933A44831C4A4B13F /* Pods-CITransformsExperiment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CITransformsExperiment.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CITransformsExperiment/Pods-CITransformsExperiment.debug.xcconfig"; sourceTree = "<group>"; };
 		F84E5727D2033DE4955473C5 /* Pods-CITransformsExperiment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CITransformsExperiment.release.xcconfig"; path = "Pods/Target Support Files/Pods-CITransformsExperiment/Pods-CITransformsExperiment.release.xcconfig"; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				634F260E1E662A4F00028893 /* Info.plist */,
 				634F26141E662A6500028893 /* ImageSourceRenderView.swift */,
 				63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */,
+				63BCF56D1E673C10006D46DD /* ImageStageController.swift */,
 			);
 			path = CITransformsExperiment;
 			sourceTree = "<group>";
@@ -220,6 +223,7 @@
 			files = (
 				634F26051E662A4F00028893 /* ViewController.swift in Sources */,
 				634F26151E662A6500028893 /* ImageSourceRenderView.swift in Sources */,
+				63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */,
 				634F26031E662A4F00028893 /* AppDelegate.swift in Sources */,
 				63BCF56C1E667D62006D46DD /* MultitouchGestureRecognizer.swift in Sources */,
 			);
