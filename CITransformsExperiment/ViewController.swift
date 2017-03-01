@@ -55,10 +55,15 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func freezeImage(_ sender: Any) {
-		guard let render = stageController.renderToImage() else {
+		guard let render = stageController.renderToImage().flatMap(CIImage.init) else {
 			fatalError("Implement me")
 		}
 
-		print(render)
+		let centerOriginTransform =
+			CGAffineTransform(translationX: -render.extent.width / 2,
+			                  y: -render.extent.height / 2)
+
+		stageController.backgroundImage =
+			render.applying(centerOriginTransform)
 	}
 }

@@ -14,6 +14,13 @@ class ImageStageController: NSObject {
 
 	var image: CIImage?
 
+	var backgroundImage: CIImage?
+
+	var stageContents: CIImage {
+		return (image ?? CIImage())
+			.compositingOverImage(backgroundImage ?? CIImage())
+	}
+
 	var cameraTransform: CGAffineTransform =
 		CGAffineTransform(rotationAngle: CGFloat(M_PI_4))
 
@@ -157,14 +164,12 @@ class ImageStageController: NSObject {
 	private func stageLocation(of touch: UITouch) -> CGPoint {
 		return touch.location(in: renderView)
 			.applying(renderViewToStageTransform)
-//			// "undo" the camera
-//			.applying(cameraTransform)
 	}
 
 	func reload() {
-		guard let image = image else {
-			return
-		}
+//		guard let image = image else {
+//			return
+//		}
 
 		// Pixel buffer isn't generated until first draw.
 		if renderView.drawableWidth == 0 {
@@ -176,19 +181,16 @@ class ImageStageController: NSObject {
 			.applying(renderView.cameraScalingTransform)
 
 		renderView.ciImage =
-			applyCamera(to: image)
+			applyCamera(to: stageContents)
 				.cropping(to: cropRect)
 		renderView.display()
 	}
 
 	func renderToImage() -> UIImage? {
-		return image
-			.flatMap { ciImage in
-				let cropRect = renderView.bounds
-					.applying(renderView.cameraCenteringTransform.inverted())
-					.applying(renderView.cameraScalingTransform)
-				return renderView.ciContext.createCGImage(ciImage, from: cropRect)
-			}
+		let cropRect = renderView.bounds
+			.applying(renderView.cameraCenteringTransform.inverted())
+			.applying(renderView.cameraScalingTransform)
+		return renderView.ciContext.createCGImage(stageContents, from: cropRect)
 			.map { UIImage(cgImage: $0) }
 	}
 
