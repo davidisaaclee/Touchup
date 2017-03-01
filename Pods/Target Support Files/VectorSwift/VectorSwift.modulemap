@@ -1,0 +1,6 @@
+framework module VectorSwift {
+  umbrella header "VectorSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}

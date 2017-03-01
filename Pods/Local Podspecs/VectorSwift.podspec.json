@@ -1,0 +1,19 @@
+{
+  "name": "VectorSwift",
+  "version": "0.2.0",
+  "summary": "Powerful vector operations for the types you're already using.",
+  "description": "VectorSwift gives you powerful vector operations for the types you're already using, by providing a Vector\nprotocol which can give any type the power to perform vector operations.",
+  "homepage": "https://github.com/davidisaaclee/VectorSwift",
+  "license": "MIT",
+  "authors": {
+    "David Lee": "david@david-lee.net"
+  },
+  "source": {
+    "git": "https://github.com/davidisaaclee/VectorSwift.git",
+    "tag": "0.2.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "VectorSwift/Classes/**/*"
+}
