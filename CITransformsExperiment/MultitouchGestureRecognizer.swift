@@ -28,6 +28,7 @@ public class MultitouchGestureRecognizer: UIGestureRecognizer {
 
 	public override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
 		super.touchesMoved(touches, with: event)
+		activeTouches.formUnion(touches)
 		state = .changed
 	}
 
@@ -39,5 +40,10 @@ public class MultitouchGestureRecognizer: UIGestureRecognizer {
 	public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
 		super.touchesEnded(touches, with: event)
 		activeTouches.subtract(touches)
+	}
+
+	public override func reset() {
+		super.reset()
+		activeTouches.removeAll()
 	}
 }

@@ -10,7 +10,7 @@ class ImageStageController: NSObject {
 		case imageTransform
 	}
 
-	var mode: Mode = .imageTransform
+	var mode: Mode = .cameraControl
 
 	var image: CIImage?
 
@@ -20,6 +20,11 @@ class ImageStageController: NSObject {
 		return (image ?? CIImage())
 			.compositingOverImage(backgroundImage ?? CIImage())
 	}
+
+	let cameraControlGestureRecognizer =
+		MultitouchGestureRecognizer()
+	let doubleTapGestureRecognizer =
+		UITapGestureRecognizer()
 
 	var cameraTransform: CGAffineTransform =
 		CGAffineTransform(rotationAngle: CGFloat(M_PI_4))
@@ -39,14 +44,14 @@ class ImageStageController: NSObject {
 
 		self.renderView = renderView
 
-		let gestureRecognizer =
-			MultitouchGestureRecognizer(target: self,
-			                            action: #selector(ImageStageController.handleTouches(recognizer:)))
-		renderView.addGestureRecognizer(gestureRecognizer)
+		cameraControlGestureRecognizer
+			.addTarget(self,
+			           action: #selector(ImageStageController.handleTouches(recognizer:)))
+		renderView.addGestureRecognizer(cameraControlGestureRecognizer)
 
-		let doubleTapGestureRecognizer =
-			UITapGestureRecognizer(target: self,
-			                       action: #selector(ImageStageController.handleDoubleTap(recognizer:)))
+		doubleTapGestureRecognizer
+			.addTarget(self,
+			           action: #selector(ImageStageController.handleDoubleTap(recognizer:)))
 		doubleTapGestureRecognizer.numberOfTapsRequired = 2
 		renderView.addGestureRecognizer(doubleTapGestureRecognizer)
 
@@ -167,10 +172,6 @@ class ImageStageController: NSObject {
 	}
 
 	func reload() {
-//		guard let image = image else {
-//			return
-//		}
-
 		// Pixel buffer isn't generated until first draw.
 		if renderView.drawableWidth == 0 {
 			renderView.display()
@@ -249,7 +250,13 @@ class ImageStageController: NSObject {
 extension ImageStageController: UIGestureRecognizerDelegate {
 	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
 	                       shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-		return true
+		switch (gestureRecognizer, otherGestureRecognizer) {
+		case (doubleTapGestureRecognizer, cameraControlGestureRecognizer):
+			return true
+			
+		default:
+			return false
+		}
 	}
 }
 
@@ -259,10 +266,6 @@ import VectorSwift
 typealias LineSegment = (pointA: CGPoint, pointB: CGPoint)
 func transformFromPinch(startingFrom startSegment: LineSegment,
                         endingAt endSegment: LineSegment) -> CGAffineTransform {
-	print("----")
-	print(startSegment)
-	print(endSegment)
-
 	let (a, b) = startSegment
 	let (aʹ, bʹ) = endSegment
 
