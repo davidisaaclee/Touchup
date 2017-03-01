@@ -2,22 +2,25 @@ import UIKit
 
 class ViewController: UIViewController {
 
-	let stageController =
-		ImageStageController(renderView: ImageSourceRenderView(frame: CGRect(origin: .zero,
-		                                                                     size: .zero)))
+	var stageController: ImageStageController!
 
-	var renderView: ImageSourceRenderView {
-		return stageController.renderView
-	}
-
-	enum Mode {
-		case cameraControl
-		case imageTransform
+	@IBOutlet var renderView: ImageSourceRenderView! {
+		didSet {
+			stageController = ImageStageController(renderView: renderView)
+		}
 	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		stageController.image = setupImage()
+		stageController.reload()
+
+		view.isMultipleTouchEnabled = true
+		renderView.isMultipleTouchEnabled = true
+	}
+
+	private func setupImage() -> CIImage {
 		let img =
 			CIImage(image: #imageLiteral(resourceName: "test-pattern"))!
 
@@ -32,19 +35,22 @@ class ViewController: UIViewController {
 				.concatenating(CGAffineTransform(rotationAngle: CGFloat(M_PI_2 / 2)))
 				.concatenating(xform1)
 
-		stageController.image =
-			img
-				.applying(centerOriginTransform)
-				.applying(xform1)
-				.applying(xform2)
-
-		renderView.frame = view.bounds
-		view.addSubview(renderView)
-
-		stageController.reload()
-
-		view.isMultipleTouchEnabled = true
-		renderView.isMultipleTouchEnabled = true
+		return img
+			.applying(centerOriginTransform)
+			.applying(xform1)
+			.applying(xform2)
 	}
 
+	@IBAction func toggleMode(_ sender: UIButton) {
+		switch stageController.mode {
+		case .cameraControl:
+			stageController.mode = .imageTransform
+			sender.setTitle("🏞", for: .normal)
+
+		case .imageTransform:
+			stageController.mode = .cameraControl
+			sender.setTitle("🎥", for: .normal)
+
+		}
+	}
 }
