@@ -199,12 +199,14 @@ class ImageStageController: NSObject {
 		let cropRect = renderView.bounds
 			.applying(renderView.cameraCenteringTransform.inverted())
 			.applying(renderView.cameraScalingTransform)
-		return renderView.ciContext.createCGImage(stageContents, from: cropRect)
+		return renderView.ciContext
+			.createCGImage(stageContents,
+			               from: cropRect)
 			.map { UIImage(cgImage: $0) }
 	}
 
 
-	func applyCamera(to image: CIImage) -> CIImage {
+	private func applyCamera(to image: CIImage) -> CIImage {
 		func renderWorkspace(around image: CIImage) -> CIImage {
 			let checkerboard =
 				CIFilter(name: "CICheckerboardGenerator",

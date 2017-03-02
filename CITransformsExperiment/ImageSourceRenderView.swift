@@ -49,7 +49,7 @@ class ImageSourceRenderView: GLKView {
 			return
 		}
 
-		clearBackground()
+//		clearBackground()
 		draw(ciImage, from: ciImage.extent)
 	}
 
