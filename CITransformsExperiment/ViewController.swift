@@ -78,38 +78,56 @@ class ViewController: UIViewController {
 	}
 
 	func reloadRenderView() {
+		guard let image = image else {
+			// hm
+			return
+		}
+
 		if let renderedEraserMarks = renderEraserMarks(eraserMarks) {
+			let cutOutEraserMarksFromImage =
+				CIFilter(name: "CISourceOutCompositing",
+				         withInputParameters: ["inputImage": image,
+				                               "inputBackgroundImage": renderedEraserMarks])!
+
 			stageController.image =
-				CIImage(image: renderedEraserMarks)!
-					.applying(CGAffineTransform(scaleX: 1, y: -1))
-					.applying(CGAffineTransform(translationX: 0, y: renderedEraserMarks.size.height))
-					.compositingOverImage(image!)
+				cutOutEraserMarksFromImage.outputImage!
 					.applying(imageTransform)
 		} else {
-			stageController.image = image?.applying(imageTransform)
+			stageController.image = image.applying(imageTransform)
 		}
 	}
 
-	private func renderEraserMarks(_ marks: [EraserMark]) -> UIImage? {
-		guard let size = image?.extent.size else {
-			return nil
+	private func renderEraserMarks(_ marks: [EraserMark]) -> CIImage? {
+		func renderToUIImage(_ marks: [EraserMark]) -> UIImage? {
+			guard let size = image?.extent.size else {
+				return nil
+			}
+
+			UIGraphicsBeginImageContext(size)
+			defer { UIGraphicsEndImageContext() }
+
+			UIColor.blue.set()
+
+			marks.forEach { mark in
+				let path = UIBezierPath()
+				mark.points.first.map { path.move(to: $0) }
+				mark.points.dropFirst().forEach { path.addLine(to: $0) }
+
+				path.lineWidth = 25
+				path.stroke()
+			}
+
+			return UIGraphicsGetImageFromCurrentImageContext()
 		}
 
-		UIGraphicsBeginImageContext(size)
-		defer { UIGraphicsEndImageContext() }
-
-		UIColor.blue.set()
-
-		marks.forEach { mark in
-			let path = UIBezierPath()
-			mark.points.first.map { path.move(to: $0) }
-			mark.points.dropFirst().forEach { path.addLine(to: $0) }
-
-			path.lineWidth = 5
-			path.stroke()
-		}
-
-		return UIGraphicsGetImageFromCurrentImageContext()
+		return renderToUIImage(marks)
+			.flatMap { CIImage(image: $0) }
+			.map { ciImage in
+				ciImage
+					.applying(CGAffineTransform(scaleX: 1, y: -1))
+					.applying(CGAffineTransform(translationX: 0,
+					                            y: ciImage.extent.height))
+			}
 	}
 
 
