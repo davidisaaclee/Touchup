@@ -58,6 +58,10 @@ class ViewController: UIViewController {
 		}
 	}
 
+	override var prefersStatusBarHidden: Bool {
+		return true
+	}
+
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
@@ -257,14 +261,7 @@ class ViewController: UIViewController {
 		let img =
 			CIImage(image: #imageLiteral(resourceName: "test-pattern"))!
 
-//		let centerOriginTransform =
-//			CGAffineTransform(translationX: -img.extent.width / 2,
-//			                  y: -img.extent.height / 2)
-//
-//		imageTransform = centerOriginTransform
-
 		return img
-//			.applying(centerOriginTransform)
 	}
 
 	@IBAction func toggleMode(_ sender: UIButton) {
@@ -295,4 +292,42 @@ class ViewController: UIViewController {
 		stageController.backgroundImage =
 			render.applying(centerOriginTransform)
 	}
+
+	@IBAction func replaceImage() {
+		let imagePicker = UIImagePickerController()
+		imagePicker.sourceType = .camera
+		imagePicker.delegate = self
+		present(imagePicker, animated: true, completion: nil)
+	}
 }
+
+
+extension ViewController: UIImagePickerControllerDelegate {
+	func imagePickerController(_ picker: UIImagePickerController,
+	                           didFinishPickingMediaWithInfo info: [String: Any]) {
+		func swap(image: UIImage) {
+			self.image = CIImage(image: image)
+			let centerOriginTransform =
+				CGAffineTransform(translationX: -image.size.width / 2,
+				                  y: -image.size.height / 2)
+			self.imageTransform = centerOriginTransform
+
+			dismiss(animated: true, completion: nil)
+		}
+
+		if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+			swap(image: editedImage)
+		} else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+			swap(image: originalImage)
+		} else {
+			fatalError("Implement me")
+		}
+	}
+
+	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+		dismiss(animated: true, completion: nil)
+	}
+}
+
+// Required for UIImagePickerController's delegate.
+extension ViewController: UINavigationControllerDelegate {}

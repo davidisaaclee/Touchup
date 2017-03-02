@@ -26,26 +26,38 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWz-jA-1o1" customClass="ImageSou">
-                                <rect key="frame" x="20" y="617" width="30" height="30"/>
+                                <rect key="frame" x="20" y="599" width="34" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="🏞"/>
                                 <connections>
                                     <action selector="toggleMode:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="nF3-Xg-Vhc"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g07-hL-uCi">
-                                <rect key="frame" x="325" y="617" width="30" height="30"/>
+                                <rect key="frame" x="321" y="599" width="34" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="❄️"/>
                                 <connections>
                                     <action selector="freezeImage:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="4Mn-1W-F6U"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28b-2k-8Q2">
+                                <rect key="frame" x="20" y="40" width="34" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="📷"/>
+                                <connections>
+                                    <action selector="replaceImage" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="2sd-ds-bJc"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="03a-BL-rW2"/>
+                            <constraint firstItem="28b-2k-8Q2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="2ml-fa-LL1"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EEG-9N-JMr"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="g07-hL-uCi" secondAttribute="bottom" constant="20" id="ZuZ-Uq-fdm"/>
                             <constraint firstItem="oWz-jA-1o1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="cQt-Bf-DB7"/>
+                            <constraint firstItem="28b-2k-8Q2" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="fXF-hN-iGC"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="mOj-lc-Huz"/>
                             <constraint firstAttribute="trailing" secondItem="g07-hL-uCi" secondAttribute="trailing" constant="20" id="nwp-7p-3GK"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="wy6-KE-oM2"/>
@@ -58,6 +70,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
         </scene>
     </scenes>
 </document>
