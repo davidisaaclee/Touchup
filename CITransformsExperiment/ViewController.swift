@@ -107,20 +107,31 @@ class ViewController: UIViewController {
 	}
 
 	private func renderEraserMarks(_ marks: [EraserMark]) -> CIImage? {
+		// We'll add a 1px margin to each side, to prevent edges showing through.
+		// Note that this will make the result of this function `margins` larger
+		// than the working image.
+		let margins = CGSize(width: 2, height: 2)
+
 		func renderToUIImage(_ marks: [EraserMark]) -> UIImage? {
 			guard let size = image?.extent.size else {
 				return nil
 			}
 
-			UIGraphicsBeginImageContext(size)
+			UIGraphicsBeginImageContext(size + margins)
 			defer { UIGraphicsEndImageContext() }
 
-			UIColor.blue.set()
+			UIColor.black.set()
 
 			marks.forEach { mark in
 				let path = UIBezierPath()
-				mark.points.first.map { path.move(to: $0) }
-				mark.points.dropFirst().forEach { path.addLine(to: $0) }
+
+				// Translate points to account for left/top margins.
+				let translatedPoints = mark.points.map {
+					$0.applying(CGAffineTransform(translationX: margins.width / 2,
+					                              y: margins.height / 2))
+				}
+				translatedPoints.first.map { path.move(to: $0) }
+				translatedPoints.dropFirst().forEach { path.addLine(to: $0) }
 
 				path.lineWidth = CGFloat(mark.width)
 				path.lineCapStyle = .round
@@ -137,6 +148,8 @@ class ViewController: UIViewController {
 					.applying(CGAffineTransform(scaleX: 1, y: -1))
 					.applying(CGAffineTransform(translationX: 0,
 					                            y: ciImage.extent.height))
+					.applying(CGAffineTransform(translationX: -margins.width / 2,
+					                            y: -margins.height / 2))
 			}
 	}
 
