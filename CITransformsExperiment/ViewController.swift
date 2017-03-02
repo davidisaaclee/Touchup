@@ -231,12 +231,15 @@ class ViewController: UIViewController {
 			switch recognizer.activeTouches.count {
 			case 1:
 				recognizer.activeTouches.first.map { touch in
-					if var mark = eraserMarks.popLast() {
+					var eraserMarksʹ = eraserMarks
+
+					if var mark = eraserMarksʹ.popLast() {
 						let location =
 							stageLocation(of: touch)
 								.applying(imageTransform.inverted())
 						mark.points.append(location)
-						eraserMarks.append(mark)
+						eraserMarksʹ.append(mark)
+						eraserMarks = eraserMarksʹ
 						stageController.reload()
 					}
 				}
