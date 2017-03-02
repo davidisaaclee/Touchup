@@ -18,12 +18,21 @@ class ViewController: UIViewController {
 
 	var image: CIImage? {
 		didSet {
-			stageController.image = image
-			stageController.reload()
+			reloadRenderView()
 		}
 	}
 
-	var eraserMarks: [EraserMark] = []
+	var imageTransform: CGAffineTransform = .identity {
+		didSet {
+			reloadRenderView()
+		}
+	}
+
+	var eraserMarks: [EraserMark] = [] {
+		didSet {
+			reloadRenderView()
+		}
+	}
 
 	fileprivate let customToolGestureRecognizer =
 		MultitouchGestureRecognizer()
@@ -56,10 +65,51 @@ class ViewController: UIViewController {
 		renderView.isMultipleTouchEnabled = true
 
 		image = setupImage()
+		let centerOriginTransform =
+			CGAffineTransform(translationX: -image!.extent.width / 2,
+			                  y: -image!.extent.height / 2)
 
-		customToolGestureRecognizer.addTarget(self,
-		                                      action: #selector(ViewController.handleToolGesture(recognizer:)))
+		imageTransform = centerOriginTransform
+
+		customToolGestureRecognizer
+			.addTarget(self,
+			           action: #selector(ViewController.handleToolGesture(recognizer:)))
 		renderView.addGestureRecognizer(customToolGestureRecognizer)
+	}
+
+	func reloadRenderView() {
+		if let renderedEraserMarks = renderEraserMarks(eraserMarks) {
+			stageController.image =
+				CIImage(image: renderedEraserMarks)!
+					.applying(CGAffineTransform(scaleX: 1, y: -1))
+					.applying(CGAffineTransform(translationX: 0, y: renderedEraserMarks.size.height))
+					.compositingOverImage(image!)
+					.applying(imageTransform)
+		} else {
+			stageController.image = image?.applying(imageTransform)
+		}
+	}
+
+	private func renderEraserMarks(_ marks: [EraserMark]) -> UIImage? {
+		guard let size = image?.extent.size else {
+			return nil
+		}
+
+		UIGraphicsBeginImageContext(size)
+		defer { UIGraphicsEndImageContext() }
+
+		UIColor.blue.set()
+
+		marks.forEach { mark in
+			let path = UIBezierPath()
+			mark.points.first.map { path.move(to: $0) }
+			mark.points.dropFirst().forEach { path.addLine(to: $0) }
+
+			path.lineWidth = 5
+			path.stroke()
+		}
+
+		return UIGraphicsGetImageFromCurrentImageContext()
 	}
 
 
@@ -107,9 +157,10 @@ class ViewController: UIViewController {
 						stageLocation(of: touch)
 							- location
 
-					image =
-						image?.applying(CGAffineTransform(translationX: displacement.x,
-						                                  y: displacement.y))
+					imageTransform =
+						imageTransform
+							.concatenating(CGAffineTransform(translationX: displacement.x,
+							                                 y: displacement.y))
 				}
 
 			case let numberOfTouches where numberOfTouches >= 2:
@@ -134,8 +185,9 @@ class ViewController: UIViewController {
 					                   endingAt: (pointA: locationAʹ,
 					                              pointB: locationBʹ))
 
-				image =
-					image?.applying(transform)
+				imageTransform =
+					imageTransform
+						.concatenating(transform)
 
 			default:
 				break
@@ -155,8 +207,6 @@ class ViewController: UIViewController {
 		case .ended:
 			if let mark = eraserMarks.last, mark.points.isEmpty {
 				eraserMarks.removeLast()
-			} else {
-				print(eraserMarks.last!.points)
 			}
 
 		case .changed:
@@ -164,7 +214,10 @@ class ViewController: UIViewController {
 			case 1:
 				recognizer.activeTouches.first.map { touch in
 					if var mark = eraserMarks.popLast() {
-						mark.points.append(stageLocation(of: touch))
+						let location =
+							stageLocation(of: touch)
+								.applying(imageTransform.inverted())
+						mark.points.append(location)
 						eraserMarks.append(mark)
 						stageController.reload()
 					}
@@ -183,21 +236,14 @@ class ViewController: UIViewController {
 		let img =
 			CIImage(image: #imageLiteral(resourceName: "test-pattern"))!
 
-		let centerOriginTransform =
-			CGAffineTransform(translationX: -img.extent.width / 2,
-			                  y: -img.extent.height / 2)
-
-		let xform1 =
-			CGAffineTransform(translationX: 200, y: 0)
-		let xform2 =
-			xform1.inverted()
-				.concatenating(CGAffineTransform(rotationAngle: CGFloat(M_PI_2 / 2)))
-				.concatenating(xform1)
+//		let centerOriginTransform =
+//			CGAffineTransform(translationX: -img.extent.width / 2,
+//			                  y: -img.extent.height / 2)
+//
+//		imageTransform = centerOriginTransform
 
 		return img
-			.applying(centerOriginTransform)
-			.applying(xform1)
-			.applying(xform2)
+//			.applying(centerOriginTransform)
 	}
 
 	@IBAction func toggleMode(_ sender: UIButton) {

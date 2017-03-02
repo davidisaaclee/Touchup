@@ -12,9 +12,17 @@ class ImageStageController: NSObject {
 
 	var mode: Mode = .cameraControl
 
-	var image: CIImage?
+	var image: CIImage? {
+		didSet {
+			reload()
+		}
+	}
 
-	var backgroundImage: CIImage?
+	var backgroundImage: CIImage? {
+		didSet {
+			reload()
+		}
+	}
 
 	var stageContents: CIImage {
 		return (image ?? CIImage())
