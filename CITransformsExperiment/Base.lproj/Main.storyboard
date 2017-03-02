@@ -30,7 +30,9 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="🏞"/>
                                 <connections>
-                                    <action selector="toggleMode:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="nF3-Xg-Vhc"/>
+                                    <action selector="enterImageTransform" destination="BYZ-38-t0r" eventType="touchDown" id="J27-6H-axY"/>
+                                    <action selector="exitImageTransform" destination="BYZ-38-t0r" eventType="touchUpOutside" id="60k-DX-RO4"/>
+                                    <action selector="exitImageTransform" destination="BYZ-38-t0r" eventType="touchUpInside" id="aPN-Z3-WuO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g07-hL-uCi">
@@ -47,6 +49,17 @@
                                 <state key="normal" title="📷"/>
                                 <connections>
                                     <action selector="replaceImage" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="2sd-ds-bJc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFh-4f-QaN">
+                                <rect key="frame" x="170" y="599" width="34" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="🔪"/>
+                                <connections>
+                                    <action selector="enterEraser" destination="BYZ-38-t0r" eventType="touchDown" id="66r-kJ-rcd"/>
+                                    <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpOutside" id="SHb-I1-ccK"/>
+                                    <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpInside" id="ga0-I5-Xrg"/>
                                 </connections>
                             </button>
                         </subviews>

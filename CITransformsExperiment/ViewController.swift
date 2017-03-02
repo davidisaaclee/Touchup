@@ -292,20 +292,20 @@ class ViewController: UIViewController {
 		}
 	}
 
-	@IBAction func toggleMode(_ sender: UIButton) {
-		switch mode {
-		case .cameraControl:
-			mode = .imageTransform
-			sender.setTitle("🏞", for: .normal)
+	@IBAction func enterImageTransform() {
+		mode = .imageTransform
+	}
 
-		case .imageTransform:
-			mode = .eraser
-			sender.setTitle("🔪", for: .normal)
+	@IBAction func exitImageTransform() {
+		mode = .cameraControl
+	}
 
-		case .eraser:
-			mode = .cameraControl
-			sender.setTitle("🎥", for: .normal)
-		}
+	@IBAction func enterEraser() {
+		mode = .eraser
+	}
+
+	@IBAction func exitEraser() {
+		mode = .cameraControl
 	}
 
 	@IBAction func freezeImage(_ sender: Any) {
