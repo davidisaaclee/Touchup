@@ -69,17 +69,21 @@ class ViewController: UIViewController {
 		view.isMultipleTouchEnabled = true
 		renderView.isMultipleTouchEnabled = true
 
-		image = setupImage()
-		let centerOriginTransform =
-			CGAffineTransform(translationX: -image!.extent.width / 2,
-			                  y: -image!.extent.height / 2)
-
-		imageTransform = centerOriginTransform
+		setWorkingImage(CIImage(image: #imageLiteral(resourceName: "test-pattern"))!)
 
 		customToolGestureRecognizer
 			.addTarget(self,
 			           action: #selector(ViewController.handleToolGesture(recognizer:)))
 		renderView.addGestureRecognizer(customToolGestureRecognizer)
+	}
+
+	func setWorkingImage(_ image: CIImage) {
+		self.image =
+			image
+		self.imageTransform =
+			CGAffineTransform(translationX: -image.extent.width / 2,
+			                  y: -image.extent.height / 2)
+		self.eraserMarks = []
 	}
 
 	func reloadRenderView() {
@@ -275,13 +279,6 @@ class ViewController: UIViewController {
 		}
 	}
 
-	private func setupImage() -> CIImage {
-		let img =
-			CIImage(image: #imageLiteral(resourceName: "test-pattern"))!
-
-		return img
-	}
-
 	@IBAction func toggleMode(_ sender: UIButton) {
 		switch mode {
 		case .cameraControl:
@@ -325,15 +322,8 @@ extension ViewController: UIImagePickerControllerDelegate {
 	                           didFinishPickingMediaWithInfo info: [String: Any]) {
 		func swap(image: UIImage) {
 			let resizedImage =
-//				image.resizing(to: image.size.applying(CGAffineTransform(scaleX: 0.125,
-//				                                                         y: 0.125)))
 				image.resizing(toFitWithin: CGSize(width: 100, height: 100))
-			self.image =
-				CIImage(image: resizedImage)
-			let centerOriginTransform =
-				CGAffineTransform(translationX: -resizedImage.size.width / 2,
-				                  y: -resizedImage.size.height / 2)
-			self.imageTransform = centerOriginTransform
+			self.setWorkingImage(CIImage(image: resizedImage)!)
 
 			dismiss(animated: true, completion: nil)
 		}
