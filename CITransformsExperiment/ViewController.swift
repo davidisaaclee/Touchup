@@ -3,6 +3,7 @@ import VectorSwift
 
 struct EraserMark {
 	var points: [CGPoint]
+	let width: Float
 }
 
 
@@ -117,7 +118,8 @@ class ViewController: UIViewController {
 				mark.points.first.map { path.move(to: $0) }
 				mark.points.dropFirst().forEach { path.addLine(to: $0) }
 
-				path.lineWidth = 25
+				path.lineWidth = CGFloat(mark.width)
+				path.lineCapStyle = .round
 				path.stroke()
 			}
 
@@ -224,7 +226,8 @@ class ViewController: UIViewController {
 	private func handleEraser(using recognizer: MultitouchGestureRecognizer) {
 		switch recognizer.state {
 		case .began:
-			eraserMarks.append(EraserMark(points: []))
+			eraserMarks.append(EraserMark(points: [],
+			                              width: 25))
 
 		case .ended:
 			if let mark = eraserMarks.last, mark.points.isEmpty {
