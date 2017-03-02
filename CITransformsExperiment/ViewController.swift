@@ -226,8 +226,23 @@ class ViewController: UIViewController {
 	private func handleEraser(using recognizer: MultitouchGestureRecognizer) {
 		switch recognizer.state {
 		case .began:
+			var width: Float {
+				// need to apply the 2d transforms to a 1d "distance"...
+				let p1 = CGPoint(x: 0, y: 0)
+				let p2 = CGPoint(x: 25, y: 0)
+
+				func applyTheTransforms(to point: CGPoint) -> CGPoint {
+					return point
+						.applying(imageTransform.inverted())
+						.applying(stageController.cameraTransform.inverted())
+				}
+
+				return Float(applyTheTransforms(to: p1)
+					.distanceTo(applyTheTransforms(to: p2)))
+			}
+
 			eraserMarks.append(EraserMark(points: [],
-			                              width: 25))
+			                              width: width))
 
 		case .ended:
 			if let mark = eraserMarks.last, mark.points.isEmpty {
