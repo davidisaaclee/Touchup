@@ -324,10 +324,15 @@ extension ViewController: UIImagePickerControllerDelegate {
 	func imagePickerController(_ picker: UIImagePickerController,
 	                           didFinishPickingMediaWithInfo info: [String: Any]) {
 		func swap(image: UIImage) {
-			self.image = CIImage(image: image)
+			let resizedImage =
+//				image.resizing(to: image.size.applying(CGAffineTransform(scaleX: 0.125,
+//				                                                         y: 0.125)))
+				image.resizing(toFitWithin: CGSize(width: 100, height: 100))
+			self.image =
+				CIImage(image: resizedImage)
 			let centerOriginTransform =
-				CGAffineTransform(translationX: -image.size.width / 2,
-				                  y: -image.size.height / 2)
+				CGAffineTransform(translationX: -resizedImage.size.width / 2,
+				                  y: -resizedImage.size.height / 2)
 			self.imageTransform = centerOriginTransform
 
 			dismiss(animated: true, completion: nil)
