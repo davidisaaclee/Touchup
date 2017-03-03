@@ -1,16 +1,16 @@
 import UIKit
 
+protocol ImageStageControllerDelegate: class {
+	func imageStageController(_ controller: ImageStageController,
+	                          shouldSetCameraTransformTo cameraTransform: CGAffineTransform) -> Bool
+}
+
 class ImageStageController: NSObject {
+
+	weak var delegate: ImageStageControllerDelegate?
 
 	var renderView: ImageSourceRenderView =
 		ImageSourceRenderView(frame: .zero)
-
-	enum Mode {
-		case cameraControl
-		case imageTransform
-	}
-
-	var mode: Mode = .cameraControl
 
 	var image: CIImage? {
 		didSet {
@@ -66,12 +66,18 @@ class ImageStageController: NSObject {
 		doubleTapGestureRecognizer.delegate = self
 	}
 
+	fileprivate func attemptToSetCameraTransform(_ cameraTransform: CGAffineTransform) {
+		if delegate?.imageStageController(self, shouldSetCameraTransformTo: cameraTransform) ?? true {
+			self.cameraTransform = cameraTransform
+		}
+	}
+
 	@objc private func handleDoubleTap(recognizer: UITapGestureRecognizer) {
 		guard case .ended = recognizer.state else {
 			return
 		}
 
-		cameraTransform = .identity
+		attemptToSetCameraTransform(.identity)
 		reload()
 	}
 
@@ -100,26 +106,13 @@ class ImageStageController: NSObject {
 						return
 					}
 
-					switch mode {
-					case .cameraControl:
-						let displacement =
-							stageLocation(of: touch).applying(cameraTransform)
-								- location.applying(cameraTransform)
+					let displacement =
+						stageLocation(of: touch).applying(cameraTransform)
+							- location.applying(cameraTransform)
 
-						cameraTransform =
-							cameraTransform
-								.concatenating(CGAffineTransform(translationX: displacement.x,
-								                                 y: displacement.y))
-
-					case .imageTransform:
-						let displacement =
-							stageLocation(of: touch)
-								- location
-
-						image =
-							image?.applying(CGAffineTransform(translationX: displacement.x,
-							                                  y: displacement.y))
-					}
+					attemptToSetCameraTransform(cameraTransform
+						.concatenating(CGAffineTransform(translationX: displacement.x,
+						                                 y: displacement.y)))
 
 					reload()
 				}
@@ -140,25 +133,13 @@ class ImageStageController: NSObject {
 				let (locationAʹ, locationBʹ) =
 					(stageLocation(of: touchA), stageLocation(of: touchB))
 
-				switch mode {
-				case .cameraControl:
-					let transform =
-						transformFromPinch(startingFrom: (pointA: locationA.applying(cameraTransform),
-						                                  pointB: locationB.applying(cameraTransform)),
-						                   endingAt: (pointA: locationAʹ.applying(cameraTransform),
-						                              pointB: locationBʹ.applying(cameraTransform)))
+				let transform =
+					transformFromPinch(startingFrom: (pointA: locationA.applying(cameraTransform),
+					                                  pointB: locationB.applying(cameraTransform)),
+					                   endingAt: (pointA: locationAʹ.applying(cameraTransform),
+					                              pointB: locationBʹ.applying(cameraTransform)))
 
-					cameraTransform = cameraTransform.concatenating(transform)
-
-				case .imageTransform:
-					let transform =
-						transformFromPinch(startingFrom: (pointA: locationA,
-						                                  pointB: locationB),
-						                   endingAt: (pointA: locationAʹ,
-						                              pointB: locationBʹ))
-
-					image = image?.applying(transform)
-				}
+				cameraTransform = cameraTransform.concatenating(transform)
 
 				reload()
 
