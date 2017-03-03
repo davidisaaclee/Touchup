@@ -173,7 +173,7 @@ class ImageStageController: NSObject {
 		renderView.ciImage =
 			applyCamera(to: stageContents)
 				.cropping(to: cropRect)
-		renderView.display()
+		renderView.setNeedsDisplay()
 	}
 
 	func renderToImage() -> UIImage? {

@@ -23,7 +23,19 @@ class ViewController: UIViewController {
 		}
 	}
 
+	var backgroundImage: CIImage? {
+		didSet {
+			reloadRenderView()
+		}
+	}
+
 	var imageTransform: CGAffineTransform = .identity {
+		didSet {
+			reloadRenderView()
+		}
+	}
+
+	var cameraTransform: CGAffineTransform = .identity {
 		didSet {
 			reloadRenderView()
 		}
@@ -91,6 +103,9 @@ class ViewController: UIViewController {
 			// hm
 			return
 		}
+
+		stageController.cameraTransform = cameraTransform
+		stageController.backgroundImage = backgroundImage
 
 		if let renderedEraserMarks = renderEraserMarks(eraserMarks) {
 			let cutOutEraserMarksFromImage =
@@ -280,7 +295,6 @@ class ViewController: UIViewController {
 						mark.points.append(location)
 						eraserMarksʹ.append(mark)
 						eraserMarks = eraserMarksʹ
-						stageController.reload()
 					}
 				}
 
@@ -318,7 +332,7 @@ class ViewController: UIViewController {
 			CGAffineTransform(translationX: -render.extent.width / 2,
 			                  y: -render.extent.height / 2)
 
-		stageController.backgroundImage =
+		backgroundImage =
 			render.applying(centerOriginTransform)
 	}
 
@@ -358,3 +372,11 @@ extension ViewController: UIImagePickerControllerDelegate {
 
 // Required for UIImagePickerController's delegate.
 extension ViewController: UINavigationControllerDelegate {}
+
+extension ViewController: ImageStageControllerDelegate {
+	func imageStageController(_ controller: ImageStageController,
+	                          shouldSetCameraTransformTo cameraTransform: CGAffineTransform) -> Bool {
+		self.cameraTransform = cameraTransform
+		return false
+	}
+}
