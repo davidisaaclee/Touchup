@@ -9,6 +9,14 @@ struct EraserMark {
 
 class ViewController: UIViewController {
 
+	struct Model {
+		var image: CIImage? = nil
+		var backgroundImage: CIImage? = nil
+		var imageTransform: CGAffineTransform = .identity
+		var cameraTransform: CGAffineTransform = .identity
+		var eraserMarks: [EraserMark] = []
+	}
+
 	var stageController: ImageStageController!
 
 	@IBOutlet var renderView: ImageSourceRenderView! {
@@ -17,31 +25,7 @@ class ViewController: UIViewController {
 		}
 	}
 
-	var image: CIImage? {
-		didSet {
-			reloadRenderView()
-		}
-	}
-
-	var backgroundImage: CIImage? {
-		didSet {
-			reloadRenderView()
-		}
-	}
-
-	var imageTransform: CGAffineTransform = .identity {
-		didSet {
-			reloadRenderView()
-		}
-	}
-
-	var cameraTransform: CGAffineTransform = .identity {
-		didSet {
-			reloadRenderView()
-		}
-	}
-
-	var eraserMarks: [EraserMark] = [] {
+	var model: Model = ViewController.Model() {
 		didSet {
 			reloadRenderView()
 		}
@@ -90,24 +74,24 @@ class ViewController: UIViewController {
 	}
 
 	func setWorkingImage(_ image: CIImage) {
-		self.image =
+		model.image =
 			image
-		self.imageTransform =
+		model.imageTransform =
 			CGAffineTransform(translationX: -image.extent.width / 2,
 			                  y: -image.extent.height / 2)
-		self.eraserMarks = []
+		model.eraserMarks = []
 	}
 
 	func reloadRenderView() {
-		guard let image = image else {
+		guard let image = model.image else {
 			// hm
 			return
 		}
 
-		stageController.cameraTransform = cameraTransform
-		stageController.backgroundImage = backgroundImage
+		stageController.cameraTransform = model.cameraTransform
+		stageController.backgroundImage = model.backgroundImage
 
-		if let renderedEraserMarks = renderEraserMarks(eraserMarks) {
+		if let renderedEraserMarks = renderEraserMarks(model.eraserMarks) {
 			let cutOutEraserMarksFromImage =
 				CIFilter(name: "CISourceOutCompositing",
 				         withInputParameters: ["inputImage": image,
@@ -115,9 +99,9 @@ class ViewController: UIViewController {
 
 			stageController.image =
 				cutOutEraserMarksFromImage.outputImage!
-					.applying(imageTransform)
+					.applying(model.imageTransform)
 		} else {
-			stageController.image = image.applying(imageTransform)
+			stageController.image = image.applying(model.imageTransform)
 		}
 	}
 
@@ -128,7 +112,7 @@ class ViewController: UIViewController {
 		let margins = CGSize(width: 2, height: 2)
 
 		func renderToUIImage(_ marks: [EraserMark]) -> UIImage? {
-			guard let size = image?.extent.size else {
+			guard let size = model.image?.extent.size else {
 				return nil
 			}
 
@@ -213,8 +197,8 @@ class ViewController: UIViewController {
 						stageLocation(of: touch)
 							- location
 
-					imageTransform =
-						imageTransform
+					model.imageTransform =
+						model.imageTransform
 							.concatenating(CGAffineTransform(translationX: displacement.x,
 							                                 y: displacement.y))
 				}
@@ -241,8 +225,8 @@ class ViewController: UIViewController {
 					                   endingAt: (pointA: locationAʹ,
 					                              pointB: locationBʹ))
 
-				imageTransform =
-					imageTransform
+				model.imageTransform =
+					model.imageTransform
 						.concatenating(transform)
 
 			default:
@@ -266,7 +250,7 @@ class ViewController: UIViewController {
 
 				func applyTheTransforms(to point: CGPoint) -> CGPoint {
 					return point
-						.applying(imageTransform.inverted())
+						.applying(model.imageTransform.inverted())
 						.applying(stageController.cameraTransform.inverted())
 				}
 
@@ -274,27 +258,27 @@ class ViewController: UIViewController {
 					.distanceTo(applyTheTransforms(to: p2)))
 			}
 
-			eraserMarks.append(EraserMark(points: [],
+			model.eraserMarks.append(EraserMark(points: [],
 			                              width: width))
 
 		case .ended:
-			if let mark = eraserMarks.last, mark.points.isEmpty {
-				eraserMarks.removeLast()
+			if let mark = model.eraserMarks.last, mark.points.isEmpty {
+				model.eraserMarks.removeLast()
 			}
 
 		case .changed:
 			switch recognizer.activeTouches.count {
 			case 1:
 				recognizer.activeTouches.first.map { touch in
-					var eraserMarksʹ = eraserMarks
+					var eraserMarksʹ = model.eraserMarks
 
 					if var mark = eraserMarksʹ.popLast() {
 						let location =
 							stageLocation(of: touch)
-								.applying(imageTransform.inverted())
+								.applying(model.imageTransform.inverted())
 						mark.points.append(location)
 						eraserMarksʹ.append(mark)
-						eraserMarks = eraserMarksʹ
+						model.eraserMarks = eraserMarksʹ
 					}
 				}
 
@@ -332,7 +316,7 @@ class ViewController: UIViewController {
 			CGAffineTransform(translationX: -render.extent.width / 2,
 			                  y: -render.extent.height / 2)
 
-		backgroundImage =
+		model.backgroundImage =
 			render.applying(centerOriginTransform)
 	}
 
@@ -351,7 +335,7 @@ extension ViewController: UIImagePickerControllerDelegate {
 		func swap(image: UIImage) {
 			let resizedImage =
 				image.resizing(toFitWithin: CGSize(width: 100, height: 100))
-			self.setWorkingImage(CIImage(image: resizedImage)!)
+			setWorkingImage(CIImage(image: resizedImage)!)
 
 			dismiss(animated: true, completion: nil)
 		}
@@ -376,7 +360,7 @@ extension ViewController: UINavigationControllerDelegate {}
 extension ViewController: ImageStageControllerDelegate {
 	func imageStageController(_ controller: ImageStageController,
 	                          shouldSetCameraTransformTo cameraTransform: CGAffineTransform) -> Bool {
-		self.cameraTransform = cameraTransform
+		model.cameraTransform = cameraTransform
 		return false
 	}
 }
