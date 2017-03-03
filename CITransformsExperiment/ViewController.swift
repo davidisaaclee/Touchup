@@ -244,9 +244,10 @@ class ViewController: UIViewController {
 		switch recognizer.state {
 		case .began:
 			var width: Float {
+				var widthConstant: CGFloat = 60
 				// need to apply the 2d transforms to a 1d "distance"...
 				let p1 = CGPoint(x: 0, y: 0)
-				let p2 = CGPoint(x: 25, y: 0)
+				let p2 = CGPoint(x: widthConstant, y: 0)
 
 				func applyTheTransforms(to point: CGPoint) -> CGPoint {
 					return point
