@@ -3,6 +3,8 @@ import UIKit
 protocol ImageStageControllerDelegate: class {
 	func imageStageController(_ controller: ImageStageController,
 	                          shouldSetCameraTransformTo cameraTransform: CGAffineTransform) -> Bool
+	func imageStageController(_ controller: ImageStageController,
+	                          shouldMultiplyCameraTransformBy cameraTransform: CGAffineTransform) -> Bool
 }
 
 class ImageStageController: NSObject {
@@ -35,7 +37,11 @@ class ImageStageController: NSObject {
 		UITapGestureRecognizer()
 
 	var cameraTransform: CGAffineTransform =
-		CGAffineTransform(rotationAngle: CGFloat(M_PI_4))
+		CGAffineTransform(rotationAngle: CGFloat(M_PI_4)) {
+		didSet {
+			reload()
+		}
+	}
 
 	// Apply to a `renderView`'s coordinate system to get stage output's
 	// coordinate system.
@@ -72,13 +78,18 @@ class ImageStageController: NSObject {
 		}
 	}
 
+	fileprivate func attemptToConcatCameraTransform(_ cameraTransform: CGAffineTransform) {
+		if delegate?.imageStageController(self, shouldMultiplyCameraTransformBy: cameraTransform) ?? true {
+			self.cameraTransform = self.cameraTransform.concatenating(cameraTransform)
+		}
+	}
+
 	@objc private func handleDoubleTap(recognizer: UITapGestureRecognizer) {
 		guard case .ended = recognizer.state else {
 			return
 		}
 
 		attemptToSetCameraTransform(.identity)
-		reload()
 	}
 
 
@@ -110,9 +121,8 @@ class ImageStageController: NSObject {
 						stageLocation(of: touch).applying(cameraTransform)
 							- location.applying(cameraTransform)
 
-					attemptToSetCameraTransform(cameraTransform
-						.concatenating(CGAffineTransform(translationX: displacement.x,
-						                                 y: displacement.y)))
+					attemptToConcatCameraTransform(CGAffineTransform(translationX: displacement.x,
+					                                                 y: displacement.y))
 
 					reload()
 				}
@@ -139,7 +149,7 @@ class ImageStageController: NSObject {
 					                   endingAt: (pointA: locationAʹ.applying(cameraTransform),
 					                              pointB: locationBʹ.applying(cameraTransform)))
 
-				cameraTransform = cameraTransform.concatenating(transform)
+				attemptToSetCameraTransform(cameraTransform.concatenating(transform))
 
 				reload()
 
@@ -191,8 +201,8 @@ class ImageStageController: NSObject {
 		func renderWorkspace(around image: CIImage) -> CIImage {
 			let checkerboard =
 				CIFilter(name: "CICheckerboardGenerator",
-				         withInputParameters: ["inputColor0": CIColor(color: UIColor(white: 0.8, alpha: 1)),
-				                               "inputColor1": CIColor(color: UIColor(white: 1, alpha: 1)),
+				         withInputParameters: ["inputColor0": CIColor(color: UIColor(white: 0.2, alpha: 1)),
+				                               "inputColor1": CIColor(color: UIColor(white: 0.1, alpha: 1)),
 				                               "inputWidth": NSNumber(value: 50)])!
 
 			let black =

@@ -22,6 +22,7 @@ class ViewController: UIViewController {
 	@IBOutlet var renderView: ImageSourceRenderView! {
 		didSet {
 			stageController = ImageStageController(renderView: renderView)
+			stageController.delegate = self
 		}
 	}
 
@@ -401,6 +402,12 @@ extension ViewController: ImageStageControllerDelegate {
 	func imageStageController(_ controller: ImageStageController,
 	                          shouldSetCameraTransformTo cameraTransform: CGAffineTransform) -> Bool {
 		model.cameraTransform = cameraTransform
+		return false
+	}
+
+	func imageStageController(_ controller: ImageStageController,
+	                          shouldMultiplyCameraTransformBy cameraTransform: CGAffineTransform) -> Bool {
+		model.cameraTransform = model.cameraTransform.concatenating(cameraTransform)
 		return false
 	}
 }
