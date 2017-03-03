@@ -209,9 +209,9 @@ class ImageStageController: NSObject {
 				CIFilter(name: "CIConstantColorGenerator",
 				         withInputParameters: ["inputColor": CIColor(color: .black)])!
 
-			let translucentWhite =
+			let translucentBlack =
 				CIFilter(name: "CIConstantColorGenerator",
-				         withInputParameters: ["inputColor": CIColor(color: UIColor(white: 1, alpha: 0.8))])!
+				         withInputParameters: ["inputColor": CIColor(color: UIColor(white: 0, alpha: 0.8))])!
 
 			let croppedBlack = black.outputImage!
 				.applyingFilter("CICrop",
@@ -221,7 +221,7 @@ class ImageStageController: NSObject {
 
 			let cutImageBoundsOutOfScrim =
 				CIFilter(name: "CISourceOutCompositing",
-				         withInputParameters: ["inputImage": translucentWhite.outputImage!,
+				         withInputParameters: ["inputImage": translucentBlack.outputImage!,
 				                               "inputBackgroundImage": croppedBlack])!
 
 			let checkerboardBehindImage =
