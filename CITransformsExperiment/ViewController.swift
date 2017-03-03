@@ -115,10 +115,28 @@ class ViewController: UIViewController {
 		// than the working image.
 		let margins = CGSize(width: 2, height: 2)
 
+		guard let workingImageSize = model.image?.extent.size else {
+			return nil
+		}
+
+		// How many pixels are we willing to render?
+		let maxPixelCount: CGFloat = 250000
+
+		var scaleFactor = CGSize(width: 1, height: 0)
+			.applying(model.imageTransform)
+			.magnitude
+
+		// Ensure that the scale factor won't make us render more than
+		// `maxPixelCount` pixels.
+		scaleFactor =
+			min(scaleFactor, 
+			    sqrt(maxPixelCount / (workingImageSize.width * workingImageSize.height)))
+
+		let scaling =
+			CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
+
 		func renderToUIImage(_ marks: [EraserMark]) -> UIImage? {
-			guard let size = model.image?.extent.size else {
-				return nil
-			}
+			let size = workingImageSize.applying(scaling)
 
 			UIGraphicsBeginImageContext(size + margins)
 			defer { UIGraphicsEndImageContext() }
@@ -128,15 +146,18 @@ class ViewController: UIViewController {
 			marks.forEach { mark in
 				let path = UIBezierPath()
 
-				// Translate points to account for left/top margins.
-				let translatedPoints = mark.points.map {
-					$0.applying(CGAffineTransform(translationX: margins.width / 2,
-					                              y: margins.height / 2))
-				}
-				translatedPoints.first.map { path.move(to: $0) }
-				translatedPoints.dropFirst().forEach { path.addLine(to: $0) }
+				let transformedPoints = mark.points
+					// Translate points to account for left/top margins.
+					.map {
+						$0.applying(CGAffineTransform(translationX: margins.width / 2,
+						                              y: margins.height / 2))
+					}
+					// Scale points to keep things crispy
+					.map { $0.applying(scaling) }
+				transformedPoints.first.map { path.move(to: $0) }
+				transformedPoints.dropFirst().forEach { path.addLine(to: $0) }
 
-				path.lineWidth = CGFloat(mark.width)
+				path.lineWidth = CGFloat(mark.width) * scaleFactor
 				path.lineCapStyle = .round
 				path.stroke()
 			}
@@ -144,16 +165,30 @@ class ViewController: UIViewController {
 			return UIGraphicsGetImageFromCurrentImageContext()
 		}
 
-		return renderToUIImage(marks)
+		let result: CIImage? = renderToUIImage(marks)
 			.flatMap { CIImage(image: $0) }
 			.map { ciImage in
-				ciImage
+				// Resize scaled-up image to match the size of the working image
+				// (excluding margins).
+				let resizedImage: CIImage =
+					ciImage
+						.applying(CGAffineTransform(translationX: -ciImage.extent.width / 2,
+						                            y: -ciImage.extent.height / 2))
+						.applying(scaling.inverted())
+						.applying(CGAffineTransform(translationX: ciImage.extent.width / (2 * scaleFactor),
+						                            y: ciImage.extent.height / (2 * scaleFactor)))
+
+				// Do some transforms to move from top-left origin coordinate system to
+				// center origin.
+				return resizedImage
 					.applying(CGAffineTransform(scaleX: 1, y: -1))
 					.applying(CGAffineTransform(translationX: 0,
-					                            y: ciImage.extent.height))
+					                            y: resizedImage.extent.height))
 					.applying(CGAffineTransform(translationX: -margins.width / 2,
 					                            y: -margins.height / 2))
 			}
+
+		return result
 	}
 
 
@@ -344,6 +379,14 @@ class ViewController: UIViewController {
 
 	@IBAction func exitEraser() {
 		mode = .cameraControl
+	}
+
+	@IBAction func saveToCameraRoll() {
+		guard let render = stageController.renderToImage() else {
+			fatalError("Implement me")
+		}
+
+		UIImageWriteToSavedPhotosAlbum(render, nil, nil, nil)
 	}
 
 	@IBAction func freezeImage(_ sender: Any) {
