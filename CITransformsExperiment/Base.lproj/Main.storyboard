@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -62,12 +63,33 @@
                                     <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpInside" id="ga0-I5-Xrg"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="o7u-99-UoH">
+                                <rect key="frame" x="26" y="557" width="96" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sIF-u0-btG">
+                                        <rect key="frame" x="0.0" y="0.0" width="38" height="30"/>
+                                        <state key="normal" title="Undo"/>
+                                        <connections>
+                                            <action selector="undo" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="Rsh-wc-eif"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRS-WN-fYw">
+                                        <rect key="frame" x="60" y="0.0" width="36" height="30"/>
+                                        <state key="normal" title="Redo"/>
+                                        <connections>
+                                            <action selector="redo" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="b0f-W7-0BQ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="03a-BL-rW2"/>
                             <constraint firstItem="28b-2k-8Q2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="2ml-fa-LL1"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="o7u-99-UoH" secondAttribute="bottom" constant="80" id="7wG-Lz-l5a"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EEG-9N-JMr"/>
+                            <constraint firstItem="o7u-99-UoH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="10" id="YuR-5Y-6Hm"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="g07-hL-uCi" secondAttribute="bottom" constant="20" id="ZuZ-Uq-fdm"/>
                             <constraint firstItem="oWz-jA-1o1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="cQt-Bf-DB7"/>
                             <constraint firstItem="28b-2k-8Q2" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="fXF-hN-iGC"/>

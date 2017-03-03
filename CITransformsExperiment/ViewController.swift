@@ -31,6 +31,9 @@ class ViewController: UIViewController {
 		}
 	}
 
+	var history: [Model] = []
+	var historyIndex: Int = -1
+
 	fileprivate let customToolGestureRecognizer =
 		MultitouchGestureRecognizer()
 
@@ -40,17 +43,14 @@ class ViewController: UIViewController {
 		case eraser
 	}
 
-	var mode: Mode = .imageTransform {
+	var mode: Mode = .cameraControl {
 		didSet {
 			switch mode {
-			case .imageTransform:
+			case .imageTransform, .eraser:
 				customToolGestureRecognizer.isEnabled = true
 
 			case .cameraControl:
 				customToolGestureRecognizer.isEnabled = false
-
-			case .eraser:
-				customToolGestureRecognizer.isEnabled = true
 			}
 		}
 	}
@@ -70,7 +70,10 @@ class ViewController: UIViewController {
 		customToolGestureRecognizer
 			.addTarget(self,
 			           action: #selector(ViewController.handleToolGesture(recognizer:)))
+		customToolGestureRecognizer.isEnabled = false
 		renderView.addGestureRecognizer(customToolGestureRecognizer)
+
+		pushHistory()
 	}
 
 	func setWorkingImage(_ image: CIImage) {
@@ -185,6 +188,9 @@ class ViewController: UIViewController {
 
 	func handleImageTransform(using recognizer: MultitouchGestureRecognizer) {
 		switch recognizer.state {
+		case .ended:
+			pushHistory()
+
 		case .changed:
 			switch recognizer.activeTouches.count {
 			case 1:
@@ -238,13 +244,43 @@ class ViewController: UIViewController {
 		}
 	}
 
+	func pushHistory() {
+		history.removeSubrange(history.index(after: historyIndex) ..< history.endIndex)
+		history.append(model)
+		historyIndex += 1
+	}
+
+	@IBAction func undo() {
+		let indexʹ = history.index(before: historyIndex)
+		guard history.indices.contains(indexʹ) else {
+			return
+		}
+
+		print("undoing to \(indexʹ) from \(historyIndex)")
+
+		historyIndex = indexʹ
+		model = history[indexʹ]
+	}
+
+	@IBAction func redo() {
+		let indexʹ = history.index(after: historyIndex)
+		guard history.indices.contains(indexʹ) else {
+			return
+		}
+
+		print("redoing to \(indexʹ) from \(historyIndex)")
+
+		historyIndex = indexʹ
+		model = history[indexʹ]
+	}
+
 
 	private func handleEraser(using recognizer: MultitouchGestureRecognizer) {
 		switch recognizer.state {
 		case .began:
 			var width: Float {
 				var widthConstant: CGFloat = 60
-				// need to apply the 2d transforms to a 1d "distance"...
+				// need to aupply the 2d transforms to a 1d "distance"...
 				let p1 = CGPoint(x: 0, y: 0)
 				let p2 = CGPoint(x: widthConstant, y: 0)
 
@@ -264,6 +300,8 @@ class ViewController: UIViewController {
 		case .ended:
 			if let mark = model.eraserMarks.last, mark.points.isEmpty {
 				model.eraserMarks.removeLast()
+			} else {
+				pushHistory()
 			}
 
 		case .changed:
@@ -318,6 +356,7 @@ class ViewController: UIViewController {
 
 		model.backgroundImage =
 			render.applying(centerOriginTransform)
+		pushHistory()
 	}
 
 	@IBAction func replaceImage() {
@@ -336,6 +375,7 @@ extension ViewController: UIImagePickerControllerDelegate {
 			let resizedImage =
 				image.resizing(toFitWithin: CGSize(width: 100, height: 100))
 			setWorkingImage(CIImage(image: resizedImage)!)
+			pushHistory()
 
 			dismiss(animated: true, completion: nil)
 		}
