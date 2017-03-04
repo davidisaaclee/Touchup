@@ -6,7 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -26,80 +26,75 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWz-jA-1o1">
-                                <rect key="frame" x="20" y="599" width="34" height="48"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="🏞"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWz-jA-1o1">
+                                <rect key="frame" x="20" y="547" width="99.5" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="ntc-W4-g4j"/>
+                                    <constraint firstAttribute="width" secondItem="oWz-jA-1o1" secondAttribute="height" multiplier="168:169" id="tam-PO-zXn"/>
+                                </constraints>
+                                <state key="normal" image="transform2"/>
                                 <connections>
                                     <action selector="enterImageTransform" destination="BYZ-38-t0r" eventType="touchDown" id="J27-6H-axY"/>
                                     <action selector="exitImageTransform" destination="BYZ-38-t0r" eventType="touchUpOutside" id="60k-DX-RO4"/>
                                     <action selector="exitImageTransform" destination="BYZ-38-t0r" eventType="touchUpInside" id="aPN-Z3-WuO"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g07-hL-uCi">
-                                <rect key="frame" x="321" y="599" width="34" height="48"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="❄️"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g07-hL-uCi">
+                                <rect key="frame" x="252" y="547" width="103" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="g07-hL-uCi" secondAttribute="height" multiplier="191:185" id="WGj-rx-eqj"/>
+                                    <constraint firstAttribute="height" constant="100" id="kUD-CT-fwg"/>
+                                </constraints>
+                                <state key="normal" image="stamp2"/>
                                 <connections>
                                     <action selector="freezeImage:" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="4Mn-1W-F6U"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28b-2k-8Q2">
-                                <rect key="frame" x="20" y="40" width="34" height="48"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="📷"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28b-2k-8Q2">
+                                <rect key="frame" x="20" y="40" width="63.5" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="Jia-Go-SB6"/>
+                                    <constraint firstAttribute="width" secondItem="28b-2k-8Q2" secondAttribute="height" multiplier="37:35" id="voD-Y9-CHX"/>
+                                </constraints>
+                                <state key="normal" image="import"/>
                                 <connections>
                                     <action selector="replaceImage" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="2sd-ds-bJc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFh-4f-QaN">
-                                <rect key="frame" x="170" y="599" width="34" height="48"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="🔪"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFh-4f-QaN">
+                                <rect key="frame" x="135" y="547" width="106" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="VFh-4f-QaN" secondAttribute="height" multiplier="92:87" id="Fyh-nD-l4d"/>
+                                    <constraint firstAttribute="height" constant="100" id="zXA-q1-IjJ"/>
+                                </constraints>
+                                <state key="normal" image="eraser2"/>
                                 <connections>
                                     <action selector="enterEraser" destination="BYZ-38-t0r" eventType="touchDown" id="66r-kJ-rcd"/>
                                     <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpOutside" id="SHb-I1-ccK"/>
                                     <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpInside" id="ga0-I5-Xrg"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ST1-uG-giW">
-                                <rect key="frame" x="321" y="40" width="34" height="48"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="💾"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ST1-uG-giW">
+                                <rect key="frame" x="294.5" y="40" width="60.5" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ST1-uG-giW" secondAttribute="height" multiplier="193:191" id="GUY-3C-Fg5"/>
+                                    <constraint firstAttribute="height" constant="60" id="IRM-mo-BHf"/>
+                                </constraints>
+                                <state key="normal" image="export"/>
                                 <connections>
                                     <action selector="saveToCameraRoll" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="YSn-0w-mu5"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="o7u-99-UoH">
-                                <rect key="frame" x="26" y="557" width="96" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sIF-u0-btG">
-                                        <rect key="frame" x="0.0" y="0.0" width="38" height="30"/>
-                                        <state key="normal" title="Undo"/>
-                                        <connections>
-                                            <action selector="undo" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="Rsh-wc-eif"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRS-WN-fYw">
-                                        <rect key="frame" x="60" y="0.0" width="36" height="30"/>
-                                        <state key="normal" title="Redo"/>
-                                        <connections>
-                                            <action selector="redo" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="b0f-W7-0BQ"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="03a-BL-rW2"/>
                             <constraint firstItem="28b-2k-8Q2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="2ml-fa-LL1"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="o7u-99-UoH" secondAttribute="bottom" constant="80" id="7wG-Lz-l5a"/>
+                            <constraint firstItem="VFh-4f-QaN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6Zo-yJ-9bE"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EEG-9N-JMr"/>
                             <constraint firstItem="ST1-uG-giW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="T2I-Rx-RHx"/>
-                            <constraint firstItem="o7u-99-UoH" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="10" id="YuR-5Y-6Hm"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="g07-hL-uCi" secondAttribute="bottom" constant="20" id="ZuZ-Uq-fdm"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="VFh-4f-QaN" secondAttribute="bottom" constant="20" id="a1d-lC-DGd"/>
                             <constraint firstItem="oWz-jA-1o1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="cQt-Bf-DB7"/>
                             <constraint firstItem="28b-2k-8Q2" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="fXF-hN-iGC"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="mOj-lc-Huz"/>
@@ -118,4 +113,11 @@
             <point key="canvasLocation" x="136.80000000000001" y="138.98050974512745"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="eraser2" width="187" height="176"/>
+        <image name="export" width="193" height="191"/>
+        <image name="import" width="185" height="175"/>
+        <image name="stamp2" width="191" height="187"/>
+        <image name="transform2" width="174" height="175"/>
+    </resources>
 </document>

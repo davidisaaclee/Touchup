@@ -201,8 +201,8 @@ class ImageStageController: NSObject {
 		func renderWorkspace(around image: CIImage) -> CIImage {
 			let checkerboard =
 				CIFilter(name: "CICheckerboardGenerator",
-				         withInputParameters: ["inputColor0": CIColor(color: UIColor(white: 0.2, alpha: 1)),
-				                               "inputColor1": CIColor(color: UIColor(white: 0.1, alpha: 1)),
+				         withInputParameters: ["inputColor0": CIColor(color: UIColor(white: 1, alpha: 1)),
+				                               "inputColor1": CIColor(color: UIColor(white: 0.9, alpha: 1)),
 				                               "inputWidth": NSNumber(value: 50)])!
 
 			let black =

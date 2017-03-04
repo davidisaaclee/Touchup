@@ -38,6 +38,12 @@ class ViewController: UIViewController {
 	fileprivate let customToolGestureRecognizer =
 		MultitouchGestureRecognizer()
 
+	let undoGestureRecognizer =
+		UITapGestureRecognizer()
+
+	let redoGestureRecognizer =
+		UITapGestureRecognizer()
+
 	enum Mode {
 		case cameraControl
 		case imageTransform
@@ -74,7 +80,40 @@ class ViewController: UIViewController {
 		customToolGestureRecognizer.isEnabled = false
 		renderView.addGestureRecognizer(customToolGestureRecognizer)
 
+		undoGestureRecognizer
+			.addTarget(self,
+			           action: #selector(ViewController.handleHistoryGesture(recognizer:)))
+		undoGestureRecognizer.numberOfTapsRequired = 2
+		undoGestureRecognizer.numberOfTouchesRequired = 2
+		undoGestureRecognizer.delegate = self
+		view.addGestureRecognizer(undoGestureRecognizer)
+
+		redoGestureRecognizer
+			.addTarget(self,
+			           action: #selector(ViewController.handleHistoryGesture(recognizer:)))
+		redoGestureRecognizer.numberOfTapsRequired = 2
+		redoGestureRecognizer.numberOfTouchesRequired = 3
+		redoGestureRecognizer.delegate = self
+		view.addGestureRecognizer(redoGestureRecognizer)
+
 		pushHistory()
+	}
+
+	func handleHistoryGesture(recognizer: UITapGestureRecognizer) {
+		guard case .ended = recognizer.state else {
+			return
+		}
+
+		switch recognizer {
+		case undoGestureRecognizer:
+			undo()
+
+		case redoGestureRecognizer:
+			redo()
+
+		default:
+			break
+		}
 	}
 
 	func setWorkingImage(_ image: CIImage) {
@@ -452,5 +491,20 @@ extension ViewController: ImageStageControllerDelegate {
 	                          shouldMultiplyCameraTransformBy cameraTransform: CGAffineTransform) -> Bool {
 		model.cameraTransform = model.cameraTransform.concatenating(cameraTransform)
 		return false
+	}
+}
+
+extension ViewController: UIGestureRecognizerDelegate {
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		switch (gestureRecognizer, otherGestureRecognizer) {
+		case (undoGestureRecognizer, _):
+			return true
+
+		case (redoGestureRecognizer, _):
+			return true
+
+		default:
+			return false
+		}
 	}
 }
