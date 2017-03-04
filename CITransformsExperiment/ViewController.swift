@@ -58,6 +58,8 @@ class ViewController: UIViewController {
 
 	var mode: Mode = .cameraControl {
 		didSet {
+			previousMode = oldValue
+
 			switch mode {
 			case .imageTransform, .eraser:
 				customToolGestureRecognizer.isEnabled = true
@@ -284,6 +286,9 @@ class ViewController: UIViewController {
 
 	func handleImageTransform(using recognizer: MultitouchGestureRecognizer) {
 		switch recognizer.state {
+		case .began:
+			isModeLocked = false
+
 		case .ended:
 			pushHistory()
 
@@ -374,6 +379,8 @@ class ViewController: UIViewController {
 	private func handleEraser(using recognizer: MultitouchGestureRecognizer) {
 		switch recognizer.state {
 		case .began:
+			isModeLocked = false
+
 			var width: Float {
 				var widthConstant: CGFloat = 60
 				// need to aupply the 2d transforms to a 1d "distance"...
@@ -425,20 +432,29 @@ class ViewController: UIViewController {
 		}
 	}
 
+	private var previousMode: Mode?
+	private var isModeLocked: Bool = false
+
 	@IBAction func enterImageTransform() {
+		isModeLocked = true
 		mode = .imageTransform
 	}
 
 	@IBAction func exitImageTransform() {
-		mode = .cameraControl
+		if !isModeLocked {
+			mode = .cameraControl
+		}
 	}
 
 	@IBAction func enterEraser() {
+		isModeLocked = true
 		mode = .eraser
 	}
 
 	@IBAction func exitEraser() {
-		mode = .cameraControl
+		if !isModeLocked {
+			mode = .cameraControl
+		}
 	}
 
 	@IBAction func saveToCameraRoll() {
@@ -446,7 +462,9 @@ class ViewController: UIViewController {
 			fatalError("Implement me")
 		}
 
-		UIImageWriteToSavedPhotosAlbum(render, nil, nil, nil)
+		let activityController = UIActivityViewController(activityItems: [render],
+		                                                  applicationActivities: nil)
+		present(activityController, animated: true, completion: nil)
 	}
 
 	@IBAction func freezeImage(_ sender: Any) {
