@@ -162,7 +162,8 @@ class ViewController: UIViewController {
 		// We'll add a 1px margin to each side, to prevent edges showing through.
 		// Note that this will make the result of this function `margins` larger
 		// than the working image.
-		let margins = CGSize(width: 2, height: 2)
+		let margins = CGSize(width: 10,
+		                     height: 10)
 
 		guard let workingImageSize = model.image?.extent.size else {
 			return nil
