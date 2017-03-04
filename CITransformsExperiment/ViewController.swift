@@ -6,6 +6,12 @@ struct EraserMark {
 	let width: Float
 }
 
+extension EraserMark: Equatable {
+	static func == (lhs: EraserMark, rhs: EraserMark) -> Bool {
+		return lhs.points == rhs.points && lhs.width == rhs.width
+	}
+}
+
 
 class ViewController: UIViewController {
 
@@ -148,6 +154,8 @@ class ViewController: UIViewController {
 		}
 	}
 
+	private var eraserMarksCache: (marks: [EraserMark], scaleFactor: CGFloat, image: CIImage)?
+
 	private func renderEraserMarks(_ marks: [EraserMark]) -> CIImage? {
 		// We'll add a 1px margin to each side, to prevent edges showing through.
 		// Note that this will make the result of this function `margins` larger
@@ -170,6 +178,13 @@ class ViewController: UIViewController {
 		scaleFactor =
 			min(scaleFactor, 
 			    sqrt(maxPixelCount / (workingImageSize.width * workingImageSize.height)))
+
+		if let cached = eraserMarksCache {
+			if cached.marks == marks && cached.scaleFactor == scaleFactor {
+				return cached.image
+			}
+		}
+
 
 		let scaling =
 			CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
@@ -226,6 +241,12 @@ class ViewController: UIViewController {
 					.applying(CGAffineTransform(translationX: -margins.width / 2,
 					                            y: -margins.height / 2))
 			}
+
+		if let result = result {
+			eraserMarksCache = (marks: marks,
+			                    scaleFactor: scaleFactor,
+			                    image: result)
+		}
 
 		return result
 	}
@@ -443,10 +464,18 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func replaceImage() {
-		let imagePicker = UIImagePickerController()
-		imagePicker.sourceType = .camera
+		let imagePicker = CustomImagePicker()
+		imagePicker.sourceType = .photoLibrary
+		imagePicker.allowsEditing = true
 		imagePicker.delegate = self
+		imagePicker.modalTransitionStyle = .crossDissolve
 		present(imagePicker, animated: true, completion: nil)
+	}
+
+	private class CustomImagePicker: UIImagePickerController {
+		override var prefersStatusBarHidden: Bool {
+			return true
+		}
 	}
 }
 
