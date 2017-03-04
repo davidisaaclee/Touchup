@@ -20,7 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		634F25FF1E662A4F00028893 /* CITransformsExperiment.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CITransformsExperiment.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		634F25FF1E662A4F00028893 /* Touchup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Touchup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		634F26021E662A4F00028893 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		634F26041E662A4F00028893 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		634F26071E662A4F00028893 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -59,7 +59,7 @@
 		634F25F61E662A4F00028893 = {
 			isa = PBXGroup;
 			children = (
-				634F26011E662A4F00028893 /* CITransformsExperiment */,
+				634F26011E662A4F00028893 /* Touchup */,
 				634F26001E662A4F00028893 /* Products */,
 				F51D6D8484C5560B4C9D6EBC /* Pods */,
 				3645E1784778CCFD4CFBC056 /* Frameworks */,
@@ -69,12 +69,12 @@
 		634F26001E662A4F00028893 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				634F25FF1E662A4F00028893 /* CITransformsExperiment.app */,
+				634F25FF1E662A4F00028893 /* Touchup.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		634F26011E662A4F00028893 /* CITransformsExperiment */ = {
+		634F26011E662A4F00028893 /* Touchup */ = {
 			isa = PBXGroup;
 			children = (
 				634F26021E662A4F00028893 /* AppDelegate.swift */,
@@ -88,6 +88,7 @@
 				63BCF56D1E673C10006D46DD /* ImageStageController.swift */,
 				63B481381E688F9300D1A795 /* UIImage+resize.swift */,
 			);
+			name = Touchup;
 			path = CITransformsExperiment;
 			sourceTree = "<group>";
 		};
@@ -103,9 +104,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		634F25FE1E662A4F00028893 /* CITransformsExperiment */ = {
+		634F25FE1E662A4F00028893 /* Touchup */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 634F26111E662A4F00028893 /* Build configuration list for PBXNativeTarget "CITransformsExperiment" */;
+			buildConfigurationList = 634F26111E662A4F00028893 /* Build configuration list for PBXNativeTarget "Touchup" */;
 			buildPhases = (
 				274D64F589F41FAEF87502E1 /* [CP] Check Pods Manifest.lock */,
 				634F25FB1E662A4F00028893 /* Sources */,
@@ -118,9 +119,9 @@
 			);
 			dependencies = (
 			);
-			name = CITransformsExperiment;
+			name = Touchup;
 			productName = CITransformsExperiment;
-			productReference = 634F25FF1E662A4F00028893 /* CITransformsExperiment.app */;
+			productReference = 634F25FF1E662A4F00028893 /* Touchup.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -140,7 +141,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 634F25FA1E662A4F00028893 /* Build configuration list for PBXProject "CITransformsExperiment" */;
+			buildConfigurationList = 634F25FA1E662A4F00028893 /* Build configuration list for PBXProject "Touchup" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -153,7 +154,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				634F25FE1E662A4F00028893 /* CITransformsExperiment */,
+				634F25FE1E662A4F00028893 /* Touchup */,
 			);
 		};
 /* End PBXProject section */
@@ -379,7 +380,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		634F25FA1E662A4F00028893 /* Build configuration list for PBXProject "CITransformsExperiment" */ = {
+		634F25FA1E662A4F00028893 /* Build configuration list for PBXProject "Touchup" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				634F260F1E662A4F00028893 /* Debug */,
@@ -388,7 +389,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		634F26111E662A4F00028893 /* Build configuration list for PBXNativeTarget "CITransformsExperiment" */ = {
+		634F26111E662A4F00028893 /* Build configuration list for PBXNativeTarget "Touchup" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				634F26121E662A4F00028893 /* Debug */,

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "634F25FE1E662A4F00028893"
-               BuildableName = "CITransformsExperiment.app"
-               BlueprintName = "CITransformsExperiment"
-               ReferencedContainer = "container:CITransformsExperiment.xcodeproj">
+               BuildableName = "Touchup.app"
+               BlueprintName = "Touchup"
+               ReferencedContainer = "container:Touchup.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "634F25FE1E662A4F00028893"
-            BuildableName = "CITransformsExperiment.app"
-            BlueprintName = "CITransformsExperiment"
-            ReferencedContainer = "container:CITransformsExperiment.xcodeproj">
+            BuildableName = "Touchup.app"
+            BlueprintName = "Touchup"
+            ReferencedContainer = "container:Touchup.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "634F25FE1E662A4F00028893"
-            BuildableName = "CITransformsExperiment.app"
-            BlueprintName = "CITransformsExperiment"
-            ReferencedContainer = "container:CITransformsExperiment.xcodeproj">
+            BuildableName = "Touchup.app"
+            BlueprintName = "Touchup"
+            ReferencedContainer = "container:Touchup.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "634F25FE1E662A4F00028893"
-            BuildableName = "CITransformsExperiment.app"
-            BlueprintName = "CITransformsExperiment"
-            ReferencedContainer = "container:CITransformsExperiment.xcodeproj">
+            BuildableName = "Touchup.app"
+            BlueprintName = "Touchup"
+            ReferencedContainer = "container:Touchup.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
