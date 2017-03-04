@@ -16,6 +16,15 @@
 		63B481391E688F9300D1A795 /* UIImage+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B481381E688F9300D1A795 /* UIImage+resize.swift */; };
 		63BCF56C1E667D62006D46DD /* MultitouchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */; };
 		63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BCF56D1E673C10006D46DD /* ImageStageController.swift */; };
+		63D4B8721E6B4487003D4514 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8711E6B4487003D4514 /* AssetsLibrary.framework */; };
+		63D4B8741E6B448D003D4514 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8731E6B448D003D4514 /* CoreTelephony.framework */; };
+		63D4B8761E6B4493003D4514 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8751E6B4493003D4514 /* CoreText.framework */; };
+		63D4B8781E6B4499003D4514 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8771E6B4499003D4514 /* CoreMedia.framework */; };
+		63D4B87A1E6B449E003D4514 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8791E6B449E003D4514 /* AVFoundation.framework */; };
+		63D4B87C1E6B44A4003D4514 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B87B1E6B44A4003D4514 /* CoreVideo.framework */; };
+		63D4B87E1E6B44AA003D4514 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B87D1E6B44AA003D4514 /* QuartzCore.framework */; };
+		63D4B8801E6B44AF003D4514 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B87F1E6B44AF003D4514 /* SystemConfiguration.framework */; };
+		63D4B8821E6B44B8003D4514 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8811E6B44B8003D4514 /* BuddyBuildSDK.framework */; };
 		64F055ACCE7C0F7A463A485C /* Pods_CITransformsExperiment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C44B02945F929009729274A2 /* Pods_CITransformsExperiment.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +40,16 @@
 		63B481381E688F9300D1A795 /* UIImage+resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+resize.swift"; sourceTree = "<group>"; };
 		63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultitouchGestureRecognizer.swift; sourceTree = "<group>"; };
 		63BCF56D1E673C10006D46DD /* ImageStageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageStageController.swift; sourceTree = "<group>"; };
+		63D4B8711E6B4487003D4514 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		63D4B8731E6B448D003D4514 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		63D4B8751E6B4493003D4514 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		63D4B8771E6B4499003D4514 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		63D4B8791E6B449E003D4514 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		63D4B87B1E6B44A4003D4514 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		63D4B87D1E6B44AA003D4514 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		63D4B87F1E6B44AF003D4514 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		63D4B8811E6B44B8003D4514 /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
+		63D4B8831E6B4501003D4514 /* Touchup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Touchup-Bridging-Header.h"; sourceTree = "<group>"; };
 		C44B02945F929009729274A2 /* Pods_CITransformsExperiment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CITransformsExperiment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D01A31C933A44831C4A4B13F /* Pods-CITransformsExperiment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CITransformsExperiment.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CITransformsExperiment/Pods-CITransformsExperiment.debug.xcconfig"; sourceTree = "<group>"; };
 		F84E5727D2033DE4955473C5 /* Pods-CITransformsExperiment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CITransformsExperiment.release.xcconfig"; path = "Pods/Target Support Files/Pods-CITransformsExperiment/Pods-CITransformsExperiment.release.xcconfig"; sourceTree = "<group>"; };
@@ -41,6 +60,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63D4B8821E6B44B8003D4514 /* BuddyBuildSDK.framework in Frameworks */,
+				63D4B8801E6B44AF003D4514 /* SystemConfiguration.framework in Frameworks */,
+				63D4B87E1E6B44AA003D4514 /* QuartzCore.framework in Frameworks */,
+				63D4B87C1E6B44A4003D4514 /* CoreVideo.framework in Frameworks */,
+				63D4B87A1E6B449E003D4514 /* AVFoundation.framework in Frameworks */,
+				63D4B8781E6B4499003D4514 /* CoreMedia.framework in Frameworks */,
+				63D4B8761E6B4493003D4514 /* CoreText.framework in Frameworks */,
+				63D4B8741E6B448D003D4514 /* CoreTelephony.framework in Frameworks */,
+				63D4B8721E6B4487003D4514 /* AssetsLibrary.framework in Frameworks */,
 				64F055ACCE7C0F7A463A485C /* Pods_CITransformsExperiment.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,6 +79,15 @@
 		3645E1784778CCFD4CFBC056 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				63D4B8811E6B44B8003D4514 /* BuddyBuildSDK.framework */,
+				63D4B87F1E6B44AF003D4514 /* SystemConfiguration.framework */,
+				63D4B87D1E6B44AA003D4514 /* QuartzCore.framework */,
+				63D4B87B1E6B44A4003D4514 /* CoreVideo.framework */,
+				63D4B8791E6B449E003D4514 /* AVFoundation.framework */,
+				63D4B8771E6B4499003D4514 /* CoreMedia.framework */,
+				63D4B8751E6B4493003D4514 /* CoreText.framework */,
+				63D4B8731E6B448D003D4514 /* CoreTelephony.framework */,
+				63D4B8711E6B4487003D4514 /* AssetsLibrary.framework */,
 				C44B02945F929009729274A2 /* Pods_CITransformsExperiment.framework */,
 			);
 			name = Frameworks;
@@ -87,6 +124,7 @@
 				63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */,
 				63BCF56D1E673C10006D46DD /* ImageStageController.swift */,
 				63B481381E688F9300D1A795 /* UIImage+resize.swift */,
+				63D4B8831E6B4501003D4514 /* Touchup-Bridging-Header.h */,
 			);
 			name = Touchup;
 			path = CITransformsExperiment;
@@ -137,6 +175,7 @@
 					634F25FE1E662A4F00028893 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = W232V5HB89;
+						LastSwiftMigration = 0820;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -354,11 +393,18 @@
 			baseConfigurationReference = D01A31C933A44831C4A4B13F /* Pods-CITransformsExperiment.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = W232V5HB89;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = CITransformsExperiment/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.david-lee.CITransformsExperiment";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CITransformsExperiment/Touchup-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -368,11 +414,17 @@
 			baseConfigurationReference = F84E5727D2033DE4955473C5 /* Pods-CITransformsExperiment.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = W232V5HB89;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = CITransformsExperiment/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.david-lee.CITransformsExperiment";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "CITransformsExperiment/Touchup-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
