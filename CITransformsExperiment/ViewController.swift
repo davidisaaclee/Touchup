@@ -32,6 +32,19 @@ class ViewController: UIViewController {
 		}
 	}
 
+	@IBOutlet weak var imageTransformButton: UIButton! {
+		didSet {
+			imageTransformButton.setImage(#imageLiteral(resourceName: "transform_circle"),
+			                              for: [.highlighted, .selected])
+		}
+	}
+	@IBOutlet weak var eraserButton: UIButton! {
+		didSet {
+			eraserButton.setImage(#imageLiteral(resourceName: "eraser_circle"),
+			                      for: [.highlighted, .selected])
+		}
+	}
+
 	var model: Model = ViewController.Model() {
 		didSet {
 			reloadRenderView()
@@ -66,6 +79,21 @@ class ViewController: UIViewController {
 
 			case .cameraControl:
 				customToolGestureRecognizer.isEnabled = false
+			}
+
+			imageTransformButton.isSelected = false
+			eraserButton.isSelected = false
+
+			switch mode {
+			case .cameraControl:
+				break
+
+			case .imageTransform:
+				imageTransformButton.isSelected = true
+
+			case .eraser:
+				eraserButton.isSelected = true
+
 			}
 		}
 	}
@@ -442,7 +470,9 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func exitImageTransform() {
-		if !isModeLocked {
+		// switch back if we unlocked the mode,
+		// or if tapping on locked transform mode
+		if !isModeLocked || previousMode == .imageTransform {
 			mode = .cameraControl
 		}
 	}
@@ -453,7 +483,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func exitEraser() {
-		if !isModeLocked {
+		if !isModeLocked || previousMode == .eraser {
 			mode = .cameraControl
 		}
 	}
@@ -485,7 +515,6 @@ class ViewController: UIViewController {
 	@IBAction func replaceImage() {
 		let imagePicker = CustomImagePicker()
 		imagePicker.sourceType = .photoLibrary
-		imagePicker.allowsEditing = true
 		imagePicker.delegate = self
 		imagePicker.modalTransitionStyle = .crossDissolve
 		present(imagePicker, animated: true, completion: nil)

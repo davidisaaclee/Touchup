@@ -13,7 +13,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="CITransformsExperiment" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Touchup" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -22,7 +22,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9w4-66-047" customClass="ImageSourceRenderView" customModule="CITransformsExperiment" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9w4-66-047" customClass="ImageSourceRenderView" customModule="Touchup" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
@@ -32,7 +32,10 @@
                                     <constraint firstAttribute="height" constant="100" id="ntc-W4-g4j"/>
                                     <constraint firstAttribute="width" secondItem="oWz-jA-1o1" secondAttribute="height" multiplier="168:169" id="tam-PO-zXn"/>
                                 </constraints>
-                                <state key="normal" image="transform_circle"/>
+                                <state key="normal" image="transform_disabled"/>
+                                <state key="selected" image="transform_circle"/>
+                                <state key="highlighted" image="transform_circle"/>
+                                <state key="focused" image="transform_circle"/>
                                 <connections>
                                     <action selector="enterImageTransform" destination="BYZ-38-t0r" eventType="touchDown" id="J27-6H-axY"/>
                                     <action selector="exitImageTransform" destination="BYZ-38-t0r" eventType="touchUpOutside" id="60k-DX-RO4"/>
@@ -67,7 +70,9 @@
                                     <constraint firstAttribute="width" secondItem="VFh-4f-QaN" secondAttribute="height" multiplier="92:87" id="Fyh-nD-l4d"/>
                                     <constraint firstAttribute="height" constant="100" id="zXA-q1-IjJ"/>
                                 </constraints>
-                                <state key="normal" image="eraser_circle"/>
+                                <state key="normal" image="eraser_disabled"/>
+                                <state key="selected" image="eraser_circle"/>
+                                <state key="highlighted" image="eraser_circle"/>
                                 <connections>
                                     <action selector="enterEraser" destination="BYZ-38-t0r" eventType="touchDown" id="66r-kJ-rcd"/>
                                     <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpOutside" id="SHb-I1-ccK"/>
@@ -105,6 +110,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="eraserButton" destination="VFh-4f-QaN" id="08N-ZK-eyK"/>
+                        <outlet property="imageTransformButton" destination="oWz-jA-1o1" id="ukL-PJ-KLJ"/>
                         <outlet property="renderView" destination="9w4-66-047" id="cQj-2c-6rT"/>
                     </connections>
                 </viewController>
@@ -115,9 +122,11 @@
     </scenes>
     <resources>
         <image name="eraser_circle" width="192" height="193"/>
+        <image name="eraser_disabled" width="192" height="193"/>
         <image name="export_square" width="206" height="192"/>
         <image name="library_square" width="207" height="181"/>
         <image name="stamp_square" width="200" height="178"/>
         <image name="transform_circle" width="197" height="190"/>
+        <image name="transform_disabled" width="197" height="190"/>
     </resources>
 </document>
