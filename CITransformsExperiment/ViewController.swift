@@ -533,7 +533,7 @@ extension ViewController: UIImagePickerControllerDelegate {
 	                           didFinishPickingMediaWithInfo info: [String: Any]) {
 		func swap(image: UIImage) {
 			let resizedImage =
-				image.resizing(toFitWithin: CGSize(width: 800, height: 800))
+				image.resizing(toFitWithin: renderView.bounds.size)
 			setWorkingImage(CIImage(image: resizedImage)!)
 			pushHistory()
 

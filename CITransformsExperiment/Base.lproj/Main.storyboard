@@ -7,6 +7,7 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -26,27 +27,48 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWz-jA-1o1">
-                                <rect key="frame" x="20" y="547" width="99.5" height="100"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="zXk-CJ-hIC">
+                                <rect key="frame" x="0.0" y="587" width="375" height="80"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oWz-jA-1o1">
+                                        <rect key="frame" x="0.0" y="0.0" width="79.5" height="80"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="oWz-jA-1o1" secondAttribute="height" multiplier="168:169" id="tam-PO-zXn"/>
+                                        </constraints>
+                                        <state key="normal" image="transform_disabled"/>
+                                        <state key="selected" image="transform_circle"/>
+                                        <state key="highlighted" image="transform_circle"/>
+                                        <state key="focused" image="transform_circle"/>
+                                        <connections>
+                                            <action selector="enterImageTransform" destination="BYZ-38-t0r" eventType="touchDown" id="J27-6H-axY"/>
+                                            <action selector="exitImageTransform" destination="BYZ-38-t0r" eventType="touchUpOutside" id="60k-DX-RO4"/>
+                                            <action selector="exitImageTransform" destination="BYZ-38-t0r" eventType="touchUpInside" id="aPN-Z3-WuO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFh-4f-QaN">
+                                        <rect key="frame" x="290.5" y="0.0" width="84.5" height="80"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="VFh-4f-QaN" secondAttribute="height" multiplier="92:87" id="Fyh-nD-l4d"/>
+                                        </constraints>
+                                        <state key="normal" image="eraser_disabled"/>
+                                        <state key="selected" image="eraser_circle"/>
+                                        <state key="highlighted" image="eraser_circle"/>
+                                        <connections>
+                                            <action selector="enterEraser" destination="BYZ-38-t0r" eventType="touchDown" id="66r-kJ-rcd"/>
+                                            <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpOutside" id="SHb-I1-ccK"/>
+                                            <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpInside" id="ga0-I5-Xrg"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="ntc-W4-g4j"/>
-                                    <constraint firstAttribute="width" secondItem="oWz-jA-1o1" secondAttribute="height" multiplier="168:169" id="tam-PO-zXn"/>
+                                    <constraint firstAttribute="height" constant="80" id="5DY-DU-9bo"/>
                                 </constraints>
-                                <state key="normal" image="transform_disabled"/>
-                                <state key="selected" image="transform_circle"/>
-                                <state key="highlighted" image="transform_circle"/>
-                                <state key="focused" image="transform_circle"/>
-                                <connections>
-                                    <action selector="enterImageTransform" destination="BYZ-38-t0r" eventType="touchDown" id="J27-6H-axY"/>
-                                    <action selector="exitImageTransform" destination="BYZ-38-t0r" eventType="touchUpOutside" id="60k-DX-RO4"/>
-                                    <action selector="exitImageTransform" destination="BYZ-38-t0r" eventType="touchUpInside" id="aPN-Z3-WuO"/>
-                                </connections>
-                            </button>
+                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g07-hL-uCi">
-                                <rect key="frame" x="252" y="547" width="103" height="100"/>
+                                <rect key="frame" x="40" y="504" width="60" height="58"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="g07-hL-uCi" secondAttribute="height" multiplier="191:185" id="WGj-rx-eqj"/>
-                                    <constraint firstAttribute="height" constant="100" id="kUD-CT-fwg"/>
+                                    <constraint firstAttribute="height" constant="58" id="5V2-Kw-Ivc"/>
+                                    <constraint firstAttribute="width" constant="60" id="i7i-fj-3k3"/>
                                 </constraints>
                                 <state key="normal" image="stamp_square"/>
                                 <connections>
@@ -54,7 +76,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28b-2k-8Q2">
-                                <rect key="frame" x="20" y="40" width="63.5" height="60"/>
+                                <rect key="frame" x="20" y="40" width="64" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="Jia-Go-SB6"/>
                                     <constraint firstAttribute="width" secondItem="28b-2k-8Q2" secondAttribute="height" multiplier="37:35" id="voD-Y9-CHX"/>
@@ -64,23 +86,8 @@
                                     <action selector="replaceImage" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="2sd-ds-bJc"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VFh-4f-QaN">
-                                <rect key="frame" x="135" y="547" width="106" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="VFh-4f-QaN" secondAttribute="height" multiplier="92:87" id="Fyh-nD-l4d"/>
-                                    <constraint firstAttribute="height" constant="100" id="zXA-q1-IjJ"/>
-                                </constraints>
-                                <state key="normal" image="eraser_disabled"/>
-                                <state key="selected" image="eraser_circle"/>
-                                <state key="highlighted" image="eraser_circle"/>
-                                <connections>
-                                    <action selector="enterEraser" destination="BYZ-38-t0r" eventType="touchDown" id="66r-kJ-rcd"/>
-                                    <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpOutside" id="SHb-I1-ccK"/>
-                                    <action selector="exitEraser" destination="BYZ-38-t0r" eventType="touchUpInside" id="ga0-I5-Xrg"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ST1-uG-giW">
-                                <rect key="frame" x="294.5" y="40" width="60.5" height="60"/>
+                                <rect key="frame" x="295" y="40" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ST1-uG-giW" secondAttribute="height" multiplier="193:191" id="GUY-3C-Fg5"/>
                                     <constraint firstAttribute="height" constant="60" id="IRM-mo-BHf"/>
@@ -95,18 +102,17 @@
                         <constraints>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="03a-BL-rW2"/>
                             <constraint firstItem="28b-2k-8Q2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="2ml-fa-LL1"/>
-                            <constraint firstItem="VFh-4f-QaN" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="6Zo-yJ-9bE"/>
+                            <constraint firstItem="zXk-CJ-hIC" firstAttribute="top" secondItem="g07-hL-uCi" secondAttribute="bottom" constant="25" id="CI7-cD-Zgv"/>
+                            <constraint firstItem="zXk-CJ-hIC" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="D44-u4-3zO"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EEG-9N-JMr"/>
                             <constraint firstItem="ST1-uG-giW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="T2I-Rx-RHx"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="g07-hL-uCi" secondAttribute="bottom" constant="20" id="ZuZ-Uq-fdm"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="VFh-4f-QaN" secondAttribute="bottom" constant="20" id="a1d-lC-DGd"/>
-                            <constraint firstItem="oWz-jA-1o1" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="cQt-Bf-DB7"/>
                             <constraint firstItem="28b-2k-8Q2" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="fXF-hN-iGC"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="zXk-CJ-hIC" secondAttribute="bottom" id="fZj-4J-MWj"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="mOj-lc-Huz"/>
                             <constraint firstAttribute="trailing" secondItem="ST1-uG-giW" secondAttribute="trailing" constant="20" id="nwj-BN-r1W"/>
-                            <constraint firstAttribute="trailing" secondItem="g07-hL-uCi" secondAttribute="trailing" constant="20" id="nwp-7p-3GK"/>
+                            <constraint firstItem="zXk-CJ-hIC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vYJ-Um-Nvw"/>
+                            <constraint firstItem="g07-hL-uCi" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="24" id="vcb-VJ-y57"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="wy6-KE-oM2"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="oWz-jA-1o1" secondAttribute="bottom" constant="20" id="zFQ-6o-szA"/>
                         </constraints>
                     </view>
                     <connections>
