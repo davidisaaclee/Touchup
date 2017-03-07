@@ -229,8 +229,6 @@ class ViewController: UIViewController {
 			UIColor.black.set()
 
 			marks.forEach { mark in
-				let path = UIBezierPath()
-
 				let transformedPoints = mark.points
 					// Translate points to account for left/top margins.
 					.map {
@@ -239,8 +237,12 @@ class ViewController: UIViewController {
 					}
 					// Scale points to keep things crispy
 					.map { $0.applying(scaling) }
-				transformedPoints.first.map { path.move(to: $0) }
-				transformedPoints.dropFirst().forEach { path.addLine(to: $0) }
+
+//				let path = UIBezierPath()
+//				transformedPoints.first.map { path.move(to: $0) }
+//				transformedPoints.dropFirst().forEach { path.addLine(to: $0) }
+
+				let path = UIBezierPath(points: transformedPoints, smoothFactor: 0.3)
 
 				path.lineWidth = CGFloat(mark.width) * scaleFactor
 				path.lineCapStyle = .round
