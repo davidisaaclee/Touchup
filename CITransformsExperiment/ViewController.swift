@@ -388,8 +388,6 @@ class ViewController: UIViewController {
 			return
 		}
 
-		print("undoing to \(indexʹ) from \(historyIndex)")
-
 		historyIndex = indexʹ
 		model = history[indexʹ]
 	}
@@ -399,8 +397,6 @@ class ViewController: UIViewController {
 		guard history.indices.contains(indexʹ) else {
 			return
 		}
-
-		print("redoing to \(indexʹ) from \(historyIndex)")
 
 		historyIndex = indexʹ
 		model = history[indexʹ]
