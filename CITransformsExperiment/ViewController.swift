@@ -238,12 +238,12 @@ class ViewController: UIViewController {
 					// Scale points to keep things crispy
 					.map { $0.applying(scaling) }
 
-//				let path = UIBezierPath()
-//				transformedPoints.first.map { path.move(to: $0) }
-//				transformedPoints.dropFirst().forEach { path.addLine(to: $0) }
+				let path = UIBezierPath()
+				transformedPoints.first.map { path.move(to: $0) }
+				transformedPoints.dropFirst().forEach { path.addLine(to: $0) }
 
-				let path = UIBezierPath(points: transformedPoints, smoothFactor: 0.3)
-
+				// This makes smooth lines but gets slow with lots of marks.
+//				let path = UIBezierPath(points: transformedPoints, smoothFactor: 0.3)
 				path.lineWidth = CGFloat(mark.width) * scaleFactor
 				path.lineCapStyle = .round
 				path.stroke()
