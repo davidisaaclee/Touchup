@@ -67,8 +67,8 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g07-hL-uCi">
                                 <rect key="frame" x="40" y="504" width="60" height="58"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="58" id="5V2-Kw-Ivc"/>
-                                    <constraint firstAttribute="width" constant="60" id="i7i-fj-3k3"/>
+                                    <constraint firstAttribute="height" constant="58" id="o1N-Ix-oUT"/>
+                                    <constraint firstAttribute="width" constant="60" id="wKA-kD-RqK"/>
                                 </constraints>
                                 <state key="normal" image="stamp_square"/>
                                 <connections>
@@ -84,6 +84,18 @@
                                 <state key="normal" image="library_square"/>
                                 <connections>
                                     <action selector="replaceImage" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="2sd-ds-bJc"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kXZ-tT-Phe">
+                                <rect key="frame" x="20" y="120" width="64" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="QNx-tq-xqF"/>
+                                    <constraint firstAttribute="width" secondItem="kXZ-tT-Phe" secondAttribute="height" multiplier="37:35" id="Zke-eq-71I"/>
+                                </constraints>
+                                <state key="normal" image="camera_square"/>
+                                <connections>
+                                    <action selector="replaceImage" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="zRo-Ac-3yq"/>
+                                    <action selector="replaceImageWithCamera" destination="BYZ-38-t0r" eventType="touchUpInside" id="NFE-HI-NPu"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ST1-uG-giW">
@@ -102,10 +114,13 @@
                         <constraints>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="03a-BL-rW2"/>
                             <constraint firstItem="28b-2k-8Q2" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="2ml-fa-LL1"/>
-                            <constraint firstItem="zXk-CJ-hIC" firstAttribute="top" secondItem="g07-hL-uCi" secondAttribute="bottom" constant="25" id="CI7-cD-Zgv"/>
+                            <constraint firstItem="kXZ-tT-Phe" firstAttribute="width" secondItem="kXZ-tT-Phe" secondAttribute="height" multiplier="37:35" id="5uM-Le-PCp"/>
                             <constraint firstItem="zXk-CJ-hIC" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="D44-u4-3zO"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EEG-9N-JMr"/>
                             <constraint firstItem="ST1-uG-giW" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="T2I-Rx-RHx"/>
+                            <constraint firstItem="kXZ-tT-Phe" firstAttribute="top" secondItem="28b-2k-8Q2" secondAttribute="bottom" constant="20" id="TFD-JJ-XQc"/>
+                            <constraint firstItem="kXZ-tT-Phe" firstAttribute="leading" secondItem="28b-2k-8Q2" secondAttribute="leading" id="TSh-dV-09f"/>
+                            <constraint firstItem="zXk-CJ-hIC" firstAttribute="top" secondItem="g07-hL-uCi" secondAttribute="bottom" constant="25" id="doG-xT-fav"/>
                             <constraint firstItem="28b-2k-8Q2" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="fXF-hN-iGC"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="zXk-CJ-hIC" secondAttribute="bottom" id="fZj-4J-MWj"/>
                             <constraint firstItem="9w4-66-047" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="mOj-lc-Huz"/>
@@ -127,6 +142,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="camera_square" width="195" height="197"/>
         <image name="eraser_circle" width="192" height="193"/>
         <image name="eraser_disabled" width="192" height="193"/>
         <image name="export_square" width="206" height="192"/>

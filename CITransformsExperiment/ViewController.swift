@@ -520,6 +520,14 @@ class ViewController: UIViewController {
 		present(imagePicker, animated: true, completion: nil)
 	}
 
+	@IBAction func replaceImageWithCamera() {
+		let imagePicker = CustomImagePicker()
+		imagePicker.sourceType = .camera
+		imagePicker.delegate = self
+		imagePicker.modalTransitionStyle = .crossDissolve
+		present(imagePicker, animated: true, completion: nil)
+	}
+
 	private class CustomImagePicker: UIImagePickerController {
 		override var prefersStatusBarHidden: Bool {
 			return true
