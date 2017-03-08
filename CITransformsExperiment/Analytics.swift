@@ -36,7 +36,11 @@ class Analytics {
 	private var mixpanel: MixpanelInstance?
 
 	func setup() {
-		mixpanel = Mixpanel.initialize(token: "3a201f871093e667887cfa7f0ff85c33")
+		#if RELEASE
+			mixpanel = Mixpanel.initialize(token: "d3ea2f328b77d5a2391f28caf1253fe1")
+		#else
+			mixpanel = Mixpanel.initialize(token: "3a201f871093e667887cfa7f0ff85c33")
+		#endif
 	}
 
 	func track(_ event: Event) {
