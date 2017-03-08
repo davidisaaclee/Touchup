@@ -2,13 +2,13 @@ import UIKit
 import VectorSwift
 
 struct EraserMark {
-	var points: [CGPoint]
+	var path: CGPath
 	let width: Float
 }
 
 extension EraserMark: Equatable {
 	static func == (lhs: EraserMark, rhs: EraserMark) -> Bool {
-		return lhs.points == rhs.points && lhs.width == rhs.width
+		return lhs.path == rhs.path && lhs.width == rhs.width
 	}
 }
 
@@ -24,6 +24,7 @@ class ViewController: UIViewController {
 	}
 
 	var stageController: ImageStageController!
+	let eraserController = EraserTool()
 
 	@IBOutlet var renderView: ImageSourceRenderView! {
 		didSet {
@@ -104,6 +105,8 @@ class ViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
+
+		eraserController.delegate = self
 
 		view.isMultipleTouchEnabled = true
 		renderView.isMultipleTouchEnabled = true
@@ -187,6 +190,8 @@ class ViewController: UIViewController {
 	private var eraserMarksCache: (marks: [EraserMark], scaleFactor: CGFloat, image: CIImage)?
 
 	private func renderEraserMarks(_ marks: [EraserMark]) -> CIImage? {
+		print("Rendering eraser marks...")
+
 		// We'll add a 1px margin to each side, to prevent edges showing through.
 		// Note that this will make the result of this function `margins` larger
 		// than the working image.
@@ -201,7 +206,7 @@ class ViewController: UIViewController {
 		let maxPixelCount: CGFloat = 250000
 
 		var scaleFactor = CGSize(width: 1, height: 0)
-			.applying(model.imageTransform)
+//			.applying(model.imageTransform)
 			.magnitude
 
 		// Ensure that the scale factor won't make us render more than
@@ -229,18 +234,14 @@ class ViewController: UIViewController {
 			UIColor.black.set()
 
 			marks.forEach { mark in
-				let transformedPoints = mark.points
-					// Translate points to account for left/top margins.
-					.map {
-						$0.applying(CGAffineTransform(translationX: margins.width / 2,
-						                              y: margins.height / 2))
-					}
-					// Scale points to keep things crispy
-					.map { $0.applying(scaling) }
+				let transformedPath = CGMutablePath()
+				let transform =
+					CGAffineTransform(translationX: margins.width / 2,
+					                  y: margins.height / 2)
+						.concatenating(scaling)
+				transformedPath.addPath(mark.path, transform: transform)
 
-				let path = UIBezierPath()
-				transformedPoints.first.map { path.move(to: $0) }
-				transformedPoints.dropFirst().forEach { path.addLine(to: $0) }
+				let path = UIBezierPath(cgPath: transformedPath)
 
 				// This makes smooth lines but gets slow with lots of marks.
 //				let path = UIBezierPath(points: transformedPoints, smoothFactor: 0.3)
@@ -287,7 +288,7 @@ class ViewController: UIViewController {
 
 	private var previousTouchLocations: [UITouch: CGPoint] = [:]
 
-	private func stageLocation(of touch: UITouch) -> CGPoint {
+	fileprivate func stageLocation(of touch: UITouch) -> CGPoint {
 		return touch.location(in: stageController.renderView)
 			.applying(stageController.renderViewToStageTransform)
 	}
@@ -403,57 +404,84 @@ class ViewController: UIViewController {
 	}
 
 
+	private var lastEraserPosition: CGPoint?
+
+	private func appendEraserMark(from p1: CGPoint, to p2: CGPoint) {
+		guard p1 != p2 else {
+			return
+		}
+
+		print("Eraser mark from \(p1) to \(p2)")
+	}
+
 	private func handleEraser(using recognizer: MultitouchGestureRecognizer) {
+		func eraserPosition(of touch: UITouch) -> CGPoint {
+			return stageLocation(of: touch)
+				.applying(model.imageTransform.inverted())
+		}
+
 		switch recognizer.state {
 		case .began:
 			isModeLocked = false
+			eraserController.begin(with: recognizer.activeTouches.first!)
 
-			var width: Float {
-				var widthConstant: CGFloat = 60
-				// need to aupply the 2d transforms to a 1d "distance"...
-				let p1 = CGPoint(x: 0, y: 0)
-				let p2 = CGPoint(x: widthConstant, y: 0)
-
-				func applyTheTransforms(to point: CGPoint) -> CGPoint {
-					return point
-						.applying(model.imageTransform.inverted())
-						.applying(stageController.cameraTransform.inverted())
-				}
-
-				return Float(applyTheTransforms(to: p1)
-					.distanceTo(applyTheTransforms(to: p2)))
-			}
-
-			model.eraserMarks.append(EraserMark(points: [],
-			                              width: width))
+//			lastEraserPosition =
+//				eraserPosition(of: recognizer.activeTouches.first!)
+//
+//			var width: Float {
+//				var widthConstant: CGFloat = 60
+//				// need to aupply the 2d transforms to a 1d "distance"...
+//				let p1 = CGPoint(x: 0, y: 0)
+//				let p2 = CGPoint(x: widthConstant, y: 0)
+//
+//				func applyTheTransforms(to point: CGPoint) -> CGPoint {
+//					return point
+//						.applying(model.imageTransform.inverted())
+//						.applying(stageController.cameraTransform.inverted())
+//				}
+//
+//				return Float(applyTheTransforms(to: p1)
+//					.distanceTo(applyTheTransforms(to: p2)))
+//			}
+//
+//			model.eraserMarks.append(EraserMark(points: [],
+//			                              width: width))
 
 		case .ended:
-			if let mark = model.eraserMarks.last, mark.points.isEmpty {
-				model.eraserMarks.removeLast()
-			} else {
-				pushHistory()
-			}
+			eraserController.end()
+//			if let mark = model.eraserMarks.last, mark.points.isEmpty {
+//				model.eraserMarks.removeLast()
+//			} else {
+//				pushHistory()
+//			}
 
 		case .changed:
-			switch recognizer.activeTouches.count {
-			case 1:
-				recognizer.activeTouches.first.map { touch in
-					var eraserMarksʹ = model.eraserMarks
+			eraserController.change(with: recognizer.activeTouches.first!)
+//			switch recognizer.activeTouches.count {
+//			case 1:
+//				recognizer.activeTouches.first.map { touch in
+//					let eraserPositionʹ = stageLocation(of: touch)
+//						.applying(model.imageTransform.inverted())
+//					appendEraserMark(from: lastEraserPosition!,
+//					                 to: eraserPositionʹ)
+//					lastEraserPosition = eraserPositionʹ
+//
+//					var eraserMarksʹ = model.eraserMarks
+//
+//					if var mark = eraserMarksʹ.popLast() {
+//						let location =
+//							stageLocation(of: touch)
+//								.applying(model.imageTransform.inverted())
+//						mark.points.append(location)
+//						eraserMarksʹ.append(mark)
+//						model.eraserMarks = eraserMarksʹ
+//					}
+//				}
+//
+//			default:
+//				break
+//			}
 
-					if var mark = eraserMarksʹ.popLast() {
-						let location =
-							stageLocation(of: touch)
-								.applying(model.imageTransform.inverted())
-						mark.points.append(location)
-						eraserMarksʹ.append(mark)
-						model.eraserMarks = eraserMarksʹ
-					}
-				}
-
-			default:
-				break
-			}
-			
 		default:
 			break
 		}
@@ -589,5 +617,34 @@ extension ViewController: UIGestureRecognizerDelegate {
 		default:
 			return false
 		}
+	}
+}
+
+
+extension ViewController: EraserToolDelegate {
+	func eraserTool(_ eraserTool: EraserTool,
+	                locationFor touch: UITouch) -> CGPoint {
+		return stageLocation(of: touch)
+			.applying(model.imageTransform.inverted())
+	}
+
+	func eraserTool(_ eraserTool: EraserTool, didBeginDrawingAt point: CGPoint) {
+		model.eraserMarks.append(EraserMark(path: CGMutablePath(),
+		                                    width: 25))
+	}
+
+	func eraserTool(_ eraserTool: EraserTool, didUpdateWorkingPath path: CGPath) {
+		var eraserMarksʹ = model.eraserMarks
+
+		if var mark = eraserMarksʹ.popLast() {
+			mark.path = path
+			eraserMarksʹ.append(mark)
+			model.eraserMarks = eraserMarksʹ
+		}
+
+	}
+
+	func eraserTool(_ eraserTool: EraserTool,
+	                didCommitWorkingPath path: CGPath) {
 	}
 }

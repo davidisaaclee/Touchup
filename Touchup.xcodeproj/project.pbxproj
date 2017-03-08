@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		63250E401E6F3CF600A3C955 /* UIBezierPath+smooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */; };
+		63250E421E6F917400A3C955 /* EraserTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E411E6F917400A3C955 /* EraserTool.swift */; };
 		634F26031E662A4F00028893 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26021E662A4F00028893 /* AppDelegate.swift */; };
 		634F26051E662A4F00028893 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26041E662A4F00028893 /* ViewController.swift */; };
 		634F26081E662A4F00028893 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 634F26061E662A4F00028893 /* Main.storyboard */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+smooth.swift"; sourceTree = "<group>"; };
+		63250E411E6F917400A3C955 /* EraserTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EraserTool.swift; sourceTree = "<group>"; };
 		634F25FF1E662A4F00028893 /* Touchup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Touchup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		634F26021E662A4F00028893 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		634F26041E662A4F00028893 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				63B481381E688F9300D1A795 /* UIImage+resize.swift */,
 				63D4B8831E6B4501003D4514 /* Touchup-Bridging-Header.h */,
 				63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */,
+				63250E411E6F917400A3C955 /* EraserTool.swift */,
 			);
 			name = Touchup;
 			path = CITransformsExperiment;
@@ -270,6 +273,7 @@
 				634F26051E662A4F00028893 /* ViewController.swift in Sources */,
 				634F26151E662A6500028893 /* ImageSourceRenderView.swift in Sources */,
 				63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */,
+				63250E421E6F917400A3C955 /* EraserTool.swift in Sources */,
 				634F26031E662A4F00028893 /* AppDelegate.swift in Sources */,
 				63BCF56C1E667D62006D46DD /* MultitouchGestureRecognizer.swift in Sources */,
 				63B481391E688F9300D1A795 /* UIImage+resize.swift in Sources */,
