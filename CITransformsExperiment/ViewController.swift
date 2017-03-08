@@ -179,7 +179,12 @@ class ViewController: UIViewController {
 		stageController.cameraTransform = model.cameraTransform
 		stageController.backgroundImage = model.backgroundImage
 
-		if let renderedEraserMarks = renderEraserMarks(model.eraserMarks + [workingEraserMark].flatMap { $0 }) {
+		if var renderedEraserMarks = renderEraserMarks(model.eraserMarks, shouldCache: true) {
+			if let workingEraserMark = workingEraserMark, let renderedWorkingEraserMark = renderEraserMarks([workingEraserMark], shouldCache: false) {
+				renderedEraserMarks =
+					renderedWorkingEraserMark.compositingOverImage(renderedEraserMarks)
+			}
+
 			let cutOutEraserMarksFromImage =
 				CIFilter(name: "CISourceOutCompositing",
 				         withInputParameters: ["inputImage": image,
@@ -195,7 +200,7 @@ class ViewController: UIViewController {
 
 	private var eraserMarksCache: (marks: [EraserMark], scaleFactor: CGFloat, image: CIImage)?
 
-	private func renderEraserMarks(_ marks: [EraserMark]) -> CIImage? {
+	private func renderEraserMarks(_ marks: [EraserMark], shouldCache: Bool) -> CIImage? {
 		// We'll add a 1px margin to each side, to prevent edges showing through.
 		// Note that this will make the result of this function `margins` larger
 		// than the working image.
@@ -225,7 +230,6 @@ class ViewController: UIViewController {
 				return cached.image
 			}
 		}
-
 
 		let scaling =
 			CGAffineTransform(scaleX: scaleFactor, y: scaleFactor)
@@ -281,7 +285,7 @@ class ViewController: UIViewController {
 					                            y: -margins.height / 2))
 			}
 
-		if let result = result {
+		if let result = result, shouldCache {
 			eraserMarksCache = (marks: marks,
 			                    scaleFactor: scaleFactor,
 			                    image: result)
