@@ -400,6 +400,8 @@ class ViewController: UIViewController {
 
 		historyIndex = indexʹ
 		model = history[indexʹ]
+
+		Analytics.shared.track(.undo)
 	}
 
 	@IBAction func redo() {
@@ -410,6 +412,8 @@ class ViewController: UIViewController {
 
 		historyIndex = indexʹ
 		model = history[indexʹ]
+
+		Analytics.shared.track(.redo)
 	}
 
 
@@ -446,7 +450,13 @@ class ViewController: UIViewController {
 	@IBAction func exitImageTransform() {
 		// switch back if we unlocked the mode,
 		// or if tapping on locked transform mode
-		if !isModeLocked || previousMode == .imageTransform {
+		if previousMode == .imageTransform {
+			Analytics.shared.track(.usedLockedImageTransform)
+			mode = .cameraControl
+		}
+
+		if !isModeLocked {
+			Analytics.shared.track(.usedQuasimodalImageTransform)
 			mode = .cameraControl
 		}
 	}
@@ -457,7 +467,13 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func exitEraser() {
-		if !isModeLocked || previousMode == .eraser {
+		if previousMode == .eraser {
+			Analytics.shared.track(.usedLockedEraser)
+			mode = .cameraControl
+		}
+
+		if !isModeLocked {
+			Analytics.shared.track(.usedQuasimodalEraser)
 			mode = .cameraControl
 		}
 	}
@@ -652,5 +668,7 @@ extension ViewController: EraserToolDelegate {
 		committedEraserMark.path = path
 		model.eraserMarks.append(committedEraserMark)
 		workingEraserMark = nil
+
+		Analytics.shared.track(.drewEraserMark)
 	}
 }

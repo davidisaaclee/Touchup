@@ -18,7 +18,14 @@ class Analytics {
 		case cancelledExport
 
 		case usedQuasimodalEraser
-		case lockedEraser
+		case usedLockedEraser
+		case drewEraserMark
+
+		case usedQuasimodalImageTransform
+		case usedLockedImageTransform
+
+		case undo
+		case redo
 
 		case stampToBackground
 
