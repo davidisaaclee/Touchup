@@ -1,7 +1,9 @@
 PODS:
+  - Mixpanel-swift (2.1.1)
   - VectorSwift (0.2.0)
 
 DEPENDENCIES:
+  - Mixpanel-swift
   - VectorSwift (from `https://github.com/davidisaaclee/VectorSwift.git`)
 
 EXTERNAL SOURCES:
@@ -14,8 +16,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/davidisaaclee/VectorSwift.git
 
 SPEC CHECKSUMS:
+  Mixpanel-swift: 49966d4beec714aee3a026d39085b62b26eca081
   VectorSwift: cdd75b6cf37a2407634d469bb6a0e94fe4625785
 
-PODFILE CHECKSUM: a29a0c5fc50da607f94b51145e48e53b04e6ade6
+PODFILE CHECKSUM: 4530e7470ea7240fe7633859f206fd0b0491e124
 
 COCOAPODS: 1.1.1

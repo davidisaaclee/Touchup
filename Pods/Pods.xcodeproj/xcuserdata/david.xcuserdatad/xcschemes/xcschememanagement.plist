@@ -4,7 +4,12 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-CITransformsExperiment.xcscheme</key>
+		<key>Mixpanel-swift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-Touchup.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -17,22 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>2A855227F03F12029EE34EC803EA1D84</key>
+		<key>492E4CE3DF5D2F13B8A78D540BF82F18</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2E65CE94E092B7A8CDAAA271321BAB9A</key>
+		<key>8F816E895A72919BEF8F2560CA997088</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>5D338E6EF9CC0351D649AAF4B5C7CCDE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>772D9D2A79A7F9ED73C955548E87F513</key>
+		<key>EBF4F7E132FC67065CF8C6CF8CEBCC6E</key>
 		<dict>
 			<key>primary</key>
 			<true/>

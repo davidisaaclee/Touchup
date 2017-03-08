@@ -7,4 +7,5 @@ target 'Touchup' do
 
   # Pods for Touchup
   pod "VectorSwift", :git => "https://github.com/davidisaaclee/VectorSwift.git"
+  pod 'Mixpanel-swift'
 end

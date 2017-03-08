@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Mixpanel
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
 		BuddyBuildSDK.setup()
-		
+		Analytics.shared.setup()
+
 		// Override point for customization after application launch.
 		return true
 	}
@@ -44,5 +46,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	}
 
 
+}
+
+class Analytics {
+	static let shared = Analytics()
+
+	enum Event {
+		case importFromPhotos
+		case importFromCamera
+		case exportButtonTapped
+		case stampToBackground
+
+		var name: String {
+			switch self {
+			case .importFromPhotos:
+				return "importFromPhotos"
+			case .importFromCamera:
+				return "importFromCamera"
+			case .exportButtonTapped:
+				return "exportButtonTapped"
+			case .stampToBackground:
+				return "stampToBackground"
+			}
+		}
+	}
+
+	private var mixpanel: MixpanelInstance?
+
+	func setup() {
+		mixpanel = Mixpanel.initialize(token: "3a201f871093e667887cfa7f0ff85c33")
+	}
+
+	func track(_ event: Event) {
+		guard let mixpanel = mixpanel else {
+			return
+		}
+
+		mixpanel.track(event: event.name)
+	}
 }
 
