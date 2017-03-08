@@ -15,6 +15,7 @@
 		634F260A1E662A4F00028893 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 634F26091E662A4F00028893 /* Assets.xcassets */; };
 		634F260D1E662A4F00028893 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 634F260B1E662A4F00028893 /* LaunchScreen.storyboard */; };
 		634F26151E662A6500028893 /* ImageSourceRenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26141E662A6500028893 /* ImageSourceRenderView.swift */; };
+		637E45E01E70823B00BBFE4C /* Vector+dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637E45DF1E70823B00BBFE4C /* Vector+dot.swift */; };
 		63B481391E688F9300D1A795 /* UIImage+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B481381E688F9300D1A795 /* UIImage+resize.swift */; };
 		63BCF56C1E667D62006D46DD /* MultitouchGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */; };
 		63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63BCF56D1E673C10006D46DD /* ImageStageController.swift */; };
@@ -41,6 +42,7 @@
 		634F260C1E662A4F00028893 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		634F260E1E662A4F00028893 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		634F26141E662A6500028893 /* ImageSourceRenderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSourceRenderView.swift; sourceTree = "<group>"; };
+		637E45DF1E70823B00BBFE4C /* Vector+dot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Vector+dot.swift"; sourceTree = "<group>"; };
 		63B481381E688F9300D1A795 /* UIImage+resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+resize.swift"; sourceTree = "<group>"; };
 		63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultitouchGestureRecognizer.swift; sourceTree = "<group>"; };
 		63BCF56D1E673C10006D46DD /* ImageStageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageStageController.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				63D4B8831E6B4501003D4514 /* Touchup-Bridging-Header.h */,
 				63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */,
 				63250E411E6F917400A3C955 /* EraserTool.swift */,
+				637E45DF1E70823B00BBFE4C /* Vector+dot.swift */,
 			);
 			name = Touchup;
 			path = CITransformsExperiment;
@@ -274,6 +277,7 @@
 				634F26151E662A6500028893 /* ImageSourceRenderView.swift in Sources */,
 				63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */,
 				63250E421E6F917400A3C955 /* EraserTool.swift in Sources */,
+				637E45E01E70823B00BBFE4C /* Vector+dot.swift in Sources */,
 				634F26031E662A4F00028893 /* AppDelegate.swift in Sources */,
 				63BCF56C1E667D62006D46DD /* MultitouchGestureRecognizer.swift in Sources */,
 				63B481391E688F9300D1A795 /* UIImage+resize.swift in Sources */,

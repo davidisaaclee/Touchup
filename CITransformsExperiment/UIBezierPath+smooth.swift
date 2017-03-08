@@ -11,22 +11,26 @@ extension UIBezierPath {
 
 		move(to: first)
 
-		var pts = points.grouping(into: 3).flatMap { (pointGroup: [CGPoint]) -> [CGPoint] in
-			let (previous, current, next) =
-				(pointGroup[0], pointGroup[1], pointGroup[2])
-			let tangent = next - previous
-			let cp1 = -smoothFactor * tangent + current
-			let cp2 = smoothFactor * tangent + current
+		if smoothFactor == 0 {
+			points.dropFirst().forEach { addLine(to: $0) }
+		} else {
+			var pts = points.grouping(into: 3).flatMap { (pointGroup: [CGPoint]) -> [CGPoint] in
+				let (previous, current, next) =
+					(pointGroup[0], pointGroup[1], pointGroup[2])
+				let tangent = next - previous
+				let cp1 = -smoothFactor * tangent + current
+				let cp2 = smoothFactor * tangent + current
 
-			return [cp1, current, cp2]
-		}
+				return [cp1, current, cp2]
+			}
 
-		pts = [first] + pts + [last, last]
+			pts = [first] + pts + [last, last]
 
-		for idx in stride(from: pts.startIndex, to: pts.endIndex, by: 3) {
-			self.addCurve(to: pts[idx + 2],
-			              controlPoint1: pts[idx],
-			              controlPoint2: pts[idx + 1])
+			for idx in stride(from: pts.startIndex, to: pts.endIndex, by: 3) {
+				self.addCurve(to: pts[idx + 2],
+				              controlPoint1: pts[idx],
+				              controlPoint2: pts[idx + 1])
+			}
 		}
 	}
 }
