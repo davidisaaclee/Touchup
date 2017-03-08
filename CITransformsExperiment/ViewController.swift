@@ -453,38 +453,9 @@ class ViewController: UIViewController {
 
 		case .ended:
 			eraserController.end()
-//			if let mark = model.eraserMarks.last, mark.points.isEmpty {
-//				model.eraserMarks.removeLast()
-//			} else {
-//				pushHistory()
-//			}
 
 		case .changed:
 			eraserController.change(with: recognizer.activeTouches.first!)
-//			switch recognizer.activeTouches.count {
-//			case 1:
-//				recognizer.activeTouches.first.map { touch in
-//					let eraserPositionʹ = stageLocation(of: touch)
-//						.applying(model.imageTransform.inverted())
-//					appendEraserMark(from: lastEraserPosition!,
-//					                 to: eraserPositionʹ)
-//					lastEraserPosition = eraserPositionʹ
-//
-//					var eraserMarksʹ = model.eraserMarks
-//
-//					if var mark = eraserMarksʹ.popLast() {
-//						let location =
-//							stageLocation(of: touch)
-//								.applying(model.imageTransform.inverted())
-//						mark.points.append(location)
-//						eraserMarksʹ.append(mark)
-//						model.eraserMarks = eraserMarksʹ
-//					}
-//				}
-//
-//			default:
-//				break
-//			}
 
 		default:
 			break
@@ -633,21 +604,31 @@ extension ViewController: EraserToolDelegate {
 	}
 
 	func eraserTool(_ eraserTool: EraserTool, didBeginDrawingAt point: CGPoint) {
-//		model.eraserMarks.append(EraserMark(path: CGMutablePath(),
-//		                                    width: 25))
+		var width: Float {
+			var widthConstant: CGFloat = 60
+			// need to aupply the 2d transforms to a 1d "distance"...
+			let p1 = CGPoint(x: 0, y: 0)
+			let p2 = CGPoint(x: widthConstant, y: 0)
+
+			func applyTheTransforms(to point: CGPoint) -> CGPoint {
+				return point
+					.applying(model.imageTransform.inverted())
+					.applying(stageController.cameraTransform.inverted())
+			}
+
+			return Float(applyTheTransforms(to: p1)
+				.distanceTo(applyTheTransforms(to: p2)))
+		}
+
+		workingEraserMark = EraserMark(path: CGMutablePath(),
+		                               width: width)
 	}
 
 	func eraserTool(_ eraserTool: EraserTool, didUpdateWorkingPath path: CGPath) {
-//		var eraserMarksʹ = model.eraserMarks
-//
-//		if var mark = eraserMarksʹ.popLast() {
-//			mark.path = path
-//			eraserMarksʹ.append(mark)
-//			model.eraserMarks = eraserMarksʹ
-//		}
+		guard var workingEraserMarkʹ = workingEraserMark else {
+			return
+		}
 
-		var workingEraserMarkʹ =
-			workingEraserMark ?? EraserMark(path: path, width: 25)
 		workingEraserMarkʹ.path = path
 		workingEraserMark = workingEraserMarkʹ
 	}
