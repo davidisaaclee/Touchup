@@ -52,6 +52,12 @@ class ViewController: UIViewController {
 		}
 	}
 
+	var workingEraserMark: EraserMark? {
+		didSet {
+			reloadRenderView()
+		}
+	}
+
 	var history: [Model] = []
 	var historyIndex: Int = -1
 
@@ -173,7 +179,7 @@ class ViewController: UIViewController {
 		stageController.cameraTransform = model.cameraTransform
 		stageController.backgroundImage = model.backgroundImage
 
-		if let renderedEraserMarks = renderEraserMarks(model.eraserMarks) {
+		if let renderedEraserMarks = renderEraserMarks(model.eraserMarks + [workingEraserMark].flatMap { $0 }) {
 			let cutOutEraserMarksFromImage =
 				CIFilter(name: "CISourceOutCompositing",
 				         withInputParameters: ["inputImage": image,
@@ -190,8 +196,6 @@ class ViewController: UIViewController {
 	private var eraserMarksCache: (marks: [EraserMark], scaleFactor: CGFloat, image: CIImage)?
 
 	private func renderEraserMarks(_ marks: [EraserMark]) -> CIImage? {
-		print("Rendering eraser marks...")
-
 		// We'll add a 1px margin to each side, to prevent edges showing through.
 		// Note that this will make the result of this function `margins` larger
 		// than the working image.
@@ -629,22 +633,33 @@ extension ViewController: EraserToolDelegate {
 	}
 
 	func eraserTool(_ eraserTool: EraserTool, didBeginDrawingAt point: CGPoint) {
-		model.eraserMarks.append(EraserMark(path: CGMutablePath(),
-		                                    width: 25))
+//		model.eraserMarks.append(EraserMark(path: CGMutablePath(),
+//		                                    width: 25))
 	}
 
 	func eraserTool(_ eraserTool: EraserTool, didUpdateWorkingPath path: CGPath) {
-		var eraserMarksʹ = model.eraserMarks
+//		var eraserMarksʹ = model.eraserMarks
+//
+//		if var mark = eraserMarksʹ.popLast() {
+//			mark.path = path
+//			eraserMarksʹ.append(mark)
+//			model.eraserMarks = eraserMarksʹ
+//		}
 
-		if var mark = eraserMarksʹ.popLast() {
-			mark.path = path
-			eraserMarksʹ.append(mark)
-			model.eraserMarks = eraserMarksʹ
-		}
-
+		var workingEraserMarkʹ =
+			workingEraserMark ?? EraserMark(path: path, width: 25)
+		workingEraserMarkʹ.path = path
+		workingEraserMark = workingEraserMarkʹ
 	}
 
 	func eraserTool(_ eraserTool: EraserTool,
 	                didCommitWorkingPath path: CGPath) {
+		guard var committedEraserMark = workingEraserMark else {
+			return
+		}
+
+		committedEraserMark.path = path
+		model.eraserMarks.append(committedEraserMark)
+		workingEraserMark = nil
 	}
 }
