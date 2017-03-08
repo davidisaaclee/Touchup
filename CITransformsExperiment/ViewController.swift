@@ -46,6 +46,8 @@ class ViewController: UIViewController {
 		}
 	}
 
+	let helpOverlayView = UIImageView(image: #imageLiteral(resourceName: "Help"))
+
 	var model: Model = ViewController.Model() {
 		didSet {
 			reloadRenderView()
@@ -117,7 +119,7 @@ class ViewController: UIViewController {
 		view.isMultipleTouchEnabled = true
 		renderView.isMultipleTouchEnabled = true
 
-		setWorkingImage(CIImage(image: #imageLiteral(resourceName: "test-pattern"))!)
+		setWorkingImage(CIImage(image: #imageLiteral(resourceName: "yikes"))!)
 
 		customToolGestureRecognizer
 			.addTarget(self,
@@ -140,6 +142,10 @@ class ViewController: UIViewController {
 		redoGestureRecognizer.numberOfTouchesRequired = 3
 		redoGestureRecognizer.delegate = self
 		view.addGestureRecognizer(redoGestureRecognizer)
+
+		helpOverlayView.frame = view.bounds
+		helpOverlayView.isHidden = true
+		view.addSubview(helpOverlayView)
 
 		pushHistory()
 	}
@@ -531,6 +537,14 @@ class ViewController: UIViewController {
 		present(imagePicker, animated: true, completion: nil)
 
 		Analytics.shared.track(.beganImportFromCamera)
+	}
+
+	@IBAction func showHelp() {
+		helpOverlayView.isHidden = false
+	}
+
+	@IBAction func hideHelp() {
+		helpOverlayView.isHidden = true
 	}
 
 	private class CustomImagePicker: UIImagePickerController {
