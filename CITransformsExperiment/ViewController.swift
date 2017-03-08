@@ -209,15 +209,16 @@ class ViewController: UIViewController {
 		// How many pixels are we willing to render?
 		let maxPixelCount: CGFloat = 250000
 
-		var scaleFactor = CGSize(width: 1, height: 0)
-//			.applying(model.imageTransform)
-			.magnitude
+//		var scaleFactor = CGSize(width: 1, height: 0)
+//			.magnitude
+//
+//		// Ensure that the scale factor won't make us render more than
+//		// `maxPixelCount` pixels.
+//		scaleFactor =
+//			min(scaleFactor, 
+//			    sqrt(maxPixelCount / (workingImageSize.width * workingImageSize.height)))
 
-		// Ensure that the scale factor won't make us render more than
-		// `maxPixelCount` pixels.
-		scaleFactor =
-			min(scaleFactor, 
-			    sqrt(maxPixelCount / (workingImageSize.width * workingImageSize.height)))
+		let scaleFactor: CGFloat = 1
 
 		if let cached = eraserMarksCache {
 			if cached.marks == marks && cached.scaleFactor == scaleFactor {
@@ -408,16 +409,6 @@ class ViewController: UIViewController {
 	}
 
 
-	private var lastEraserPosition: CGPoint?
-
-	private func appendEraserMark(from p1: CGPoint, to p2: CGPoint) {
-		guard p1 != p2 else {
-			return
-		}
-
-		print("Eraser mark from \(p1) to \(p2)")
-	}
-
 	private func handleEraser(using recognizer: MultitouchGestureRecognizer) {
 		func eraserPosition(of touch: UITouch) -> CGPoint {
 			return stageLocation(of: touch)
@@ -428,28 +419,6 @@ class ViewController: UIViewController {
 		case .began:
 			isModeLocked = false
 			eraserController.begin(with: recognizer.activeTouches.first!)
-
-//			lastEraserPosition =
-//				eraserPosition(of: recognizer.activeTouches.first!)
-//
-//			var width: Float {
-//				var widthConstant: CGFloat = 60
-//				// need to aupply the 2d transforms to a 1d "distance"...
-//				let p1 = CGPoint(x: 0, y: 0)
-//				let p2 = CGPoint(x: widthConstant, y: 0)
-//
-//				func applyTheTransforms(to point: CGPoint) -> CGPoint {
-//					return point
-//						.applying(model.imageTransform.inverted())
-//						.applying(stageController.cameraTransform.inverted())
-//				}
-//
-//				return Float(applyTheTransforms(to: p1)
-//					.distanceTo(applyTheTransforms(to: p2)))
-//			}
-//
-//			model.eraserMarks.append(EraserMark(points: [],
-//			                              width: width))
 
 		case .ended:
 			eraserController.end()
