@@ -19,15 +19,9 @@ class Analytics {
 
 		case usedQuasimodalEraser
 		case usedLockedEraser
-		case drewEraserMark
 
 		case usedQuasimodalImageTransform
 		case usedLockedImageTransform
-		case changedImageTransform
-		case changedImageTransformWithTwoFingers
-
-		case changedCameraTransform
-		case changedCameraTransformWithTwoFingers
 
 		case undo
 		case redo

@@ -349,8 +349,6 @@ class ViewController: UIViewController {
 						model.imageTransform
 							.concatenating(CGAffineTransform(translationX: displacement.x,
 							                                 y: displacement.y))
-
-					Analytics.shared.track(.changedImageTransform)
 				}
 
 			case let numberOfTouches where numberOfTouches >= 2:
@@ -378,8 +376,6 @@ class ViewController: UIViewController {
 				model.imageTransform =
 					model.imageTransform
 						.concatenating(transform)
-
-				Analytics.shared.track(.changedImageTransformWithTwoFingers)
 
 			default:
 				break
@@ -600,7 +596,6 @@ extension ViewController: ImageStageControllerDelegate {
 	func imageStageController(_ controller: ImageStageController,
 	                          shouldSetCameraTransformTo cameraTransform: CGAffineTransform) -> Bool {
 		model.cameraTransform = cameraTransform
-		Analytics.shared.track(.changedCameraTransform)
 		return false
 	}
 
@@ -608,8 +603,6 @@ extension ViewController: ImageStageControllerDelegate {
 	                          shouldMultiplyCameraTransformBy cameraTransform: CGAffineTransform) -> Bool {
 		model.cameraTransform =
 			model.cameraTransform.concatenating(cameraTransform)
-
-		Analytics.shared.track(.changedCameraTransformWithTwoFingers)
 		return false
 	}
 }
@@ -676,7 +669,5 @@ extension ViewController: EraserToolDelegate {
 		committedEraserMark.path = path
 		model.eraserMarks.append(committedEraserMark)
 		workingEraserMark = nil
-
-		Analytics.shared.track(.drewEraserMark)
 	}
 }
