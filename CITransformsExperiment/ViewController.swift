@@ -469,7 +469,16 @@ class ViewController: UIViewController {
 
 		let activityController = UIActivityViewController(activityItems: [render],
 		                                                  applicationActivities: nil)
+		activityController.completionWithItemsHandler = { (activityType, completed, _, _) in
+			if completed {
+				Analytics.shared.track(.finishedExport)
+			} else {
+				Analytics.shared.track(.cancelledExport)
+			}
+		}
 		present(activityController, animated: true, completion: nil)
+
+		Analytics.shared.track(.beganExport)
 	}
 
 	@IBAction func freezeImage(_ sender: Any) {
@@ -484,6 +493,8 @@ class ViewController: UIViewController {
 		model.backgroundImage =
 			render.applying(centerOriginTransform)
 		pushHistory()
+
+		Analytics.shared.track(.stampToBackground)
 	}
 
 	@IBAction func replaceImage() {
@@ -492,6 +503,8 @@ class ViewController: UIViewController {
 		imagePicker.delegate = self
 		imagePicker.modalTransitionStyle = .crossDissolve
 		present(imagePicker, animated: true, completion: nil)
+
+		Analytics.shared.track(.beganImportFromPhotos)
 	}
 
 	@IBAction func replaceImageWithCamera() {
@@ -500,6 +513,8 @@ class ViewController: UIViewController {
 		imagePicker.delegate = self
 		imagePicker.modalTransitionStyle = .crossDissolve
 		present(imagePicker, animated: true, completion: nil)
+
+		Analytics.shared.track(.beganImportFromCamera)
 	}
 
 	private class CustomImagePicker: UIImagePickerController {
@@ -529,10 +544,32 @@ extension ViewController: UIImagePickerControllerDelegate {
 		} else {
 			fatalError("Implement me")
 		}
+
+		switch picker.sourceType {
+		case .camera:
+			Analytics.shared.track(.finishedImportFromCamera)
+
+		case .photoLibrary:
+			Analytics.shared.track(.finishedImportFromPhotos)
+
+		default:
+			break
+		}
 	}
 
 	func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
 		dismiss(animated: true, completion: nil)
+
+		switch picker.sourceType {
+		case .camera:
+			Analytics.shared.track(.cancelledImportFromCamera)
+
+		case .photoLibrary:
+			Analytics.shared.track(.cancelledImportFromPhotos)
+
+		default:
+			break
+		}
 	}
 }
 

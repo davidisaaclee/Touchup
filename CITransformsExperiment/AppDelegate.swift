@@ -51,23 +51,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 class Analytics {
 	static let shared = Analytics()
 
-	enum Event {
-		case importFromPhotos
-		case importFromCamera
-		case exportButtonTapped
+	enum Event: String {
+		case beganImportFromPhotos
+		case finishedImportFromPhotos
+		case cancelledImportFromPhotos
+
+		case beganImportFromCamera
+		case finishedImportFromCamera
+		case cancelledImportFromCamera
+
+		case beganExport
+		case finishedExport
+		case cancelledExport
+
 		case stampToBackground
 
 		var name: String {
-			switch self {
-			case .importFromPhotos:
-				return "importFromPhotos"
-			case .importFromCamera:
-				return "importFromCamera"
-			case .exportButtonTapped:
-				return "exportButtonTapped"
-			case .stampToBackground:
-				return "stampToBackground"
-			}
+			return rawValue
 		}
 	}
 
