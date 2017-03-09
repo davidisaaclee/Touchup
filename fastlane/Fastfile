@@ -42,8 +42,7 @@ platform :ios do
   lane :release do
     # match(type: "appstore")
     # snapshot
-    gym(scheme: "Development",
-        output_directory: "./build")
+    gym(scheme: "Development")
     deliver(force: true)
     # frameit
   end
