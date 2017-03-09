@@ -117,6 +117,7 @@ class ViewController: UIViewController {
 
 			switch mode {
 			case .imageTransform, .eraser:
+				stageController.cameraControlGestureRecognizer.cancelGesture()
 				customToolGestureRecognizer.isEnabled = true
 
 			case .cameraControl:

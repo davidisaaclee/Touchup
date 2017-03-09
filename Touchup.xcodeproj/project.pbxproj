@@ -30,6 +30,7 @@
 		63D4B87E1E6B44AA003D4514 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B87D1E6B44AA003D4514 /* QuartzCore.framework */; };
 		63D4B8801E6B44AF003D4514 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B87F1E6B44AF003D4514 /* SystemConfiguration.framework */; };
 		63D4B8821E6B44B8003D4514 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8811E6B44B8003D4514 /* BuddyBuildSDK.framework */; };
+		63EB14AA1E71FEF900925D43 /* UIGestureRecognizer+cancel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63EB14A91E71FEF900925D43 /* UIGestureRecognizer+cancel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		63D4B87F1E6B44AF003D4514 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		63D4B8811E6B44B8003D4514 /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
 		63D4B8831E6B4501003D4514 /* Touchup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Touchup-Bridging-Header.h"; sourceTree = "<group>"; };
+		63EB14A91E71FEF900925D43 /* UIGestureRecognizer+cancel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGestureRecognizer+cancel.swift"; sourceTree = "<group>"; };
 		78D4FBC5BCD2DE39CEF776D5 /* Pods_Touchup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Touchup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8023175DC6A9118FA38AA4E /* Pods-Touchup.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Touchup.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Touchup/Pods-Touchup.debug.xcconfig"; sourceTree = "<group>"; };
 		FC8494E0AC6C0BC89FBA1528 /* Pods-Touchup.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Touchup.release.xcconfig"; path = "Pods/Target Support Files/Pods-Touchup/Pods-Touchup.release.xcconfig"; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				63250E411E6F917400A3C955 /* EraserTool.swift */,
 				637E45DF1E70823B00BBFE4C /* Vector+dot.swift */,
 				637E45E11E70B80400BBFE4C /* Analytics.swift */,
+				63EB14A91E71FEF900925D43 /* UIGestureRecognizer+cancel.swift */,
 			);
 			name = Touchup;
 			path = CITransformsExperiment;
@@ -284,6 +287,7 @@
 				634F26031E662A4F00028893 /* AppDelegate.swift in Sources */,
 				63BCF56C1E667D62006D46DD /* MultitouchGestureRecognizer.swift in Sources */,
 				63B481391E688F9300D1A795 /* UIImage+resize.swift in Sources */,
+				63EB14AA1E71FEF900925D43 /* UIGestureRecognizer+cancel.swift in Sources */,
 				637E45E21E70B80400BBFE4C /* Analytics.swift in Sources */,
 				63250E401E6F3CF600A3C955 /* UIBezierPath+smooth.swift in Sources */,
 			);
