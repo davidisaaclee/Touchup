@@ -370,7 +370,7 @@ class ViewController: UIViewController {
 			isModeLocked = false
 
 		case .ended:
-			pushHistory()
+			pushToHistory()
 
 		case .changed:
 			switch recognizer.activeTouches.count {
@@ -540,7 +540,7 @@ class ViewController: UIViewController {
 
 		model.backgroundImage =
 			render.applying(centerOriginTransform)
-		pushHistory()
+		pushToHistory()
 
 		Analytics.shared.track(.stampToBackground)
 	}
@@ -588,7 +588,7 @@ extension ViewController: UIImagePickerControllerDelegate {
 			let resizedImage =
 				image.resizing(toFitWithin: renderView.bounds.size)
 			setWorkingImage(CIImage(image: resizedImage)!)
-			pushHistory()
+			pushToHistory()
 
 			dismiss(animated: true, completion: nil)
 		}
