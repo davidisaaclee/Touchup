@@ -12,14 +12,50 @@ extension EraserMark: Equatable {
 	}
 }
 
+struct History<Model> {
+	var stack: [Model] = []
+	var currentIndex: Int = -1
+
+	mutating func push(_ model: Model) {
+		stack
+			.removeSubrange(stack.index(after: currentIndex) ..< stack.endIndex)
+		stack.append(model)
+		currentIndex += 1
+	}
+
+	mutating func undo() -> Model? {
+		let indexʹ = stack.index(before: currentIndex)
+		guard stack.indices.contains(indexʹ) else {
+			return nil
+		}
+
+		currentIndex = indexʹ
+		return stack[indexʹ]
+	}
+
+	mutating func redo() -> Model? {
+		let indexʹ = stack.index(after: currentIndex)
+		guard stack.indices.contains(indexʹ) else {
+			return nil
+		}
+
+		currentIndex = indexʹ
+		return stack[indexʹ]
+	}
+}
 
 class ViewController: UIViewController {
+
+	struct Workspace {
+		var cameraTransform: CGAffineTransform = .identity
+		var workingEraserMark: EraserMark?
+		var history: History<Model> = History<Model>()
+	}
 
 	struct Model {
 		var image: CIImage? = nil
 		var backgroundImage: CIImage? = nil
 		var imageTransform: CGAffineTransform = .identity
-		var cameraTransform: CGAffineTransform = .identity
 		var eraserMarks: [EraserMark] = []
 	}
 
@@ -54,14 +90,11 @@ class ViewController: UIViewController {
 		}
 	}
 
-	var workingEraserMark: EraserMark? {
+	var workspace: Workspace = ViewController.Workspace() {
 		didSet {
 			reloadRenderView()
 		}
 	}
-
-	var history: [Model] = []
-	var historyIndex: Int = -1
 
 	fileprivate let customToolGestureRecognizer =
 		MultitouchGestureRecognizer()
@@ -147,7 +180,7 @@ class ViewController: UIViewController {
 		helpOverlayView.isHidden = true
 		view.addSubview(helpOverlayView)
 
-		pushHistory()
+		pushToHistory()
 	}
 
 	func handleHistoryGesture(recognizer: UITapGestureRecognizer) {
@@ -182,11 +215,11 @@ class ViewController: UIViewController {
 			return
 		}
 
-		stageController.cameraTransform = model.cameraTransform
+		stageController.cameraTransform = workspace.cameraTransform
 		stageController.backgroundImage = model.backgroundImage
 
 		if var renderedEraserMarks = renderEraserMarks(model.eraserMarks, shouldCache: true) {
-			if let workingEraserMark = workingEraserMark, let renderedWorkingEraserMark = renderEraserMarks([workingEraserMark], shouldCache: false) {
+			if let workingEraserMark = workspace.workingEraserMark, let renderedWorkingEraserMark = renderEraserMarks([workingEraserMark], shouldCache: false) {
 				renderedEraserMarks =
 					renderedWorkingEraserMark.compositingOverImage(renderedEraserMarks)
 			}
@@ -392,32 +425,24 @@ class ViewController: UIViewController {
 		}
 	}
 
-	func pushHistory() {
-		history.removeSubrange(history.index(after: historyIndex) ..< history.endIndex)
-		history.append(model)
-		historyIndex += 1
+	func pushToHistory() {
+		workspace.history.push(model)
 	}
 
 	@IBAction func undo() {
-		let indexʹ = history.index(before: historyIndex)
-		guard history.indices.contains(indexʹ) else {
+		guard let modelʹ = workspace.history.undo() else {
 			return
 		}
-
-		historyIndex = indexʹ
-		model = history[indexʹ]
+		model = modelʹ
 
 		Analytics.shared.track(.undo)
 	}
 
 	@IBAction func redo() {
-		let indexʹ = history.index(after: historyIndex)
-		guard history.indices.contains(indexʹ) else {
+		guard let modelʹ = workspace.history.redo() else {
 			return
 		}
-
-		historyIndex = indexʹ
-		model = history[indexʹ]
+		model = modelʹ
 
 		Analytics.shared.track(.redo)
 	}
@@ -610,14 +635,14 @@ extension ViewController: UINavigationControllerDelegate {}
 extension ViewController: ImageStageControllerDelegate {
 	func imageStageController(_ controller: ImageStageController,
 	                          shouldSetCameraTransformTo cameraTransform: CGAffineTransform) -> Bool {
-		model.cameraTransform = cameraTransform
+		workspace.cameraTransform = cameraTransform
 		return false
 	}
 
 	func imageStageController(_ controller: ImageStageController,
 	                          shouldMultiplyCameraTransformBy cameraTransform: CGAffineTransform) -> Bool {
-		model.cameraTransform =
-			model.cameraTransform.concatenating(cameraTransform)
+		workspace.cameraTransform =
+			workspace.cameraTransform.concatenating(cameraTransform)
 		return false
 	}
 }
@@ -662,27 +687,30 @@ extension ViewController: EraserToolDelegate {
 				.distanceTo(applyTheTransforms(to: p2)))
 		}
 
-		workingEraserMark = EraserMark(path: CGMutablePath(),
-		                               width: width)
+		workspace.workingEraserMark =
+			EraserMark(path: CGMutablePath(),
+			           width: width)
 	}
 
 	func eraserTool(_ eraserTool: EraserTool, didUpdateWorkingPath path: CGPath) {
-		guard var workingEraserMarkʹ = workingEraserMark else {
+		guard var workingEraserMarkʹ = workspace.workingEraserMark else {
 			return
 		}
 
 		workingEraserMarkʹ.path = path
-		workingEraserMark = workingEraserMarkʹ
+		workspace.workingEraserMark = workingEraserMarkʹ
 	}
 
 	func eraserTool(_ eraserTool: EraserTool,
 	                didCommitWorkingPath path: CGPath) {
-		guard var committedEraserMark = workingEraserMark else {
+		guard var committedEraserMark = workspace.workingEraserMark else {
 			return
 		}
 
 		committedEraserMark.path = path
 		model.eraserMarks.append(committedEraserMark)
-		workingEraserMark = nil
+		workspace.workingEraserMark = nil
+
+		pushToHistory()
 	}
 }
