@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		494F518DA341EF4D9C96C7F4 /* Pods_Touchup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78D4FBC5BCD2DE39CEF776D5 /* Pods_Touchup.framework */; };
 		63250E401E6F3CF600A3C955 /* UIBezierPath+smooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */; };
 		63250E421E6F917400A3C955 /* EraserTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E411E6F917400A3C955 /* EraserTool.swift */; };
 		634F26031E662A4F00028893 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26021E662A4F00028893 /* AppDelegate.swift */; };
@@ -29,12 +30,9 @@
 		63D4B87E1E6B44AA003D4514 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B87D1E6B44AA003D4514 /* QuartzCore.framework */; };
 		63D4B8801E6B44AF003D4514 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B87F1E6B44AF003D4514 /* SystemConfiguration.framework */; };
 		63D4B8821E6B44B8003D4514 /* BuddyBuildSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8811E6B44B8003D4514 /* BuddyBuildSDK.framework */; };
-		64F055ACCE7C0F7A463A485C /* Pods_CITransformsExperiment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C44B02945F929009729274A2 /* Pods_CITransformsExperiment.framework */; };
-		D907B68370AC6BB2C6829EAD /* Pods_Touchup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CF8678893B09D0BCBE6E3B5 /* Pods_Touchup.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0CF8678893B09D0BCBE6E3B5 /* Pods_Touchup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Touchup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+smooth.swift"; sourceTree = "<group>"; };
 		63250E411E6F917400A3C955 /* EraserTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EraserTool.swift; sourceTree = "<group>"; };
 		634F25FF1E662A4F00028893 /* Touchup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Touchup.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,11 +58,9 @@
 		63D4B87F1E6B44AF003D4514 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		63D4B8811E6B44B8003D4514 /* BuddyBuildSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BuddyBuildSDK.framework; sourceTree = "<group>"; };
 		63D4B8831E6B4501003D4514 /* Touchup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Touchup-Bridging-Header.h"; sourceTree = "<group>"; };
-		7D01C379F7E92E6D2C4C28B1 /* Pods-Touchup.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Touchup.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Touchup/Pods-Touchup.debug.xcconfig"; sourceTree = "<group>"; };
-		C44B02945F929009729274A2 /* Pods_CITransformsExperiment.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CITransformsExperiment.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D01A31C933A44831C4A4B13F /* Pods-CITransformsExperiment.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CITransformsExperiment.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CITransformsExperiment/Pods-CITransformsExperiment.debug.xcconfig"; sourceTree = "<group>"; };
-		D997AD07E7EA2BCB2FA4EAAC /* Pods-Touchup.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Touchup.release.xcconfig"; path = "Pods/Target Support Files/Pods-Touchup/Pods-Touchup.release.xcconfig"; sourceTree = "<group>"; };
-		F84E5727D2033DE4955473C5 /* Pods-CITransformsExperiment.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CITransformsExperiment.release.xcconfig"; path = "Pods/Target Support Files/Pods-CITransformsExperiment/Pods-CITransformsExperiment.release.xcconfig"; sourceTree = "<group>"; };
+		78D4FBC5BCD2DE39CEF776D5 /* Pods_Touchup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Touchup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8023175DC6A9118FA38AA4E /* Pods-Touchup.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Touchup.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Touchup/Pods-Touchup.debug.xcconfig"; sourceTree = "<group>"; };
+		FC8494E0AC6C0BC89FBA1528 /* Pods-Touchup.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Touchup.release.xcconfig"; path = "Pods/Target Support Files/Pods-Touchup/Pods-Touchup.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,14 +77,22 @@
 				63D4B8761E6B4493003D4514 /* CoreText.framework in Frameworks */,
 				63D4B8741E6B448D003D4514 /* CoreTelephony.framework in Frameworks */,
 				63D4B8721E6B4487003D4514 /* AssetsLibrary.framework in Frameworks */,
-				64F055ACCE7C0F7A463A485C /* Pods_CITransformsExperiment.framework in Frameworks */,
-				D907B68370AC6BB2C6829EAD /* Pods_Touchup.framework in Frameworks */,
+				494F518DA341EF4D9C96C7F4 /* Pods_Touchup.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		22667A1AE47378978A0592F9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C8023175DC6A9118FA38AA4E /* Pods-Touchup.debug.xcconfig */,
+				FC8494E0AC6C0BC89FBA1528 /* Pods-Touchup.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		3645E1784778CCFD4CFBC056 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -101,8 +105,7 @@
 				63D4B8751E6B4493003D4514 /* CoreText.framework */,
 				63D4B8731E6B448D003D4514 /* CoreTelephony.framework */,
 				63D4B8711E6B4487003D4514 /* AssetsLibrary.framework */,
-				C44B02945F929009729274A2 /* Pods_CITransformsExperiment.framework */,
-				0CF8678893B09D0BCBE6E3B5 /* Pods_Touchup.framework */,
+				78D4FBC5BCD2DE39CEF776D5 /* Pods_Touchup.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -112,8 +115,8 @@
 			children = (
 				634F26011E662A4F00028893 /* Touchup */,
 				634F26001E662A4F00028893 /* Products */,
-				F51D6D8484C5560B4C9D6EBC /* Pods */,
 				3645E1784778CCFD4CFBC056 /* Frameworks */,
+				22667A1AE47378978A0592F9 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -148,17 +151,6 @@
 			path = CITransformsExperiment;
 			sourceTree = "<group>";
 		};
-		F51D6D8484C5560B4C9D6EBC /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				D01A31C933A44831C4A4B13F /* Pods-CITransformsExperiment.debug.xcconfig */,
-				F84E5727D2033DE4955473C5 /* Pods-CITransformsExperiment.release.xcconfig */,
-				7D01C379F7E92E6D2C4C28B1 /* Pods-Touchup.debug.xcconfig */,
-				D997AD07E7EA2BCB2FA4EAAC /* Pods-Touchup.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -166,12 +158,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 634F26111E662A4F00028893 /* Build configuration list for PBXNativeTarget "Touchup" */;
 			buildPhases = (
-				274D64F589F41FAEF87502E1 /* [CP] Check Pods Manifest.lock */,
+				F675859C51347735320683DF /* [CP] Check Pods Manifest.lock */,
 				634F25FB1E662A4F00028893 /* Sources */,
 				634F25FC1E662A4F00028893 /* Frameworks */,
 				634F25FD1E662A4F00028893 /* Resources */,
-				8DEF919207861BDF50CDC6E8 /* [CP] Embed Pods Frameworks */,
-				448E2E1442E2C79C9C8F9E16 /* [CP] Copy Pods Resources */,
+				5CFB7B3A5ABC2B2E527C6AB7 /* [CP] Embed Pods Frameworks */,
+				1382AF06092604D46D81B033 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -232,22 +224,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		274D64F589F41FAEF87502E1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		448E2E1442E2C79C9C8F9E16 /* [CP] Copy Pods Resources */ = {
+		1382AF06092604D46D81B033 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -262,7 +239,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Touchup/Pods-Touchup-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8DEF919207861BDF50CDC6E8 /* [CP] Embed Pods Frameworks */ = {
+		5CFB7B3A5ABC2B2E527C6AB7 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -275,6 +252,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Touchup/Pods-Touchup-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F675859C51347735320683DF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -414,7 +406,7 @@
 		};
 		634F26121E662A4F00028893 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7D01C379F7E92E6D2C4C28B1 /* Pods-Touchup.debug.xcconfig */;
+			baseConfigurationReference = C8023175DC6A9118FA38AA4E /* Pods-Touchup.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
 				BUNDLE_ID_SUFFIX = .debug;
@@ -431,12 +423,13 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "CITransformsExperiment/Touchup-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		634F26131E662A4F00028893 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D997AD07E7EA2BCB2FA4EAAC /* Pods-Touchup.release.xcconfig */;
+			baseConfigurationReference = FC8494E0AC6C0BC89FBA1528 /* Pods-Touchup.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
 				BUNDLE_ID_SUFFIX = "";
@@ -452,6 +445,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "CITransformsExperiment/Touchup-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

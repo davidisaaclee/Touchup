@@ -8,37 +8,21 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>1</integer>
 		</dict>
 		<key>Pods-Touchup.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>2</integer>
 		</dict>
 		<key>VectorSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
-			<key>orderHint</key>
-			<integer>3</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>492E4CE3DF5D2F13B8A78D540BF82F18</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5D338E6EF9CC0351D649AAF4B5C7CCDE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>772D9D2A79A7F9ED73C955548E87F513</key>
 		<dict>
 			<key>primary</key>
 			<true/>
