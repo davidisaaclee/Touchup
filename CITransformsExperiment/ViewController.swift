@@ -510,7 +510,8 @@ class ViewController: UIViewController {
 
 		let centerOriginTransform =
 			CGAffineTransform(translationX: -render.extent.width / 2,
-			                  y: -render.extent.height / 2)
+			                  // HACK: need to round because we need an integral translation?
+			                  y: (-render.extent.height / 2).rounded(.up))
 
 		model.backgroundImage =
 			render.applying(centerOriginTransform)
