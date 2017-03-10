@@ -36,10 +36,10 @@ class Analytics {
 	private var mixpanel: MixpanelInstance?
 
 	func setup() {
-		#if RELEASE
-			mixpanel = Mixpanel.initialize(token: "d3ea2f328b77d5a2391f28caf1253fe1")
-		#else
+		#if DEBUG
 			mixpanel = Mixpanel.initialize(token: "3a201f871093e667887cfa7f0ff85c33")
+		#else
+			mixpanel = Mixpanel.initialize(token: "d3ea2f328b77d5a2391f28caf1253fe1")
 		#endif
 	}
 
