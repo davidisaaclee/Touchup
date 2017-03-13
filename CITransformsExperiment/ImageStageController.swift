@@ -16,13 +16,13 @@ class ImageStageController: NSObject {
 
 	var image: CIImage? {
 		didSet {
-			reload()
+//			reload()
 		}
 	}
 
 	var backgroundImage: CIImage? {
 		didSet {
-			reload()
+//			reload()
 		}
 	}
 
@@ -39,7 +39,7 @@ class ImageStageController: NSObject {
 	var cameraTransform: CGAffineTransform =
 		CGAffineTransform(rotationAngle: CGFloat(M_PI_4)) {
 		didSet {
-			reload()
+//			reload()
 		}
 	}
 
@@ -123,8 +123,6 @@ class ImageStageController: NSObject {
 
 					attemptToConcatCameraTransform(CGAffineTransform(translationX: displacement.x,
 					                                                 y: displacement.y))
-
-					reload()
 				}
 
 			case let numberOfTouches where numberOfTouches >= 2:
@@ -150,8 +148,6 @@ class ImageStageController: NSObject {
 					                              pointB: locationBʹ.applying(cameraTransform)))
 
 				attemptToSetCameraTransform(cameraTransform.concatenating(transform))
-
-				reload()
 
 			default:
 				break

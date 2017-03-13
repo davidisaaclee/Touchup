@@ -190,6 +190,16 @@ class ViewController: UIViewController {
 		view.addSubview(helpOverlayView)
 
 		pushToHistory()
+
+		let displayLink =
+			CADisplayLink(target: self,
+			              selector: #selector(ViewController.renderFrame))
+		displayLink.add(to: .main, forMode: .commonModes)
+	}
+
+	@objc private func renderFrame() {
+		reloadRenderView()
+		stageController.reload()
 	}
 
 	func handleHistoryGesture(recognizer: UITapGestureRecognizer) {
