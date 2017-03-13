@@ -53,7 +53,7 @@ class ViewController: UIViewController {
 	}
 
 	struct Model {
-		var image: CIImage? = nil
+		var image: ImageSource? = nil
 		var backgroundImage: CIImage? = nil
 		var imageTransform: CGAffineTransform = .identity
 		var eraserMarks: [EraserMark] = []
@@ -94,6 +94,10 @@ class ViewController: UIViewController {
 		didSet {
 			reloadRenderView()
 		}
+	}
+
+	fileprivate var currentTime: TimeInterval {
+		return CACurrentMediaTime()
 	}
 
 	fileprivate let customToolGestureRecognizer =
@@ -153,7 +157,11 @@ class ViewController: UIViewController {
 		view.isMultipleTouchEnabled = true
 		renderView.isMultipleTouchEnabled = true
 
-		setWorkingImage(CIImage(image: #imageLiteral(resourceName: "yikes"))!)
+		let videoPlayer =
+			CIVideoPlayer(url: Bundle.main.url(forResource: "runner",
+			                                   withExtension: "mp4")!)
+		videoPlayer.startPlaying()
+		setWorkingImage(videoPlayer)
 
 		customToolGestureRecognizer
 			.addTarget(self,
@@ -201,7 +209,7 @@ class ViewController: UIViewController {
 		}
 	}
 
-	func setWorkingImage(_ image: CIImage) {
+	func setWorkingImage(_ image: ImageSource) {
 		model.image =
 			image
 		model.imageTransform =
@@ -211,7 +219,7 @@ class ViewController: UIViewController {
 	}
 
 	func reloadRenderView() {
-		guard let image = model.image else {
+		guard let image = model.image?.image(at: self.currentTime) else {
 			// hm
 			return
 		}
@@ -234,7 +242,8 @@ class ViewController: UIViewController {
 				cutOutEraserMarksFromImage.outputImage!
 					.applying(model.imageTransform)
 		} else {
-			stageController.image = image.applying(model.imageTransform)
+			stageController.image =
+				image.applying(model.imageTransform)
 		}
 	}
 

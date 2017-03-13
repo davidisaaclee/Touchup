@@ -16,6 +16,8 @@
 		634F260A1E662A4F00028893 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 634F26091E662A4F00028893 /* Assets.xcassets */; };
 		634F260D1E662A4F00028893 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 634F260B1E662A4F00028893 /* LaunchScreen.storyboard */; };
 		634F26151E662A6500028893 /* ImageSourceRenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26141E662A6500028893 /* ImageSourceRenderView.swift */; };
+		6368915C1E774D180022D811 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6368915B1E774D180022D811 /* Models.swift */; };
+		6368915E1E774EF00022D811 /* runner.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6368915D1E774EF00022D811 /* runner.mp4 */; };
 		637E45E01E70823B00BBFE4C /* Vector+dot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637E45DF1E70823B00BBFE4C /* Vector+dot.swift */; };
 		637E45E21E70B80400BBFE4C /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 637E45E11E70B80400BBFE4C /* Analytics.swift */; };
 		63B481391E688F9300D1A795 /* UIImage+resize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63B481381E688F9300D1A795 /* UIImage+resize.swift */; };
@@ -44,6 +46,8 @@
 		634F260C1E662A4F00028893 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		634F260E1E662A4F00028893 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		634F26141E662A6500028893 /* ImageSourceRenderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSourceRenderView.swift; sourceTree = "<group>"; };
+		6368915B1E774D180022D811 /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		6368915D1E774EF00022D811 /* runner.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = runner.mp4; sourceTree = "<group>"; };
 		637E45DF1E70823B00BBFE4C /* Vector+dot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Vector+dot.swift"; sourceTree = "<group>"; };
 		637E45E11E70B80400BBFE4C /* Analytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		63B481381E688F9300D1A795 /* UIImage+resize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+resize.swift"; sourceTree = "<group>"; };
@@ -149,6 +153,8 @@
 				637E45DF1E70823B00BBFE4C /* Vector+dot.swift */,
 				637E45E11E70B80400BBFE4C /* Analytics.swift */,
 				63EB14A91E71FEF900925D43 /* UIGestureRecognizer+cancel.swift */,
+				6368915B1E774D180022D811 /* Models.swift */,
+				6368915D1E774EF00022D811 /* runner.mp4 */,
 			);
 			name = Touchup;
 			path = CITransformsExperiment;
@@ -221,6 +227,7 @@
 				634F260D1E662A4F00028893 /* LaunchScreen.storyboard in Resources */,
 				634F260A1E662A4F00028893 /* Assets.xcassets in Resources */,
 				634F26081E662A4F00028893 /* Main.storyboard in Resources */,
+				6368915E1E774EF00022D811 /* runner.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +289,7 @@
 				634F26051E662A4F00028893 /* ViewController.swift in Sources */,
 				634F26151E662A6500028893 /* ImageSourceRenderView.swift in Sources */,
 				63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */,
+				6368915C1E774D180022D811 /* Models.swift in Sources */,
 				63250E421E6F917400A3C955 /* EraserTool.swift in Sources */,
 				637E45E01E70823B00BBFE4C /* Vector+dot.swift in Sources */,
 				634F26031E662A4F00028893 /* AppDelegate.swift in Sources */,
