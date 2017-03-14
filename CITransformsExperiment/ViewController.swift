@@ -152,6 +152,9 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+		// Clear out the working directory every time we start a new document.
+		try! deleteAllFilesInTemporaryDirectory()
+
 		eraserController.delegate = self
 
 		view.isMultipleTouchEnabled = true
@@ -195,6 +198,13 @@ class ViewController: UIViewController {
 			CADisplayLink(target: self,
 			              selector: #selector(ViewController.renderFrame(displayLink:)))
 		displayLink.add(to: .main, forMode: .commonModes)
+	}
+
+	func deleteAllFilesInTemporaryDirectory() throws {
+		try FileManager.default
+			.contentsOfDirectory(atPath: FileManager.default.temporaryDirectory.path)
+			.map { FileManager.default.temporaryDirectory.appendingPathComponent($0) }
+			.forEach { try FileManager.default.removeItem(atPath: $0.path) }
 	}
 
 	func handleHistoryGesture(recognizer: UITapGestureRecognizer) {
