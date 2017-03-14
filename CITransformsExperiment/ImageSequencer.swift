@@ -176,7 +176,7 @@ public class ImageSequencer {
 
 	private func makeWriterInputAdaptor(forInput writerInput: AVAssetWriterInput, size: CGSize) -> AVAssetWriterInputPixelBufferAdaptor {
 		let attributes: [String: Any] =
-			[kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: Int32(kCVPixelFormatType_32BGRA)),
+			[kCVPixelBufferPixelFormatTypeKey as String: NSNumber(value: Int32(kCVPixelFormatType_32ARGB)),
 			 kCVPixelBufferWidthKey as String: NSNumber(value: Int(size.width)),
 			 kCVPixelBufferHeightKey as String: NSNumber(value: Int(size.height)),
 			 kCVPixelBufferCGImageCompatibilityKey as String: NSNumber(value: true),
