@@ -54,7 +54,7 @@ class ViewController: UIViewController {
 
 	struct Model {
 		var image: ImageSource? = nil
-		var backgroundImage: CIImage? = nil
+		var backgroundImage: ImageSource? = nil
 		var imageTransform: CGAffineTransform = .identity
 		var eraserMarks: [EraserMark] = []
 	}
@@ -230,7 +230,8 @@ class ViewController: UIViewController {
 		}
 
 		stageController.cameraTransform = workspace.cameraTransform
-		stageController.backgroundImage = model.backgroundImage
+		stageController.backgroundImage =
+			model.backgroundImage?.image(at: self.currentTime)
 
 		if var renderedEraserMarks = renderEraserMarks(model.eraserMarks, shouldCache: true) {
 			if let workingEraserMark = workspace.workingEraserMark, let renderedWorkingEraserMark = renderEraserMarks([workingEraserMark], shouldCache: false) {
@@ -546,7 +547,6 @@ class ViewController: UIViewController {
 	private var imageSequencer: ImageSequencer!
 
 	@IBAction func freezeImage(_ sender: Any) {
-
 		let targetPath = (NSTemporaryDirectory() as NSString).appendingPathComponent("\(UUID().uuidString)_vid.mp4")
 		let targetURL = URL(fileURLWithPath: targetPath)
 
@@ -565,25 +565,38 @@ class ViewController: UIViewController {
 		                             frameDuration: 1.0 / 30.0) { (urlOrNil, errorOrNil) in
 																	if let url = urlOrNil {
 																		print("Success: \(url)")
+																		let render = CIVideoPlayer(url: url)
+																		render.startPlaying()
+
+																		let centerOriginTransform =
+																			CGAffineTransform(translationX: -render.extent.width / 2,
+																			                  // HACK: need to round because we need an integral translation?
+																				y: (-render.extent.height / 2).rounded(.up))
+
+																		self.model.backgroundImage =
+																			render.transformed(by: CIFilter(transform: centerOriginTransform)!)
+																		self.pushToHistory()
+																		
+																		Analytics.shared.track(.stampToBackground)
 																	} else {
 																		print("Failure: \(errorOrNil!.localizedDescription)")
 																	}
 		}
 
-		guard let render = stageController.renderToImage().flatMap(CIImage.init) else {
-			fatalError("Implement me")
-		}
-
-		let centerOriginTransform =
-			CGAffineTransform(translationX: -render.extent.width / 2,
-			                  // HACK: need to round because we need an integral translation?
-			                  y: (-render.extent.height / 2).rounded(.up))
-
-		model.backgroundImage =
-			render.applying(centerOriginTransform)
-		pushToHistory()
-
-		Analytics.shared.track(.stampToBackground)
+//		guard let render = stageController.renderToImage().flatMap(CIImage.init) else {
+//			fatalError("Implement me")
+//		}
+//
+//		let centerOriginTransform =
+//			CGAffineTransform(translationX: -render.extent.width / 2,
+//			                  // HACK: need to round because we need an integral translation?
+//			                  y: (-render.extent.height / 2).rounded(.up))
+//
+//		model.backgroundImage =
+//			render.applying(centerOriginTransform)
+//		pushToHistory()
+//
+//		Analytics.shared.track(.stampToBackground)
 	}
 
 	@IBAction func replaceImage() {

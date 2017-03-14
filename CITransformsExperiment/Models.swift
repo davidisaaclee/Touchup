@@ -5,10 +5,12 @@ import AVFoundation
 protocol ImageSource {
 	var extent: CGRect { get }
 	func image(at time: TimeInterval) -> CIImage?
+	func transformed(by transformer: ImageTransformer) -> ImageSource
 }
 
 protocol ImageTransformer {
 	func transform(_ image: CIImage) -> CIImage
+//	func transform<Source: ImageSource>(_ source: Source) -> Source
 }
 
 
@@ -24,6 +26,10 @@ extension CIFilter: ImageTransformer {
 extension CIImage: ImageSource {
 	func image(at time: TimeInterval) -> CIImage? {
 		return self
+	}
+
+	func transformed(by transformer: ImageTransformer) -> ImageSource {
+		return transformer.transform(self)
 	}
 }
 
@@ -110,6 +116,37 @@ extension CIVideoPlayer: ImageSource {
 		return CGRect(origin: .zero,
 		              size: item.asset.tracks(withMediaType: AVMediaTypeVideo).first!.naturalSize)
 	}
+
+	// result retains `transformer`?
+	func transformed(by transformer: ImageTransformer) -> ImageSource {
+		return LazilyTransformedCIVideoPlayer(base: self, transformer: transformer)
+	}
 }
 
+class LazilyTransformedCIVideoPlayer: ImageSource {
+	let base: ImageSource
+	let transformer: ImageTransformer
+	private(set) var extent: CGRect
 
+	init(base: ImageSource, transformer: ImageTransformer) {
+		self.base = base
+		self.transformer = transformer
+		self.extent = base.extent
+	}
+
+	func image(at time: TimeInterval) -> CIImage? {
+		let result = base.image(at: time).map(transformer.transform)
+		result.map(updateExtent(withOutput:))
+		return result
+	}
+
+	func transformed(by transformer: ImageTransformer) -> ImageSource {
+		return LazilyTransformedCIVideoPlayer(base: self,
+		                                      transformer: transformer)
+	}
+
+	private func updateExtent(withOutput image: CIImage) {
+		extent = image.extent
+	}
+
+}
