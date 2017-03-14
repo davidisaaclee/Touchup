@@ -28,6 +28,7 @@
 		63C5A9361E77B8030079D380 /* CIFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C5A9351E77B8030079D380 /* CIFilter.swift */; };
 		63C5A9381E785FDB0079D380 /* progress.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 63C5A9371E785FDB0079D380 /* progress.mp4 */; };
 		63C5A93B1E7866680079D380 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C5A93A1E7866680079D380 /* History.swift */; };
+		63C5A93D1E787D130079D380 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C5A93C1E787D130079D380 /* Result.swift */; };
 		63D4B8721E6B4487003D4514 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8711E6B4487003D4514 /* AssetsLibrary.framework */; };
 		63D4B8741E6B448D003D4514 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8731E6B448D003D4514 /* CoreTelephony.framework */; };
 		63D4B8761E6B4493003D4514 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63D4B8751E6B4493003D4514 /* CoreText.framework */; };
@@ -63,6 +64,7 @@
 		63C5A9351E77B8030079D380 /* CIFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CIFilter.swift; sourceTree = "<group>"; };
 		63C5A9371E785FDB0079D380 /* progress.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = progress.mp4; sourceTree = "<group>"; };
 		63C5A93A1E7866680079D380 /* History.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		63C5A93C1E787D130079D380 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		63D4B8711E6B4487003D4514 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		63D4B8731E6B448D003D4514 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		63D4B8751E6B4493003D4514 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -169,6 +171,7 @@
 				63C5A9351E77B8030079D380 /* CIFilter.swift */,
 				63C5A9391E785FDF0079D380 /* Videos */,
 				63C5A93A1E7866680079D380 /* History.swift */,
+				63C5A93C1E787D130079D380 /* Result.swift */,
 			);
 			name = Touchup;
 			path = CITransformsExperiment;
@@ -324,6 +327,7 @@
 				63B481391E688F9300D1A795 /* UIImage+resize.swift in Sources */,
 				63EB14AA1E71FEF900925D43 /* UIGestureRecognizer+cancel.swift in Sources */,
 				637E45E21E70B80400BBFE4C /* Analytics.swift in Sources */,
+				63C5A93D1E787D130079D380 /* Result.swift in Sources */,
 				63C5A9361E77B8030079D380 /* CIFilter.swift in Sources */,
 				63250E401E6F3CF600A3C955 /* UIBezierPath+smooth.swift in Sources */,
 			);

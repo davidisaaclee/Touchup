@@ -551,38 +551,27 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func freezeImage(_ sender: Any) {
-		let targetPath = (NSTemporaryDirectory() as NSString).appendingPathComponent("\(UUID().uuidString)_vid.mp4")
-		let targetURL = URL(fileURLWithPath: targetPath)
-		let framesToRender = cachedFrames
+		render(cachedFrames) { (result) in
+			switch result {
+			case let .success(url):
+				let render = CIVideoPlayer(url: url)
+				render.play()
 
-		let imageSequencerConfig =
-			ImageSequencer.Configuration(outputVideoSize: renderSize,
-			                             destination: targetURL,
-			                             frameDuration: 1.0 / 30.0)
-		imageSequencer =
-			ImageSequencer(configuration: imageSequencerConfig)
-		imageSequencer.generateVideo(from: framesToRender,
-		                             outputVideoSize: renderSize,
-		                             destinationURL: targetURL,
-		                             frameDuration: 1.0 / 30.0) { (urlOrNil, errorOrNil) in
-																	if let url = urlOrNil {
-																		let render = CIVideoPlayer(url: url)
-																		render.play()
+				let centerOriginTransform =
+					CGAffineTransform(translationX: -render.extent.width / 2,
+					                  // HACK: need to round because we need an integral translation?
+						y: (-render.extent.height / 2).rounded(.up))
 
-																		let centerOriginTransform =
-																			CGAffineTransform(translationX: -render.extent.width / 2,
-																			                  // HACK: need to round because we need an integral translation?
-																				y: (-render.extent.height / 2).rounded(.up))
+				self.model.backgroundImage =
+					render
+						.transformed(by: CIFilter(transform: centerOriginTransform)!)
+				self.pushToHistory()
 
-																		self.model.backgroundImage =
-																			render
-																				.transformed(by: CIFilter(transform: centerOriginTransform)!)
-																		self.pushToHistory()
-																		
-																		Analytics.shared.track(.stampToBackground)
-																	} else {
-																		print("Failure: \(errorOrNil!.localizedDescription)")
-																	}
+				Analytics.shared.track(.stampToBackground)
+
+			case let .failure(error):
+				print("Failure: \(error.localizedDescription)")
+			}
 		}
 
 //		guard let render = stageController.renderToImage().flatMap(CIImage.init) else {
@@ -643,6 +632,34 @@ class ViewController: UIViewController {
 		return touch.location(in: stageController.renderView)
 			.applying(stageController.renderViewToStageTransform)
 	}
+
+	fileprivate func render(_ frames: [CGImage],
+	                        completion: @escaping (Result<URL>) -> Void) {
+		let targetURL =
+			FileManager.default.temporaryDirectory
+				.appendingPathComponent("\(UUID().uuidString)_vid.mp4")
+
+		let imageSequencerConfig =
+			ImageSequencer.Configuration(outputVideoSize: renderSize,
+			                             destination: targetURL,
+			                             frameDuration: 1.0 / 30.0)
+		imageSequencer =
+			ImageSequencer(configuration: imageSequencerConfig)
+		imageSequencer.generateVideo(from: frames,
+		                             outputVideoSize: renderSize,
+		                             destinationURL: targetURL,
+		                             frameDuration: 1.0 / 30.0) { (urlOrNil, errorOrNil) in
+																	if let url = urlOrNil {
+																		completion(.success(url))
+																	} else {
+																		completion(.failure(errorOrNil!))
+																	}
+		}
+
+	}
+
+
+	// MARK: Setup
 
 	fileprivate func setupGestureRecognizers() {
 		customToolGestureRecognizer
