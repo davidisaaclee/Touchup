@@ -534,22 +534,47 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func saveToCameraRoll() {
-		guard let render = stageController.renderToUIImage() else {
-			fatalError("Implement me")
-		}
+		let isVideo = true
 
-		let activityController = UIActivityViewController(activityItems: [render],
-		                                                  applicationActivities: nil)
-		activityController.completionWithItemsHandler = { (activityType, completed, _, _) in
-			if completed {
-				Analytics.shared.track(.finishedExport)
-			} else {
-				Analytics.shared.track(.cancelledExport)
+		if isVideo {
+			render(cachedFrames) { (result) in
+				switch result {
+				case let .success(url):
+					let activityController = UIActivityViewController(activityItems: [url],
+					                                                  applicationActivities: nil)
+					activityController.completionWithItemsHandler = { (activityType, completed, _, _) in
+						if completed {
+							Analytics.shared.track(.finishedExport)
+						} else {
+							Analytics.shared.track(.cancelledExport)
+						}
+					}
+					self.present(activityController, animated: true, completion: nil)
+
+					Analytics.shared.track(.beganExport)
+
+				case let .failure(error):
+					print("Failed render: \(error)")
+				}
 			}
-		}
-		present(activityController, animated: true, completion: nil)
+		} else {
+			guard let render = stageController.renderToUIImage() else {
+				fatalError("Implement me")
+			}
 
-		Analytics.shared.track(.beganExport)
+			let activityController = UIActivityViewController(activityItems: [render],
+			                                                  applicationActivities: nil)
+			activityController.completionWithItemsHandler = { (activityType, completed, _, _) in
+				if completed {
+					Analytics.shared.track(.finishedExport)
+				} else {
+					Analytics.shared.track(.cancelledExport)
+				}
+			}
+			present(activityController, animated: true, completion: nil)
+
+			Analytics.shared.track(.beganExport)
+		}
 	}
 
 	@IBAction func freezeImage(_ sender: Any) {
