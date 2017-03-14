@@ -12,38 +12,6 @@ extension EraserMark: Equatable {
 	}
 }
 
-struct History<Model> {
-	var stack: [Model] = []
-	var currentIndex: Int = -1
-
-	mutating func push(_ model: Model) {
-		stack
-			.removeSubrange(stack.index(after: currentIndex) ..< stack.endIndex)
-		stack.append(model)
-		currentIndex += 1
-	}
-
-	mutating func undo() -> Model? {
-		let indexʹ = stack.index(before: currentIndex)
-		guard stack.indices.contains(indexʹ) else {
-			return nil
-		}
-
-		currentIndex = indexʹ
-		return stack[indexʹ]
-	}
-
-	mutating func redo() -> Model? {
-		let indexʹ = stack.index(after: currentIndex)
-		guard stack.indices.contains(indexʹ) else {
-			return nil
-		}
-
-		currentIndex = indexʹ
-		return stack[indexʹ]
-	}
-}
-
 class ViewController: UIViewController {
 
 	struct Workspace {
@@ -59,8 +27,20 @@ class ViewController: UIViewController {
 		var eraserMarks: [EraserMark] = []
 	}
 
+	enum Mode {
+		case cameraControl
+		case imageTransform
+		case eraser
+	}
+
+
+	// MARK: Child controllers
+
 	var stageController: ImageStageController!
 	let eraserController = EraserTool()
+
+
+	// MARK: IBOutlets and views
 
 	@IBOutlet var renderView: ImageSourceRenderView! {
 		didSet {
@@ -84,6 +64,21 @@ class ViewController: UIViewController {
 
 	let helpOverlayView = UIImageView(image: #imageLiteral(resourceName: "Help"))
 
+
+	// MARK: Gesture recognizers
+
+	fileprivate let customToolGestureRecognizer =
+		MultitouchGestureRecognizer()
+
+	fileprivate let undoGestureRecognizer =
+		UITapGestureRecognizer()
+
+	fileprivate let redoGestureRecognizer =
+		UITapGestureRecognizer()
+
+
+	// MARK: Models
+
 	var model: Model = ViewController.Model() {
 		didSet {
 			reloadRenderView()
@@ -96,24 +91,7 @@ class ViewController: UIViewController {
 		}
 	}
 
-	fileprivate var currentTime: TimeInterval {
-		return CACurrentMediaTime()
-	}
-
-	fileprivate let customToolGestureRecognizer =
-		MultitouchGestureRecognizer()
-
-	let undoGestureRecognizer =
-		UITapGestureRecognizer()
-
-	let redoGestureRecognizer =
-		UITapGestureRecognizer()
-
-	enum Mode {
-		case cameraControl
-		case imageTransform
-		case eraser
-	}
+	// MARK: Local state
 
 	var mode: Mode = .cameraControl {
 		didSet {
@@ -140,9 +118,31 @@ class ViewController: UIViewController {
 
 			case .eraser:
 				eraserButton.isSelected = true
-
+				
 			}
 		}
+	}
+
+	private var eraserMarksCache: (marks: [EraserMark], scaleFactor: CGFloat, image: CIImage)?
+	private var previousTouchLocations: [UITouch: CGPoint] = [:]
+	private var previousMode: Mode?
+	private var isModeLocked: Bool = false
+	fileprivate var cachedFrames: [CGImage] = []
+	private var imageSequencer: ImageSequencer!
+
+
+	// MARK: Convenience properties 
+
+	fileprivate var currentTime: TimeInterval {
+		return CACurrentMediaTime()
+	}
+
+	var renderSize: CGSize {
+		let shrunkenSize =
+			stageController.imageRenderSize
+				.aspectFitting(within: CGSize(width: 1080,
+				                              height: 1920))
+		return ImageSequencer.coerceSize(size: shrunkenSize)
 	}
 
 	override var prefersStatusBarHidden: Bool {
@@ -166,27 +166,7 @@ class ViewController: UIViewController {
 		videoPlayer.play()
 		setWorkingImage(videoPlayer)
 
-		customToolGestureRecognizer
-			.addTarget(self,
-			           action: #selector(ViewController.handleToolGesture(recognizer:)))
-		customToolGestureRecognizer.isEnabled = false
-		renderView.addGestureRecognizer(customToolGestureRecognizer)
-
-		undoGestureRecognizer
-			.addTarget(self,
-			           action: #selector(ViewController.handleHistoryGesture(recognizer:)))
-		undoGestureRecognizer.numberOfTapsRequired = 2
-		undoGestureRecognizer.numberOfTouchesRequired = 2
-		undoGestureRecognizer.delegate = self
-		view.addGestureRecognizer(undoGestureRecognizer)
-
-		redoGestureRecognizer
-			.addTarget(self,
-			           action: #selector(ViewController.handleHistoryGesture(recognizer:)))
-		redoGestureRecognizer.numberOfTapsRequired = 2
-		redoGestureRecognizer.numberOfTouchesRequired = 3
-		redoGestureRecognizer.delegate = self
-		view.addGestureRecognizer(redoGestureRecognizer)
+		setupGestureRecognizers()
 
 		helpOverlayView.frame = view.bounds
 		helpOverlayView.isHidden = true
@@ -204,40 +184,6 @@ class ViewController: UIViewController {
 			             object: nil,
 			             queue: nil,
 			             using: { _ in self.willEnterForeground() })
-	}
-
-	func deleteAllFilesInTemporaryDirectory() throws {
-		try FileManager.default
-			.contentsOfDirectory(atPath: FileManager.default.temporaryDirectory.path)
-			.map { FileManager.default.temporaryDirectory.appendingPathComponent($0) }
-			.forEach { try FileManager.default.removeItem(atPath: $0.path) }
-	}
-
-	fileprivate func willEnterForeground() {
-		if let backgroundVideo = model.backgroundImage as? Playable {
-			backgroundVideo.play()
-		}
-
-		if let foregroundVideo = model.image as? Playable {
-			foregroundVideo.play()
-		}
-	}
-
-	func handleHistoryGesture(recognizer: UITapGestureRecognizer) {
-		guard case .ended = recognizer.state else {
-			return
-		}
-
-		switch recognizer {
-		case undoGestureRecognizer:
-			undo()
-
-		case redoGestureRecognizer:
-			redo()
-
-		default:
-			break
-		}
 	}
 
 	func setWorkingImage(_ image: ImageSource) {
@@ -278,8 +224,6 @@ class ViewController: UIViewController {
 				image.applying(model.imageTransform)
 		}
 	}
-
-	private var eraserMarksCache: (marks: [EraserMark], scaleFactor: CGFloat, image: CIImage)?
 
 	private func renderEraserMarks(_ marks: [EraserMark], shouldCache: Bool) -> CIImage? {
 		// We'll add a 1px margin to each side, to prevent edges showing through.
@@ -376,11 +320,30 @@ class ViewController: UIViewController {
 	}
 
 
-	private var previousTouchLocations: [UITouch: CGPoint] = [:]
+	// MARK: Action targets
 
-	fileprivate func stageLocation(of touch: UITouch) -> CGPoint {
-		return touch.location(in: stageController.renderView)
-			.applying(stageController.renderViewToStageTransform)
+	fileprivate func willEnterForeground() {
+		if let backgroundVideo = model.backgroundImage as? Playable {
+			backgroundVideo.play()
+		}
+
+		if let foregroundVideo = model.image as? Playable {
+			foregroundVideo.play()
+		}
+	}
+
+	@objc private func renderFrame(displayLink: CADisplayLink) {
+		reloadRenderView()
+		stageController.reload()
+
+		stageController.renderToImage()
+			.map { image in
+				cachedFrames.append(image)
+
+				if cachedFrames.count > 60 {
+					cachedFrames.removeFirst()
+				}
+		}
 	}
 
 	@objc private func handleToolGesture(recognizer: MultitouchGestureRecognizer) {
@@ -406,7 +369,25 @@ class ViewController: UIViewController {
 		}
 	}
 
-	func handleImageTransform(using recognizer: MultitouchGestureRecognizer) {
+
+	@objc private func handleHistoryGesture(recognizer: UITapGestureRecognizer) {
+		guard case .ended = recognizer.state else {
+			return
+		}
+
+		switch recognizer {
+		case undoGestureRecognizer:
+			undo()
+
+		case redoGestureRecognizer:
+			redo()
+
+		default:
+			break
+		}
+	}
+
+	@objc private func handleImageTransform(using recognizer: MultitouchGestureRecognizer) {
 		switch recognizer.state {
 		case .began:
 			isModeLocked = false
@@ -467,30 +448,7 @@ class ViewController: UIViewController {
 		}
 	}
 
-	func pushToHistory() {
-		workspace.history.push(model)
-	}
-
-	@IBAction func undo() {
-		guard let modelʹ = workspace.history.undo() else {
-			return
-		}
-		model = modelʹ
-
-		Analytics.shared.track(.undo)
-	}
-
-	@IBAction func redo() {
-		guard let modelʹ = workspace.history.redo() else {
-			return
-		}
-		model = modelʹ
-
-		Analytics.shared.track(.redo)
-	}
-
-
-	private func handleEraser(using recognizer: MultitouchGestureRecognizer) {
+	@objc private func handleEraser(using recognizer: MultitouchGestureRecognizer) {
 		func eraserPosition(of touch: UITouch) -> CGPoint {
 			return stageLocation(of: touch)
 				.applying(model.imageTransform.inverted())
@@ -512,8 +470,30 @@ class ViewController: UIViewController {
 		}
 	}
 
-	private var previousMode: Mode?
-	private var isModeLocked: Bool = false
+	func pushToHistory() {
+		workspace.history.push(model)
+	}
+
+
+	// MARK: IBActions
+
+	@IBAction func undo() {
+		guard let modelʹ = workspace.history.undo() else {
+			return
+		}
+		model = modelʹ
+
+		Analytics.shared.track(.undo)
+	}
+
+	@IBAction func redo() {
+		guard let modelʹ = workspace.history.redo() else {
+			return
+		}
+		model = modelʹ
+
+		Analytics.shared.track(.redo)
+	}
 
 	@IBAction func enterImageTransform() {
 		isModeLocked = true
@@ -570,8 +550,6 @@ class ViewController: UIViewController {
 		Analytics.shared.track(.beganExport)
 	}
 
-	private var imageSequencer: ImageSequencer!
-
 	@IBAction func freezeImage(_ sender: Any) {
 		let targetPath = (NSTemporaryDirectory() as NSString).appendingPathComponent("\(UUID().uuidString)_vid.mp4")
 		let targetURL = URL(fileURLWithPath: targetPath)
@@ -626,7 +604,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func replaceImage() {
-		let imagePicker = CustomImagePicker()
+		let imagePicker = UIImagePickerController()
 		imagePicker.sourceType = .photoLibrary
 		imagePicker.delegate = self
 		imagePicker.modalTransitionStyle = .crossDissolve
@@ -636,7 +614,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func replaceImageWithCamera() {
-		let imagePicker = CustomImagePicker()
+		let imagePicker = UIImagePickerController()
 		imagePicker.sourceType = .camera
 		imagePicker.delegate = self
 		imagePicker.modalTransitionStyle = .crossDissolve
@@ -653,35 +631,45 @@ class ViewController: UIViewController {
 		helpOverlayView.isHidden = true
 	}
 
-	var renderSize: CGSize {
-		let shrunkenSize =
-			stageController.imageRenderSize
-				.aspectFitting(within: CGSize(width: 1080,
-				                              height: 1920))
-		return ImageSequencer.coerceSize(size: shrunkenSize)
+
+	// MARK: Utility
+
+	fileprivate func deleteAllFilesInTemporaryDirectory() throws {
+		try FileManager.default
+			.contentsOfDirectory(atPath: FileManager.default.temporaryDirectory.path)
+			.map { FileManager.default.temporaryDirectory.appendingPathComponent($0) }
+			.forEach { try FileManager.default.removeItem(atPath: $0.path) }
 	}
 
-	@objc private func renderFrame(displayLink: CADisplayLink) {
-		reloadRenderView()
-		stageController.reload()
-
-		stageController.renderToImage()
-			.map { image in
-				cachedFrames.append(image)
-				
-				if cachedFrames.count > 60 {
-					cachedFrames.removeFirst()
-				}
-			}
+	fileprivate func stageLocation(of touch: UITouch) -> CGPoint {
+		return touch.location(in: stageController.renderView)
+			.applying(stageController.renderViewToStageTransform)
 	}
 
-	fileprivate var cachedFrames: [CGImage] = []
+	fileprivate func setupGestureRecognizers() {
+		customToolGestureRecognizer
+			.addTarget(self,
+			           action: #selector(ViewController.handleToolGesture(recognizer:)))
+		customToolGestureRecognizer.isEnabled = false
+		renderView.addGestureRecognizer(customToolGestureRecognizer)
 
-	private class CustomImagePicker: UIImagePickerController {
-		override var prefersStatusBarHidden: Bool {
-			return true
-		}
+		undoGestureRecognizer
+			.addTarget(self,
+			           action: #selector(ViewController.handleHistoryGesture(recognizer:)))
+		undoGestureRecognizer.numberOfTapsRequired = 2
+		undoGestureRecognizer.numberOfTouchesRequired = 2
+		undoGestureRecognizer.delegate = self
+		view.addGestureRecognizer(undoGestureRecognizer)
+
+		redoGestureRecognizer
+			.addTarget(self,
+			           action: #selector(ViewController.handleHistoryGesture(recognizer:)))
+		redoGestureRecognizer.numberOfTapsRequired = 2
+		redoGestureRecognizer.numberOfTouchesRequired = 3
+		redoGestureRecognizer.delegate = self
+		view.addGestureRecognizer(redoGestureRecognizer)
 	}
+
 }
 
 
