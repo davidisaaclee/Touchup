@@ -1,5 +1,9 @@
 import AVFoundation
 
+fileprivate func logError(_ message: Any) {
+	print(message)
+}
+
 extension CGImage {
 	var size: CGSize {
 		return CGSize(width: width,
@@ -70,18 +74,6 @@ public class ImageSequencer {
             self.frameDuration = frameDuration
         }
     }
-
-//	public static func generateVideoFromImageSequence(imageSequence: [CGImage],
-//	                                                  outputVideoSize: CGSize,
-//	                                                  destinationURL: NSURL,
-//	                                                  frameDuration: NSTimeInterval,
-//	                                                  completion: (NSURL?, ErrorType?) -> Void) {
-//		return ImageSequencer().generateVideoFromImageSequence(imageSequence,
-//		                                                       outputVideoSize: outputVideoSize,
-//		                                                       destinationURL: destinationURL,
-//		                                                       frameDuration: frameDuration,
-//		                                                       completion: completion)
-//	}
 
     public let configuration: Configuration
 
@@ -205,8 +197,8 @@ public class ImageSequencer {
 //				AVVideoAverageBitRateKey: NSNumber(value: 7500000.0), // 7.5 mbps
 				AVVideoMaxKeyFrameIntervalKey: NSNumber(value: 16),
 				AVVideoMaxKeyFrameIntervalDurationKey: NSNumber(value: 0.0),
-				AVVideoProfileLevelKey: AVVideoProfileLevelH264Main31
-//				AVVideoProfileLevelKey: AVVideoProfileLevelH264High41,
+//				AVVideoProfileLevelKey: AVVideoProfileLevelH264Main31
+				AVVideoProfileLevelKey: AVVideoProfileLevelH264High41,
 			],
 		]
 	}
@@ -250,11 +242,11 @@ public class ImageSequencer {
 					.append(buffer,
 					        withPresentationTime: currentTime)
 
-//			print(succeeded ? "Successful." : "Failed")
+			print(succeeded ? "Successful." : "Failed")
 //			print("After: ", writingContext.adaptor.pixelBufferPool != nil)
 			return (true, 1)
 		} else {
-//			print("No frame")
+			print("No frame")
 //			if let buffer = frames.first.flatMap({ self.pixelBufferFromImage($0, pool: bufferPool) }) {
 //				writingContext.adaptor.appendPixelBuffer(buffer, withPresentationTime: currentTime)
 //			}
@@ -302,7 +294,10 @@ public class ImageSequencer {
 			                                                pool,
 			                                                &pixelBufferOrNil)
 
-			guard status == kCVReturnSuccess else { return nil }
+			guard status == kCVReturnSuccess else {
+				logError("Could not create pixel buffer from pool: \(status)")
+				return nil
+			}
 		} else {
 			fatalError("Implement me")
 //			CVPixelBufferCreate(kCFAllocatorDefault,
@@ -313,11 +308,17 @@ public class ImageSequencer {
 //			                    &pixelBufferOrNil)
 		}
 
-		guard let pixelBuffer = pixelBufferOrNil else { return nil }
+		guard let pixelBuffer = pixelBufferOrNil else {
+			logError("Unexpectedly nil pixel buffer pointer")
+			return nil
+		}
 
 		CVPixelBufferLockBaseAddress(pixelBuffer, .readOnly)
 		let pixelDataPointer = CVPixelBufferGetBaseAddress(pixelBuffer)
-		guard pixelDataPointer != nil else { return nil }
+		guard pixelDataPointer != nil else {
+			logError("Unexpectedly nil pixel buffer data pointer")
+			return nil
+		}
 
 		// Create output bitmap context.
 

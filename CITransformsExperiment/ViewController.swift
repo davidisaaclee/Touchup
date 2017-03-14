@@ -158,7 +158,7 @@ class ViewController: UIViewController {
 		renderView.isMultipleTouchEnabled = true
 
 		let videoPlayer =
-			CIVideoPlayer(url: Bundle.main.url(forResource: "runner",
+			CIVideoPlayer(url: Bundle.main.url(forResource: "progress",
 			                                   withExtension: "mp4")!)
 		videoPlayer.startPlaying()
 		setWorkingImage(videoPlayer)
@@ -193,7 +193,7 @@ class ViewController: UIViewController {
 
 		let displayLink =
 			CADisplayLink(target: self,
-			              selector: #selector(ViewController.renderFrame))
+			              selector: #selector(ViewController.renderFrame(displayLink:)))
 		displayLink.add(to: .main, forMode: .commonModes)
 	}
 
@@ -526,7 +526,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func saveToCameraRoll() {
-		guard let render = stageController.renderToImage() else {
+		guard let render = stageController.renderToUIImage() else {
 			fatalError("Implement me")
 		}
 
@@ -564,7 +564,6 @@ class ViewController: UIViewController {
 		                             destinationURL: targetURL,
 		                             frameDuration: 1.0 / 30.0) { (urlOrNil, errorOrNil) in
 																	if let url = urlOrNil {
-																		print("Success: \(url)")
 																		let render = CIVideoPlayer(url: url)
 																		render.startPlaying()
 
@@ -574,7 +573,8 @@ class ViewController: UIViewController {
 																				y: (-render.extent.height / 2).rounded(.up))
 
 																		self.model.backgroundImage =
-																			render.transformed(by: CIFilter(transform: centerOriginTransform)!)
+																			render
+																				.transformed(by: CIFilter(transform: centerOriginTransform)!)
 																		self.pushToHistory()
 																		
 																		Analytics.shared.track(.stampToBackground)
@@ -630,12 +630,12 @@ class ViewController: UIViewController {
 	var renderSize: CGSize {
 		let shrunkenSize =
 			stageController.imageRenderSize
-				.aspectFitting(within: CGSize(width: 1000,
-				                              height: 1000))
+				.aspectFitting(within: CGSize(width: 1080,
+				                              height: 1920))
 		return ImageSequencer.coerceSize(size: shrunkenSize)
 	}
 
-	@objc private func renderFrame() {
+	@objc private func renderFrame(displayLink: CADisplayLink) {
 		reloadRenderView()
 		stageController.reload()
 
