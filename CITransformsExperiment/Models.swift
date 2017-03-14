@@ -122,11 +122,16 @@ extension CIVideoPlayer: ImageSource {
 
 	// result retains `transformer`?
 	func transformed(by transformer: ImageTransformer) -> ImageSource {
-		return LazilyTransformedCIVideoPlayer(base: self, transformer: transformer)
+		let newExtent = transformer
+			.transform(CIImage(color: .black()).cropping(to: extent))
+			.extent
+		return LazilyTransformedCIVideoPlayer(base: self,
+		                                      transformer: transformer,
+		                                      extent: newExtent)
 	}
 }
 
-class LazilyTransformedCIVideoPlayer: ImageSource, Playable {
+private class LazilyTransformedCIVideoPlayer: ImageSource, Playable {
 	let base: ImageSource & Playable
 	let transformer: ImageTransformer
 	private(set) var extent: CGRect
@@ -135,6 +140,12 @@ class LazilyTransformedCIVideoPlayer: ImageSource, Playable {
 		self.base = base
 		self.transformer = transformer
 		self.extent = base.extent
+	}
+
+	init(base: ImageSource & Playable, transformer: ImageTransformer, extent: CGRect) {
+		self.base = base
+		self.transformer = transformer
+		self.extent = extent
 	}
 
 	func image(at time: TimeInterval) -> CIImage? {

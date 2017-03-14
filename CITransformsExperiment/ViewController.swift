@@ -140,8 +140,10 @@ class ViewController: UIViewController {
 	fileprivate var renderSize: CGSize {
 		let shrunkenSize =
 			stageController.imageRenderSize
-				.aspectFitting(within: CGSize(width: 1080,
-				                              height: 1920))
+				.aspectFitting(within: CGSize(width: 500	,
+				                              height: 500))
+//				.aspectFitting(within: CGSize(width: 1080,
+//				                              height: 1920))
 		return ImageSequencer.coerceSize(size: shrunkenSize)
 	}
 
@@ -560,15 +562,24 @@ class ViewController: UIViewController {
 		}
 
 		if isVideo {
-			render(cachedFrames) { (result) in
-				switch result {
-				case let .success(url):
-					let render = CIVideoPlayer(url: url)
-					render.play()
-					complete(with: render)
+			DispatchQueue.global(qos: .background).async {
+				self.render(self.cachedFrames) { (result) in
+					switch result {
+					case let .success(url):
+						DispatchQueue.main.async {
+							let render = CIVideoPlayer(url: url)
+							render.play()
 
-				case let .failure(error):
-					print("Failure: \(error.localizedDescription)")
+							let scaleToStageTransform =
+								CGAffineTransform(scaleX: self.stageController.imageRenderSize.width / self.renderSize.width,
+								                  y: self.stageController.imageRenderSize.height / self.renderSize.height)
+
+							complete(with: render.transformed(by: CIFilter(transform: scaleToStageTransform)!))
+						}
+
+					case let .failure(error):
+						print("Failure: \(error.localizedDescription)")
+					}
 				}
 			}
 		} else {
