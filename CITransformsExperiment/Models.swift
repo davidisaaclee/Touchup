@@ -13,6 +13,9 @@ protocol ImageTransformer {
 //	func transform<Source: ImageSource>(_ source: Source) -> Source
 }
 
+protocol Playable: class {
+	func play()
+}
 
 // MARK: - Stills
 
@@ -64,7 +67,7 @@ class PlayerLooper: NSObject {
 }
 
 
-class CIVideoPlayer {
+class CIVideoPlayer: Playable {
 
 	var playerLayer: AVPlayerLayer!
 
@@ -85,7 +88,7 @@ class CIVideoPlayer {
 		self.init(item: AVPlayerItem(url: url))
 	}
 
-	func startPlaying() {
+	func play() {
 		looper.player.play()
 		isPlaying = true
 	}
@@ -123,12 +126,12 @@ extension CIVideoPlayer: ImageSource {
 	}
 }
 
-class LazilyTransformedCIVideoPlayer: ImageSource {
-	let base: ImageSource
+class LazilyTransformedCIVideoPlayer: ImageSource, Playable {
+	let base: ImageSource & Playable
 	let transformer: ImageTransformer
 	private(set) var extent: CGRect
 
-	init(base: ImageSource, transformer: ImageTransformer) {
+	init(base: ImageSource & Playable, transformer: ImageTransformer) {
 		self.base = base
 		self.transformer = transformer
 		self.extent = base.extent
@@ -143,6 +146,10 @@ class LazilyTransformedCIVideoPlayer: ImageSource {
 	func transformed(by transformer: ImageTransformer) -> ImageSource {
 		return LazilyTransformedCIVideoPlayer(base: self,
 		                                      transformer: transformer)
+	}
+
+	func play() {
+		base.play()
 	}
 
 	private func updateExtent(withOutput image: CIImage) {

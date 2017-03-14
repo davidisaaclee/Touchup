@@ -163,7 +163,7 @@ class ViewController: UIViewController {
 		let videoPlayer =
 			CIVideoPlayer(url: Bundle.main.url(forResource: "progress",
 			                                   withExtension: "mp4")!)
-		videoPlayer.startPlaying()
+		videoPlayer.play()
 		setWorkingImage(videoPlayer)
 
 		customToolGestureRecognizer
@@ -198,6 +198,12 @@ class ViewController: UIViewController {
 			CADisplayLink(target: self,
 			              selector: #selector(ViewController.renderFrame(displayLink:)))
 		displayLink.add(to: .main, forMode: .commonModes)
+
+		NotificationCenter.default
+			.addObserver(forName: NSNotification.Name.UIApplicationWillEnterForeground,
+			             object: nil,
+			             queue: nil,
+			             using: { _ in self.willEnterForeground() })
 	}
 
 	func deleteAllFilesInTemporaryDirectory() throws {
@@ -205,6 +211,16 @@ class ViewController: UIViewController {
 			.contentsOfDirectory(atPath: FileManager.default.temporaryDirectory.path)
 			.map { FileManager.default.temporaryDirectory.appendingPathComponent($0) }
 			.forEach { try FileManager.default.removeItem(atPath: $0.path) }
+	}
+
+	fileprivate func willEnterForeground() {
+		if let backgroundVideo = model.backgroundImage as? Playable {
+			backgroundVideo.play()
+		}
+
+		if let foregroundVideo = model.image as? Playable {
+			foregroundVideo.play()
+		}
 	}
 
 	func handleHistoryGesture(recognizer: UITapGestureRecognizer) {
@@ -575,7 +591,7 @@ class ViewController: UIViewController {
 		                             frameDuration: 1.0 / 30.0) { (urlOrNil, errorOrNil) in
 																	if let url = urlOrNil {
 																		let render = CIVideoPlayer(url: url)
-																		render.startPlaying()
+																		render.play()
 
 																		let centerOriginTransform =
 																			CGAffineTransform(translationX: -render.extent.width / 2,
