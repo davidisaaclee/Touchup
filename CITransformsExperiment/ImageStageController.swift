@@ -189,18 +189,32 @@ class ImageStageController: NSObject {
 	}
 
 	func renderToImage() -> CGImage? {
-		let cropRect = renderView.bounds
+		return renderToImage(size: imageRenderSize)
+	}
+
+	func renderToImage(size: CGSize) -> CGImage? {
+		var cropRect = renderView.bounds
 			.applying(renderView.cameraCenteringTransform.inverted())
 			.applying(renderView.cameraScalingTransform)
+
+		let scaling =
+			CGAffineTransform(scaleX: size.width / cropRect.width,
+			                  y: size.height / cropRect.height)
+
+		cropRect = cropRect.applying(scaling)
+
+		let contents = stageContents
+			.applying(scaling)
+
 		let image = renderView.ciContext
-			.createCGImage(stageContents.applying(CGAffineTransform(scaleX: 1, y: -1)),
+			.createCGImage(contents,
 			               from: cropRect)
 		return image
 	}
 
 	func renderToUIImage() -> UIImage? {
 		return renderToImage()
-			.map { UIImage(cgImage: $0, scale: 1, orientation: .downMirrored) }
+			.map { UIImage(cgImage: $0, scale: 1, orientation: .up) }
 	}
 
 

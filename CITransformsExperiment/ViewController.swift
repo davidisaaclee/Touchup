@@ -336,11 +336,11 @@ class ViewController: UIViewController {
 		reloadRenderView()
 		stageController.reload()
 
-		stageController.renderToImage()
+		stageController.renderToImage(size: renderSize)
 			.map { image in
 				cachedFrames.append(image)
 
-				if cachedFrames.count > 60 {
+				if cachedFrames.count > 125 {
 					cachedFrames.removeFirst()
 				}
 		}
@@ -553,9 +553,7 @@ class ViewController: UIViewController {
 	@IBAction func freezeImage(_ sender: Any) {
 		let targetPath = (NSTemporaryDirectory() as NSString).appendingPathComponent("\(UUID().uuidString)_vid.mp4")
 		let targetURL = URL(fileURLWithPath: targetPath)
-
 		let framesToRender = cachedFrames
-			.map { $0.resizing(to: renderSize) }
 
 		let imageSequencerConfig =
 			ImageSequencer.Configuration(outputVideoSize: renderSize,
