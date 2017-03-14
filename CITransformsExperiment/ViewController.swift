@@ -137,7 +137,7 @@ class ViewController: UIViewController {
 		return CACurrentMediaTime()
 	}
 
-	var renderSize: CGSize {
+	fileprivate var renderSize: CGSize {
 		let shrunkenSize =
 			stageController.imageRenderSize
 				.aspectFitting(within: CGSize(width: 1080,
@@ -186,6 +186,7 @@ class ViewController: UIViewController {
 			             using: { _ in self.willEnterForeground() })
 	}
 
+	// note: expects `image` to be anchored at lower-left
 	func setWorkingImage(_ image: ImageSource) {
 		model.image =
 			image
@@ -193,6 +194,17 @@ class ViewController: UIViewController {
 			CGAffineTransform(translationX: -image.extent.width / 2,
 			                  y: -image.extent.height / 2)
 		model.eraserMarks = []
+	}
+
+	// note: expects `imageSource` to be anchored at lower-left
+	func setBackground(_ imageSource: ImageSource) {
+		let centerOriginTransform =
+			CGAffineTransform(translationX: -imageSource.extent.width / 2,
+			                  // HACK: need to round because we need an integral translation?
+				y: (-imageSource.extent.height / 2).rounded(.up))
+
+		model.backgroundImage =
+			imageSource.transformed(by: CIFilter(transform: centerOriginTransform)!)
 	}
 
 	func reloadRenderView() {
@@ -239,15 +251,6 @@ class ViewController: UIViewController {
 		// How many pixels are we willing to render?
 		let maxPixelCount: CGFloat = 250000
 
-//		var scaleFactor = CGSize(width: 1, height: 0)
-//			.magnitude
-//
-//		// Ensure that the scale factor won't make us render more than
-//		// `maxPixelCount` pixels.
-//		scaleFactor =
-//			min(scaleFactor, 
-//			    sqrt(maxPixelCount / (workingImageSize.width * workingImageSize.height)))
-
 		let scaleFactor: CGFloat = 1
 
 		if let cached = eraserMarksCache {
@@ -276,9 +279,6 @@ class ViewController: UIViewController {
 				transformedPath.addPath(mark.path, transform: transform)
 
 				let path = UIBezierPath(cgPath: transformedPath)
-
-				// This makes smooth lines but gets slow with lots of marks.
-//				let path = UIBezierPath(points: transformedPoints, smoothFactor: 0.3)
 				path.lineWidth = CGFloat(mark.width) * scaleFactor
 				path.lineCapStyle = .round
 				path.stroke()
@@ -551,43 +551,33 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func freezeImage(_ sender: Any) {
-		render(cachedFrames) { (result) in
-			switch result {
-			case let .success(url):
-				let render = CIVideoPlayer(url: url)
-				render.play()
+		let isVideo = true
 
-				let centerOriginTransform =
-					CGAffineTransform(translationX: -render.extent.width / 2,
-					                  // HACK: need to round because we need an integral translation?
-						y: (-render.extent.height / 2).rounded(.up))
-
-				self.model.backgroundImage =
-					render
-						.transformed(by: CIFilter(transform: centerOriginTransform)!)
-				self.pushToHistory()
-
-				Analytics.shared.track(.stampToBackground)
-
-			case let .failure(error):
-				print("Failure: \(error.localizedDescription)")
-			}
+		func complete(with background: ImageSource) {
+			setBackground(background)
+			pushToHistory()
+			Analytics.shared.track(.stampToBackground)
 		}
 
-//		guard let render = stageController.renderToImage().flatMap(CIImage.init) else {
-//			fatalError("Implement me")
-//		}
-//
-//		let centerOriginTransform =
-//			CGAffineTransform(translationX: -render.extent.width / 2,
-//			                  // HACK: need to round because we need an integral translation?
-//			                  y: (-render.extent.height / 2).rounded(.up))
-//
-//		model.backgroundImage =
-//			render.applying(centerOriginTransform)
-//		pushToHistory()
-//
-//		Analytics.shared.track(.stampToBackground)
+		if isVideo {
+			render(cachedFrames) { (result) in
+				switch result {
+				case let .success(url):
+					let render = CIVideoPlayer(url: url)
+					render.play()
+					complete(with: render)
+
+				case let .failure(error):
+					print("Failure: \(error.localizedDescription)")
+				}
+			}
+		} else {
+			guard let render = stageController.renderToImage() else {
+				fatalError("Implement me")
+			}
+
+			complete(with: CIImage(cgImage: render))
+		}
 	}
 
 	@IBAction func replaceImage() {

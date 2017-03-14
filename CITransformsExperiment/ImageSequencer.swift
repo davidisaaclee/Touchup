@@ -170,7 +170,7 @@ public class ImageSequencer {
 		let input =
 			AVAssetWriterInput(mediaType: AVMediaTypeVideo,
 			                   outputSettings: self.videoSettings(withSize: size))
-		input.expectsMediaDataInRealTime = true
+		input.expectsMediaDataInRealTime = false
 		return input
 	}
 
@@ -193,12 +193,13 @@ public class ImageSequencer {
 			AVVideoWidthKey: NSNumber(value: Int(size.width)),
 			AVVideoHeightKey: NSNumber(value: Int(size.height)),
 			AVVideoCompressionPropertiesKey: [
-				AVVideoAverageBitRateKey: NSNumber(value: 1000000),
-//				AVVideoAverageBitRateKey: NSNumber(value: 7500000.0), // 7.5 mbps
+//				AVVideoAverageBitRateKey: NSNumber(value: 1000000),
+				AVVideoAverageBitRateKey: NSNumber(value: 7500000.0), // 7.5 mbps
 				AVVideoMaxKeyFrameIntervalKey: NSNumber(value: 16),
 				AVVideoMaxKeyFrameIntervalDurationKey: NSNumber(value: 0.0),
 //				AVVideoProfileLevelKey: AVVideoProfileLevelH264Main31
-				AVVideoProfileLevelKey: AVVideoProfileLevelH264High41,
+//				AVVideoProfileLevelKey: AVVideoProfileLevelH264High41,
+				AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel
 			],
 		]
 	}
@@ -232,24 +233,18 @@ public class ImageSequencer {
 			CMTime(value: CMTimeValue(Double(frameIndex) * frameDuration * Double(ticsPerSecond)),
 			       timescale: ticsPerSecond)
 
-//		if frameIndex < frames.count, let buffer = self.pixelBufferFromImage(frames[frameIndex], pool: bufferPool) {
 		if let buffer = self.pixelBuffer(from: frame, pool: bufferPool) {
 			// Append frame to writer.
-//			print("Before: ", writingContext.adaptor.pixelBufferPool != nil)
-//			print("Appending frame at \(currentTime)...")
 			let succeeded =
 				writingContext.adaptor
 					.append(buffer,
 					        withPresentationTime: currentTime)
-
-			print(succeeded ? "Successful." : "Failed")
-//			print("After: ", writingContext.adaptor.pixelBufferPool != nil)
+			if !succeeded {
+				print("Failed to append pixel buffer.")
+			}
 			return (true, 1)
 		} else {
 			print("No frame")
-//			if let buffer = frames.first.flatMap({ self.pixelBufferFromImage($0, pool: bufferPool) }) {
-//				writingContext.adaptor.appendPixelBuffer(buffer, withPresentationTime: currentTime)
-//			}
 			return (false, 0)
 		}
 	}
@@ -266,25 +261,7 @@ public class ImageSequencer {
 		}
 	}
 
-//	private func pixelBufferFromImage(image: UIImage) -> CVPixelBuffer? {
-//		return pixelBufferFromImage(image.CGImage)
-//	}
-
 	private func pixelBuffer(from image: CGImage, pool: CVPixelBufferPool?) -> CVPixelBuffer? {
-//		let dictKeys = [kCVPixelBufferCGImageCompatibilityKey,
-//		                kCVPixelBufferCGBitmapContextCompatibilityKey,
-//		                kCVPixelBufferPixelFormatTypeKey]
-//		let dictValues = [true,
-//		                  true,
-//		                  NSNumber(value: kCVPixelFormatType_32RGBA)]
-//		let pixelBufferAttributes: CFDictionary =
-//			CFDictionaryCreate(kCFAllocatorDefault,
-//			                   UnsafeMutablePointer<UnsafeRawPointer?>.allocate(capacity: dictKeys.count),
-//			                   UnsafeMutablePointer<UnsafeRawPointer?>.allocate(capacity: dictValues.count),
-//			                   dictKeys.count,
-//			                   nil,
-//			                   nil)
-
 		// Create the pixel buffer.
 
 		var pixelBufferOrNil: CVPixelBuffer?
@@ -300,12 +277,6 @@ public class ImageSequencer {
 			}
 		} else {
 			fatalError("Implement me")
-//			CVPixelBufferCreate(kCFAllocatorDefault,
-//			                    Int(configuration.outputVideoSize.width),
-//			                    Int(configuration.outputVideoSize.height),
-//			                    OSType.allZeros,
-//			                    pixelBufferAttributes,
-//			                    &pixelBufferOrNil)
 		}
 
 		guard let pixelBuffer = pixelBufferOrNil else {
@@ -324,7 +295,7 @@ public class ImageSequencer {
 
 		let bitsPerComponent = 8
 		let bytesPerRow = 4 * image.width
-		var colorSpace = CGColorSpaceCreateDeviceRGB()
+		let colorSpace = CGColorSpaceCreateDeviceRGB()
 		let bitmapInfo = CGImageAlphaInfo.noneSkipFirst
 
 		var bitmapContext = CGContext(data: pixelDataPointer,
@@ -339,7 +310,6 @@ public class ImageSequencer {
 		bitmapContext?.concatenate(CGAffineTransform(rotationAngle: 0)) // ?
 		bitmapContext?.draw(image, in: CGRect(x: 0, y: 0, width: image.width, height: image.height))
 
-//		colorSpace = nil
 		bitmapContext = nil
 
 		CVPixelBufferUnlockBaseAddress(pixelBuffer, .readOnly)
