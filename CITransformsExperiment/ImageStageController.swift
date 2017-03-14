@@ -182,6 +182,12 @@ class ImageStageController: NSObject {
 		renderView.setNeedsDisplay()
 	}
 
+	var imageRenderSize: CGSize {
+		return renderView.bounds
+			.applying(renderView.cameraScalingTransform)
+			.size
+	}
+
 	func renderToImage() -> CGImage? {
 		let cropRect = renderView.bounds
 			.applying(renderView.cameraCenteringTransform.inverted())

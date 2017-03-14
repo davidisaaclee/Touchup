@@ -10,6 +10,8 @@
 		494F518DA341EF4D9C96C7F4 /* Pods_Touchup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78D4FBC5BCD2DE39CEF776D5 /* Pods_Touchup.framework */; };
 		63250E401E6F3CF600A3C955 /* UIBezierPath+smooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */; };
 		63250E421E6F917400A3C955 /* EraserTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E411E6F917400A3C955 /* EraserTool.swift */; };
+		634C33121E775710005AA13A /* ImageSequenceToVideoConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634C33111E775710005AA13A /* ImageSequenceToVideoConverter.swift */; };
+		634C33141E775D7E005AA13A /* ImageSequencer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634C33131E775D7E005AA13A /* ImageSequencer.swift */; };
 		634F26031E662A4F00028893 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26021E662A4F00028893 /* AppDelegate.swift */; };
 		634F26051E662A4F00028893 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26041E662A4F00028893 /* ViewController.swift */; };
 		634F26081E662A4F00028893 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 634F26061E662A4F00028893 /* Main.storyboard */; };
@@ -38,6 +40,8 @@
 /* Begin PBXFileReference section */
 		63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+smooth.swift"; sourceTree = "<group>"; };
 		63250E411E6F917400A3C955 /* EraserTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EraserTool.swift; sourceTree = "<group>"; };
+		634C33111E775710005AA13A /* ImageSequenceToVideoConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSequenceToVideoConverter.swift; sourceTree = "<group>"; };
+		634C33131E775D7E005AA13A /* ImageSequencer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSequencer.swift; sourceTree = "<group>"; };
 		634F25FF1E662A4F00028893 /* Touchup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Touchup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		634F26021E662A4F00028893 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		634F26041E662A4F00028893 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -154,6 +158,8 @@
 				637E45E11E70B80400BBFE4C /* Analytics.swift */,
 				63EB14A91E71FEF900925D43 /* UIGestureRecognizer+cancel.swift */,
 				6368915B1E774D180022D811 /* Models.swift */,
+				634C33111E775710005AA13A /* ImageSequenceToVideoConverter.swift */,
+				634C33131E775D7E005AA13A /* ImageSequencer.swift */,
 				6368915D1E774EF00022D811 /* runner.mp4 */,
 			);
 			name = Touchup;
@@ -289,9 +295,11 @@
 				634F26051E662A4F00028893 /* ViewController.swift in Sources */,
 				634F26151E662A6500028893 /* ImageSourceRenderView.swift in Sources */,
 				63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */,
+				634C33141E775D7E005AA13A /* ImageSequencer.swift in Sources */,
 				6368915C1E774D180022D811 /* Models.swift in Sources */,
 				63250E421E6F917400A3C955 /* EraserTool.swift in Sources */,
 				637E45E01E70823B00BBFE4C /* Vector+dot.swift in Sources */,
+				634C33121E775710005AA13A /* ImageSequenceToVideoConverter.swift in Sources */,
 				634F26031E662A4F00028893 /* AppDelegate.swift in Sources */,
 				63BCF56C1E667D62006D46DD /* MultitouchGestureRecognizer.swift in Sources */,
 				63B481391E688F9300D1A795 /* UIImage+resize.swift in Sources */,

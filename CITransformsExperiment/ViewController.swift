@@ -197,11 +197,6 @@ class ViewController: UIViewController {
 		displayLink.add(to: .main, forMode: .commonModes)
 	}
 
-	@objc private func renderFrame() {
-		reloadRenderView()
-		stageController.reload()
-	}
-
 	func handleHistoryGesture(recognizer: UITapGestureRecognizer) {
 		guard case .ended = recognizer.state else {
 			return
@@ -548,7 +543,33 @@ class ViewController: UIViewController {
 		Analytics.shared.track(.beganExport)
 	}
 
+	private var imageSequencer: ImageSequencer!
+
 	@IBAction func freezeImage(_ sender: Any) {
+
+		let targetPath = (NSTemporaryDirectory() as NSString).appendingPathComponent("\(UUID().uuidString)_vid.mp4")
+		let targetURL = URL(fileURLWithPath: targetPath)
+
+		let framesToRender = cachedFrames
+			.map { $0.resizing(to: renderSize) }
+
+		let imageSequencerConfig =
+			ImageSequencer.Configuration(outputVideoSize: renderSize,
+			                             destination: targetURL,
+			                             frameDuration: 1.0 / 30.0)
+		imageSequencer =
+			ImageSequencer(configuration: imageSequencerConfig)
+		imageSequencer.generateVideo(from: framesToRender,
+		                             outputVideoSize: renderSize,
+		                             destinationURL: targetURL,
+		                             frameDuration: 1.0 / 30.0) { (urlOrNil, errorOrNil) in
+																	if let url = urlOrNil {
+																		print("Success: \(url)")
+																	} else {
+																		print("Failure: \(errorOrNil!.localizedDescription)")
+																	}
+		}
+
 		guard let render = stageController.renderToImage().flatMap(CIImage.init) else {
 			fatalError("Implement me")
 		}
@@ -592,6 +613,30 @@ class ViewController: UIViewController {
 	@IBAction func hideHelp() {
 		helpOverlayView.isHidden = true
 	}
+
+	var renderSize: CGSize {
+		let shrunkenSize =
+			stageController.imageRenderSize
+				.aspectFitting(within: CGSize(width: 1000,
+				                              height: 1000))
+		return ImageSequencer.coerceSize(size: shrunkenSize)
+	}
+
+	@objc private func renderFrame() {
+		reloadRenderView()
+		stageController.reload()
+
+		stageController.renderToImage()
+			.map { image in
+				cachedFrames.append(image)
+				
+				if cachedFrames.count > 60 {
+					cachedFrames.removeFirst()
+				}
+			}
+	}
+
+	fileprivate var cachedFrames: [CGImage] = []
 
 	private class CustomImagePicker: UIImagePickerController {
 		override var prefersStatusBarHidden: Bool {
