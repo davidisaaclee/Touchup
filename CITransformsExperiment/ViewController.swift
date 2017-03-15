@@ -12,6 +12,7 @@ extension EraserMark: Equatable {
 	}
 }
 
+
 class ViewController: UIViewController {
 
 	struct Workspace {
@@ -127,8 +128,14 @@ class ViewController: UIViewController {
 	private var previousTouchLocations: [UITouch: CGPoint] = [:]
 	private var previousMode: Mode?
 	private var isModeLocked: Bool = false
-	fileprivate var cachedFrames: [CGImage] = []
 	private var imageSequencer: ImageSequencer!
+
+	fileprivate var cachedFrames: [CGImage] = []
+
+	fileprivate var startedTapeRecorderAt =
+		Date()
+	fileprivate var tapeRecorder =
+		TapeRecorder<CGImage>(tape: Tape<CGImage>(length: 120))
 
 
 	// MARK: Convenience properties 
@@ -140,7 +147,7 @@ class ViewController: UIViewController {
 	fileprivate var renderSize: CGSize {
 		let shrunkenSize =
 			stageController.imageRenderSize
-				.aspectFitting(within: CGSize(width: 500	,
+				.aspectFitting(within: CGSize(width: 500,
 				                              height: 500))
 //				.aspectFitting(within: CGSize(width: 1080,
 //				                              height: 1920))
@@ -156,6 +163,8 @@ class ViewController: UIViewController {
 
 		// Clear out the working directory every time we start a new document.
 		try! deleteAllFilesInTemporaryDirectory()
+
+		tapeRecorder.beginRecording()
 
 		eraserController.delegate = self
 
@@ -338,14 +347,23 @@ class ViewController: UIViewController {
 		reloadRenderView()
 		stageController.reload()
 
-		stageController.renderToImage(size: renderSize)
-			.map { image in
-				cachedFrames.append(image)
-
-				if cachedFrames.count > 125 {
-					cachedFrames.removeFirst()
-				}
+		if let image = stageController.renderToImage(size: renderSize) {
+			tapeRecorder.insert(image,
+			                    at: Date().timeIntervalSince(startedTapeRecorderAt))
+		} else {
+			tapeRecorder.update(for: Date().timeIntervalSince(startedTapeRecorderAt))
 		}
+//		stageController.renderToImage(size: renderSize)
+//			.map { image in
+//				tapeRecorder.insert(image,
+//				                    at: Date().timeIntervalSince(startedTapeRecorderAt))
+//
+//				cachedFrames.append(image)
+//
+//				if cachedFrames.count > 125 {
+//					cachedFrames.removeFirst()
+//				}
+//		}
 	}
 
 	@objc private func handleToolGesture(recognizer: MultitouchGestureRecognizer) {
@@ -537,7 +555,8 @@ class ViewController: UIViewController {
 		let isVideo = true
 
 		if isVideo {
-			render(cachedFrames) { (result) in
+//			render(cachedFrames) { (result) in
+			render(tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)) { (result) in
 				switch result {
 				case let .success(url):
 					let activityController = UIActivityViewController(activityItems: [url],
@@ -588,7 +607,11 @@ class ViewController: UIViewController {
 
 		if isVideo {
 			DispatchQueue.global(qos: .background).async {
-				self.render(self.cachedFrames) { (result) in
+//				self.render(self.cachedFrames) { (result) in
+				let frames = self.tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)
+
+				
+				self.render(frames) { (result) in
 					switch result {
 					case let .success(url):
 						DispatchQueue.main.async {
