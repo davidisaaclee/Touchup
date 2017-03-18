@@ -16,13 +16,13 @@ class ImageStageController: NSObject {
 
 	var image: CIImage? {
 		didSet {
-			reload()
+//			reload()
 		}
 	}
 
 	var backgroundImage: CIImage? {
 		didSet {
-			reload()
+//			reload()
 		}
 	}
 
@@ -39,7 +39,7 @@ class ImageStageController: NSObject {
 	var cameraTransform: CGAffineTransform =
 		CGAffineTransform(rotationAngle: CGFloat(M_PI_4)) {
 		didSet {
-			reload()
+//			reload()
 		}
 	}
 
@@ -123,8 +123,6 @@ class ImageStageController: NSObject {
 
 					attemptToConcatCameraTransform(CGAffineTransform(translationX: displacement.x,
 					                                                 y: displacement.y))
-
-					reload()
 				}
 
 			case let numberOfTouches where numberOfTouches >= 2:
@@ -150,8 +148,6 @@ class ImageStageController: NSObject {
 					                              pointB: locationBʹ.applying(cameraTransform)))
 
 				attemptToSetCameraTransform(cameraTransform.concatenating(transform))
-
-				reload()
 
 			default:
 				break
@@ -186,14 +182,39 @@ class ImageStageController: NSObject {
 		renderView.setNeedsDisplay()
 	}
 
-	func renderToImage() -> UIImage? {
-		let cropRect = renderView.bounds
+	var imageRenderSize: CGSize {
+		return renderView.bounds
+			.applying(renderView.cameraScalingTransform)
+			.size
+	}
+
+	func renderToImage() -> CGImage? {
+		return renderToImage(size: imageRenderSize)
+	}
+
+	func renderToImage(size: CGSize) -> CGImage? {
+		var cropRect = renderView.bounds
 			.applying(renderView.cameraCenteringTransform.inverted())
 			.applying(renderView.cameraScalingTransform)
-		return renderView.ciContext
-			.createCGImage(stageContents,
+
+		let scaling =
+			CGAffineTransform(scaleX: size.width / cropRect.width,
+			                  y: size.height / cropRect.height)
+
+		cropRect = cropRect.applying(scaling)
+
+		let contents = stageContents
+			.applying(scaling)
+
+		let image = renderView.ciContext
+			.createCGImage(contents,
 			               from: cropRect)
-			.map { UIImage(cgImage: $0) }
+		return image
+	}
+
+	func renderToUIImage() -> UIImage? {
+		return renderToImage()
+			.map { UIImage(cgImage: $0, scale: 1, orientation: .up) }
 	}
 
 

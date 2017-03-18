@@ -24,6 +24,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Capture a photo and add it to the artboard.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Record videos to add onto the artboard.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Add photos from your camera roll to the artboard.</string>
 	<key>UILaunchStoryboardName</key>
