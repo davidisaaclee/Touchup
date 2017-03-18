@@ -367,9 +367,6 @@ class ViewController: UIViewController {
 
 	func handleImageTransform(using recognizer: MultitouchGestureRecognizer) {
 		switch recognizer.state {
-		case .began:
-			isModeLocked = false
-
 		case .ended:
 			pushToHistory()
 
@@ -457,7 +454,6 @@ class ViewController: UIViewController {
 
 		switch recognizer.state {
 		case .began:
-			isModeLocked = false
 			eraserController.begin(with: recognizer.activeTouches.first!)
 
 		case .ended:
