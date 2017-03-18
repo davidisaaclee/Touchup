@@ -137,7 +137,7 @@ class ViewController: UIViewController {
 		TapeRecorder<CGImage>(tape: Tape<CGImage>(length: 120))
 
 	fileprivate var recordState: RecordState =
-		.recording(startedAt: Date())
+		.stopped
 
 
 	// MARK: Convenience properties 
@@ -173,11 +173,16 @@ class ViewController: UIViewController {
 		view.isMultipleTouchEnabled = true
 		renderView.isMultipleTouchEnabled = true
 
-		let videoPlayer =
-			CIVideoPlayer(url: Bundle.main.url(forResource: "progress",
-			                                   withExtension: "mp4")!)
-		videoPlayer.play()
-		setWorkingImage(videoPlayer)
+		var startingWorkingImage: ImageSource {
+//			let videoPlayer =
+//				CIVideoPlayer(url: Bundle.main.url(forResource: "progress",
+//				                                   withExtension: "mp4")!)
+//			videoPlayer.play()
+//			return videoPlayer
+
+			return CIImage(image: #imageLiteral(resourceName: "yikes"))!
+		}
+		setWorkingImage(startingWorkingImage)
 
 		setupGestureRecognizers()
 
@@ -619,7 +624,11 @@ class ViewController: UIViewController {
 		Analytics.shared.track(.stampToBackground)
 	}
 
-	@IBAction func recordToTape() {
+	@IBAction func beginRecordingToTape() {
+		recordState = .recording(startedAt: Date())
+	}
+
+	@IBAction func endRecordingToTape() {
 		DispatchQueue.global(qos: .background).async {
 			let frames = self.tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)
 

@@ -46,7 +46,9 @@
                                 </constraints>
                                 <state key="normal" image="stamp_square"/>
                                 <connections>
-                                    <action selector="recordToTape" destination="BYZ-38-t0r" eventType="primaryActionTriggered" id="V5x-OX-WFC"/>
+                                    <action selector="beginRecordingToTape" destination="BYZ-38-t0r" eventType="touchDown" id="bY5-TU-Fns"/>
+                                    <action selector="endRecordingToTape" destination="BYZ-38-t0r" eventType="touchUpInside" id="dAz-G4-UUk"/>
+                                    <action selector="endRecordingToTape" destination="BYZ-38-t0r" eventType="touchUpOutside" id="dMT-gQ-jvr"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28b-2k-8Q2">
