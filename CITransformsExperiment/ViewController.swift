@@ -377,7 +377,6 @@ class ViewController: UIViewController {
 		}
 	}
 
-
 	@objc private func handleHistoryGesture(recognizer: UITapGestureRecognizer) {
 		guard case .ended = recognizer.state else {
 			return
