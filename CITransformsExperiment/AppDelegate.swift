@@ -17,6 +17,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		BuddyBuildSDK.setup()
 		Analytics.shared.setup()
 
+		#if DEBUG
+			print("Running debug scheme")
+		#else
+			print("Running release scheme")
+		#endif
+
 		return true
 	}
 

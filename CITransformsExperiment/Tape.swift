@@ -50,7 +50,7 @@ struct Tape<Frame> {
 			(startIndex ..< frames.endIndex).forEach { frames[$0] = nil }
 			(frames.startIndex ..< endIndex).forEach { frames[$0] = nil }
 
-			print("Erased (\(startIndex)..<\(endIndex)): \(Array((startIndex ..< frames.endIndex)) + Array(frames.startIndex ..< endIndex))")
+//			print("Erased (\(startIndex)..<\(endIndex)): \(Array((startIndex ..< frames.endIndex)) + Array(frames.startIndex ..< endIndex))")
 		}
 	}
 }
@@ -87,7 +87,7 @@ struct TapeRecorder<Frame> {
 
 		case .recording:
 			tape.frames[frameIndex(for: time)] = frame
-			print("Inserted at \(frameIndex(for: time))")
+//			print("Inserted at \(frameIndex(for: time))")
 		}
 	}
 

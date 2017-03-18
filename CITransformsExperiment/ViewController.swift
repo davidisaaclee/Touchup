@@ -1,4 +1,5 @@
 import UIKit
+import MobileCoreServices
 import VectorSwift
 
 struct EraserMark {
@@ -127,8 +128,6 @@ class ViewController: UIViewController {
 	private var modeButtonDownTimestamp: [Mode: Date] = [:]
 	private var imageSequencer: ImageSequencer!
 
-	fileprivate var cachedFrames: [CGImage] = []
-
 	fileprivate var startedTapeRecorderAt =
 		Date()
 	fileprivate var tapeRecorder =
@@ -144,8 +143,8 @@ class ViewController: UIViewController {
 	fileprivate var renderSize: CGSize {
 		let shrunkenSize =
 			stageController.imageRenderSize
-				.aspectFitting(within: CGSize(width: 500,
-				                              height: 500))
+				.aspectFitting(within: CGSize(width: 512,
+				                              height: 960))
 //				.aspectFitting(within: CGSize(width: 1080,
 //				                              height: 1920))
 		return ImageSequencer.coerceSize(size: shrunkenSize)
@@ -344,23 +343,15 @@ class ViewController: UIViewController {
 		reloadRenderView()
 		stageController.reload()
 
-		if let image = stageController.renderToImage(size: renderSize) {
-			tapeRecorder.insert(image,
-			                    at: Date().timeIntervalSince(startedTapeRecorderAt))
-		} else {
-			tapeRecorder.update(for: Date().timeIntervalSince(startedTapeRecorderAt))
+		let now = Date()
+		DispatchQueue.global(qos: .background).async {
+			if let image = self.stageController.renderToImage(size: self.renderSize) {
+				self.tapeRecorder.insert(image,
+				                    at: now.timeIntervalSince(self.startedTapeRecorderAt))
+			} else {
+				self.tapeRecorder.update(for: now.timeIntervalSince(self.startedTapeRecorderAt))
+			}
 		}
-//		stageController.renderToImage(size: renderSize)
-//			.map { image in
-//				tapeRecorder.insert(image,
-//				                    at: Date().timeIntervalSince(startedTapeRecorderAt))
-//
-//				cachedFrames.append(image)
-//
-//				if cachedFrames.count > 125 {
-//					cachedFrames.removeFirst()
-//				}
-//		}
 	}
 
 	@objc private func handleToolGesture(recognizer: MultitouchGestureRecognizer) {
@@ -573,7 +564,6 @@ class ViewController: UIViewController {
 		let isVideo = true
 
 		if isVideo {
-//			render(cachedFrames) { (result) in
 			render(tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)) { (result) in
 				switch result {
 				case let .success(url):
@@ -625,7 +615,6 @@ class ViewController: UIViewController {
 
 		if isVideo {
 			DispatchQueue.global(qos: .background).async {
-//				self.render(self.cachedFrames) { (result) in
 				let frames = self.tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)
 
 				
@@ -660,6 +649,8 @@ class ViewController: UIViewController {
 	@IBAction func replaceImage() {
 		let imagePicker = UIImagePickerController()
 		imagePicker.sourceType = .photoLibrary
+		imagePicker.mediaTypes = [kUTTypeMovie as String,
+		                          kUTTypeImage as String]
 		imagePicker.delegate = self
 		imagePicker.modalTransitionStyle = .crossDissolve
 		present(imagePicker, animated: true, completion: nil)
@@ -670,6 +661,8 @@ class ViewController: UIViewController {
 	@IBAction func replaceImageWithCamera() {
 		let imagePicker = UIImagePickerController()
 		imagePicker.sourceType = .camera
+		imagePicker.mediaTypes = [kUTTypeMovie as String,
+		                          kUTTypeImage as String]
 		imagePicker.delegate = self
 		imagePicker.modalTransitionStyle = .crossDissolve
 		present(imagePicker, animated: true, completion: nil)
@@ -767,12 +760,24 @@ extension ViewController: UIImagePickerControllerDelegate {
 			dismiss(animated: true, completion: nil)
 		}
 
-		if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
-			swap(image: editedImage)
-		} else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-			swap(image: originalImage)
-		} else {
-			fatalError("Implement me")
+		let mediaType = info[UIImagePickerControllerMediaType] as! CFString
+		if mediaType == kUTTypeImage {
+			if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+				swap(image: editedImage)
+			} else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+				swap(image: originalImage)
+			} else {
+				fatalError("Implement me")
+			}
+
+		} else if mediaType == kUTTypeMovie {
+			if let url = info[UIImagePickerControllerMediaURL] as? URL {
+				let player = CIVideoPlayer(url: url)
+				player.play()
+				setWorkingImage(player)
+				pushToHistory()
+				dismiss(animated: true, completion: nil)
+			}
 		}
 
 		switch picker.sourceType {
