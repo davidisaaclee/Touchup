@@ -29,10 +29,15 @@ class ViewController: UIViewController {
 		var eraserMarks: [EraserMark] = []
 	}
 
-	enum Mode {
+	fileprivate enum Mode {
 		case cameraControl
 		case imageTransform
 		case eraser
+	}
+
+	fileprivate enum RecordState {
+		case stopped
+		case recording(startedAt: Date)
 	}
 
 
@@ -95,7 +100,7 @@ class ViewController: UIViewController {
 
 	// MARK: Local state
 
-	var mode: Mode = .cameraControl {
+	fileprivate var mode: Mode = .cameraControl {
 		didSet {
 			switch mode {
 			case .imageTransform, .eraser:
@@ -128,10 +133,11 @@ class ViewController: UIViewController {
 	private var modeButtonDownTimestamp: [Mode: Date] = [:]
 	private var imageSequencer: ImageSequencer!
 
-	fileprivate var startedTapeRecorderAt =
-		Date()
 	fileprivate var tapeRecorder =
 		TapeRecorder<CGImage>(tape: Tape<CGImage>(length: 120))
+
+	fileprivate var recordState: RecordState =
+		.recording(startedAt: Date())
 
 
 	// MARK: Convenience properties 
@@ -343,12 +349,14 @@ class ViewController: UIViewController {
 		reloadRenderView()
 		stageController.reload()
 
-		let now = Date()
-		if let image = self.stageController.renderToImage(size: self.renderSize) {
-			self.tapeRecorder.insert(image,
-			                         at: now.timeIntervalSince(self.startedTapeRecorderAt))
-		} else {
-			self.tapeRecorder.update(for: now.timeIntervalSince(self.startedTapeRecorderAt))
+		if case let .recording(startedRecordingAt) = recordState {
+			let now = Date()
+			if let image = stageController.renderToImage(size: renderSize) {
+				tapeRecorder.insert(image,
+				                    at: now.timeIntervalSince(startedRecordingAt))
+			} else {
+				tapeRecorder.update(for: now.timeIntervalSince(startedRecordingAt))
+			}
 		}
 	}
 
@@ -602,44 +610,41 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func freezeImage(_ sender: Any) {
-		let isVideo = true
-
-		func complete(with background: ImageSource) {
-			setBackground(background)
-			pushToHistory()
-			Analytics.shared.track(.stampToBackground)
+		guard let render = stageController.renderToImage() else {
+			fatalError("Implement me")
 		}
 
-		if isVideo {
-			DispatchQueue.global(qos: .background).async {
-				let frames = self.tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)
+		setBackground(CIImage(cgImage: render))
+		pushToHistory()
+		Analytics.shared.track(.stampToBackground)
+	}
 
-				
-				self.render(frames) { (result) in
-					switch result {
-					case let .success(url):
-						DispatchQueue.main.async {
-							let render = CIVideoPlayer(url: url)
-							render.play()
+	@IBAction func recordToTape() {
+		DispatchQueue.global(qos: .background).async {
+			let frames = self.tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)
 
-							let scaleToStageTransform =
-								CGAffineTransform(scaleX: self.stageController.imageRenderSize.width / self.renderSize.width,
-								                  y: self.stageController.imageRenderSize.height / self.renderSize.height)
+			self.render(frames) { (result) in
+				switch result {
+				case let .success(url):
+					DispatchQueue.main.async {
+						let render = CIVideoPlayer(url: url)
+						render.play()
 
-							complete(with: render.transformed(by: CIFilter(transform: scaleToStageTransform)!))
-						}
+						let scaleToStageTransform =
+							CGAffineTransform(scaleX: self.stageController.imageRenderSize.width / self.renderSize.width,
+							                  y: self.stageController.imageRenderSize.height / self.renderSize.height)
 
-					case let .failure(error):
-						print("Failure: \(error.localizedDescription)")
+						let background =
+							render.transformed(by: CIFilter(transform: scaleToStageTransform)!)
+						self.setBackground(background)
+						self.pushToHistory()
+						Analytics.shared.track(.stampToBackground)
 					}
+
+				case let .failure(error):
+					print("Failure: \(error.localizedDescription)")
 				}
 			}
-		} else {
-			guard let render = stageController.renderToImage() else {
-				fatalError("Implement me")
-			}
-
-			complete(with: CIImage(cgImage: render))
 		}
 	}
 
