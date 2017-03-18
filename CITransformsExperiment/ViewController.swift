@@ -578,9 +578,8 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func saveToCameraRoll() {
-		let isVideo = true
-
-		if isVideo {
+		if isBackgroundVideo {
+			// TODO: Don't have a running buffer anymore, so we need to grab these frames for real.
 			render(tapeRecorder.tape.smoothFrames(using: CGImageFrameSmoothingAlgorithm.copyLastKeyframe)) { (result) in
 				switch result {
 				case let .success(url):
