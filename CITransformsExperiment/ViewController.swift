@@ -37,6 +37,9 @@ class ViewController: UIViewController {
 
 	fileprivate enum RecordState {
 		case stopped
+		// tape is "rolling" but not recording
+		case playing(startedAt: Date)
+		// tape is "rolling" and recording
 		case recording(startedAt: Date)
 	}
 
@@ -660,6 +663,12 @@ class ViewController: UIViewController {
 
 				case let .failure(error):
 					print("Failure: \(error.localizedDescription)")
+				}
+
+				if case let .recording(startedRecordingAt) = self.recordState {
+					self.recordState = .playing(startedAt: startedRecordingAt)
+				} else {
+					print("Unexpected recording state coming out of recording: \(self.recordState)")
 				}
 			}
 		}
