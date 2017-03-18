@@ -49,9 +49,19 @@ struct Tape<Frame> {
 		} else {
 			(startIndex ..< frames.endIndex).forEach { frames[$0] = nil }
 			(frames.startIndex ..< endIndex).forEach { frames[$0] = nil }
-
-//			print("Erased (\(startIndex)..<\(endIndex)): \(Array((startIndex ..< frames.endIndex)) + Array(frames.startIndex ..< endIndex))")
 		}
+	}
+
+	mutating func trimEmptyFramesFromEnd() {
+		var numberOfSequentialEmptyFramesAtEnd = 0
+		var i = frames.index(before: frames.endIndex)
+
+		while frames.indices.contains(i) && frames[i] == nil {
+			i = frames.index(before: i)
+			numberOfSequentialEmptyFramesAtEnd += 1
+		}
+
+		frames.removeLast(numberOfSequentialEmptyFramesAtEnd)
 	}
 }
 

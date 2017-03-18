@@ -134,7 +134,7 @@ class ViewController: UIViewController {
 	private var imageSequencer: ImageSequencer!
 
 	fileprivate var tapeRecorder =
-		TapeRecorder<CGImage>(tape: Tape<CGImage>(length: 120))
+		TapeRecorder<CGImage>(tape: Tape<CGImage>(length: 5000))
 
 	fileprivate var recordState: RecordState =
 		.stopped
@@ -154,6 +154,10 @@ class ViewController: UIViewController {
 //				.aspectFitting(within: CGSize(width: 1080,
 //				                              height: 1920))
 		return ImageSequencer.coerceSize(size: shrunkenSize)
+	}
+
+	fileprivate var isBackgroundVideo: Bool {
+		return model.backgroundImage is Playable
 	}
 
 	override var prefersStatusBarHidden: Bool {
@@ -630,6 +634,10 @@ class ViewController: UIViewController {
 
 	@IBAction func endRecordingToTape() {
 		DispatchQueue.global(qos: .background).async {
+			if !self.isBackgroundVideo {
+				self.tapeRecorder.tape.trimEmptyFramesFromEnd()
+			}
+
 			let frames = self.tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)
 
 			self.render(frames) { (result) in

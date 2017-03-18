@@ -44,7 +44,7 @@
                                     <constraint firstAttribute="width" constant="60" id="Dyp-7Z-5au"/>
                                     <constraint firstAttribute="height" constant="58" id="g8w-J7-oQI"/>
                                 </constraints>
-                                <state key="normal" image="stamp_square"/>
+                                <state key="normal" image="stamp2"/>
                                 <connections>
                                     <action selector="beginRecordingToTape" destination="BYZ-38-t0r" eventType="touchDown" id="bY5-TU-Fns"/>
                                     <action selector="endRecordingToTape" destination="BYZ-38-t0r" eventType="touchUpInside" id="dAz-G4-UUk"/>
@@ -173,6 +173,7 @@
         <image name="export_square" width="206" height="192"/>
         <image name="help_button" width="20" height="36"/>
         <image name="library_square" width="207" height="181"/>
+        <image name="stamp2" width="191" height="187"/>
         <image name="stamp_square" width="200" height="178"/>
         <image name="transform_circle" width="197" height="190"/>
         <image name="transform_disabled" width="197" height="190"/>
