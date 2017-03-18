@@ -53,7 +53,6 @@ struct Tape<Frame> {
 		return Double(frames.count) / fps
 	}
 
-
 	init(length: Int, fps: Double = 30) {
 		self.frames = [Frame?](repeating: nil, count: length)
 		self.fps = fps
@@ -68,7 +67,7 @@ struct Tape<Frame> {
 	}
 
 	func time(for frameIndex: Int) -> TimeInterval {
-		fatalError("Implement me")
+		return Double(frameIndex) / fps
 	}
 
 	mutating func eraseAll() {

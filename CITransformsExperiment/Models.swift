@@ -71,8 +71,6 @@ class CIVideoPlayer: Playable {
 
 	var playerLayer: AVPlayerLayer!
 
-	private(set) var isPlaying: Bool = false
-
 	fileprivate let item: AVPlayerItem
 	fileprivate let output = AVPlayerItemVideoOutput()
 	fileprivate var looper: PlayerLooper!
@@ -90,7 +88,6 @@ class CIVideoPlayer: Playable {
 
 	func play() {
 		looper.player.play()
-		isPlaying = true
 	}
 
 	func frame(at time: CFTimeInterval) -> CIImage? {
