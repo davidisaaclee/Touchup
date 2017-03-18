@@ -1,8 +1,48 @@
 import Foundation
 
 
-enum FrameSmoothingAlgorithm {
-	case copyLastKeyframe
+//enum FrameSmoothingAlgorithm {
+//	case copyLastKeyframe
+//	case fallbackOnEmptyFrames(fallback: ImageSource)
+//}
+
+protocol FrameSmoothingAlgorithm {
+	associatedtype Frame
+
+	func transform(_ tape: Tape<Frame>) -> [Frame]
+}
+
+struct CGImageFrameSmoothingAlgorithm: FrameSmoothingAlgorithm {
+	typealias Frame = CGImage
+
+	let transformBlock: (Tape<CGImage>) -> [CGImage]
+
+	func transform(_ tape: Tape<CGImage>) -> [CGImage] {
+		return transformBlock(tape)
+	}
+
+	static let copyLastKeyframe = CGImageFrameSmoothingAlgorithm { (tape) -> [CGImage] in
+		guard let firstFilledFrame = tape.frames.first(where: { $0 != nil }) else {
+			fatalError("Implement me")
+		}
+
+		var previousWrittenFrame: CGImage = firstFilledFrame!
+
+		return tape.frames.map { frameOrNil in
+			if let frame = frameOrNil {
+				previousWrittenFrame = frame
+				return frame
+			} else {
+				return previousWrittenFrame
+			}
+		}
+	}
+
+	static func fallbackOnEmptyFrames(fallback: ImageSource) -> CGImageFrameSmoothingAlgorithm {
+		return CGImageFrameSmoothingAlgorithm { (tape) -> [CGImage] in
+			fatalError("Implement me")
+		}
+	}
 }
 
 struct Tape<Frame> {
@@ -13,29 +53,22 @@ struct Tape<Frame> {
 		return Double(frames.count) / fps
 	}
 
-	func smoothFrames(using algorithm: FrameSmoothingAlgorithm) -> [Frame] {
-		switch algorithm {
-		case .copyLastKeyframe:
-			guard let firstFilledFrame = frames.first(where: { $0 != nil }) else {
-				fatalError("Implement me")
-			}
-
-			var previousWrittenFrame: Frame = firstFilledFrame!
-
-			return frames.map { frameOrNil in
-				if let frame = frameOrNil {
-					previousWrittenFrame = frame
-					return frame
-				} else {
-					return previousWrittenFrame
-				}
-			}
-		}
-	}
 
 	init(length: Int, fps: Double = 30) {
 		self.frames = [Frame?](repeating: nil, count: length)
 		self.fps = fps
+	}
+
+	func smoothFrames<A: FrameSmoothingAlgorithm>(using algorithm: A) -> [Frame] where A.Frame == Frame {
+		return algorithm.transform(self)
+	}
+
+	func frameIndex(for time: TimeInterval) -> Int {
+		return Int(time * fps) % frames.count
+	}
+
+	func time(for frameIndex: Int) -> TimeInterval {
+		fatalError("Implement me")
 	}
 
 	mutating func eraseAll() {
@@ -79,10 +112,6 @@ struct TapeRecorder<Frame> {
 		self.tape = tape
 	}
 
-	func frameIndex(for time: TimeInterval) -> Int {
-		return Int(time * tape.fps) % tape.frames.count
-	}
-
 	mutating func beginRecording() {
 		state = .recording(lastWrittenFrameIndex: 0)
 	}
@@ -96,7 +125,7 @@ struct TapeRecorder<Frame> {
 			return
 
 		case .recording:
-			tape.frames[frameIndex(for: time)] = frame
+			tape.frames[tape.frameIndex(for: time)] = frame
 //			print("Inserted at \(frameIndex(for: time))")
 		}
 	}
@@ -107,7 +136,7 @@ struct TapeRecorder<Frame> {
 			return
 
 		case let .recording(lastWrittenFrameIndex):
-			let currentIndex = frameIndex(for: time)
+			let currentIndex = tape.frameIndex(for: time)
 
 			let lower =
 				tape.frames.index(after: lastWrittenFrameIndex) % tape.frames.count

@@ -581,7 +581,7 @@ class ViewController: UIViewController {
 		let isVideo = true
 
 		if isVideo {
-			render(tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)) { (result) in
+			render(tapeRecorder.tape.smoothFrames(using: CGImageFrameSmoothingAlgorithm.copyLastKeyframe)) { (result) in
 				switch result {
 				case let .success(url):
 					let activityController = UIActivityViewController(activityItems: [url],
@@ -641,7 +641,7 @@ class ViewController: UIViewController {
 				self.tapeRecorder.tape.trimEmptyFramesFromEnd()
 			}
 
-			let frames = self.tapeRecorder.tape.smoothFrames(using: .copyLastKeyframe)
+			let frames = self.tapeRecorder.tape.smoothFrames(using: CGImageFrameSmoothingAlgorithm.copyLastKeyframe)
 
 			self.render(frames) { (result) in
 				switch result {
