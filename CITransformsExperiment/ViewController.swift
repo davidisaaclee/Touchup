@@ -113,8 +113,6 @@ class ViewController: UIViewController {
 
 	var mode: Mode = .cameraControl {
 		didSet {
-			previousMode = oldValue
-
 			switch mode {
 			case .imageTransform, .eraser:
 				stageController.cameraControlGestureRecognizer.cancelGesture()
@@ -140,6 +138,8 @@ class ViewController: UIViewController {
 			}
 		}
 	}
+
+	private var modeButtonDownTimestamp: [Mode: Date] = [:]
 
 	override var prefersStatusBarHidden: Bool {
 		return true
@@ -471,43 +471,65 @@ class ViewController: UIViewController {
 		}
 	}
 
-	private var previousMode: Mode?
-	private var isModeLocked: Bool = false
+	private func engageTool(for newMode: Mode) {
+		guard newMode != mode else {
+			return
+		}
+		modeButtonDownTimestamp[newMode] = Date()
+		mode = newMode
+	}
+
+	private func releaseTool(for modeToRelease: Mode) {
+		guard mode == modeToRelease else {
+			return
+		}
+
+		let bottomMode = Mode.cameraControl
+
+		if let beganModeAt = modeButtonDownTimestamp[modeToRelease] {
+			let maximumModalTapTime: TimeInterval = 0.2
+			if -beganModeAt.timeIntervalSinceNow > maximumModalTapTime {
+				// was a hold
+				mode = bottomMode
+				switch modeToRelease {
+				case .eraser:
+					Analytics.shared.track(.usedQuasimodalEraser)
+				case .imageTransform:
+					Analytics.shared.track(.usedQuasimodalImageTransform)
+				default:
+					break
+				}
+			} else {
+				// was a lock
+				switch modeToRelease {
+				case .eraser:
+					Analytics.shared.track(.usedLockedEraser)
+				case .imageTransform:
+					Analytics.shared.track(.usedLockedImageTransform)
+				default:
+					break
+				}
+			}
+		} else {
+			// idk just go to camera
+			mode = bottomMode
+		}
+	}
 
 	@IBAction func enterImageTransform() {
-		isModeLocked = true
-		mode = .imageTransform
+		engageTool(for: .imageTransform)
 	}
 
 	@IBAction func exitImageTransform() {
-		// switch back if we unlocked the mode,
-		// or if tapping on locked transform mode
-		if previousMode == .imageTransform {
-			Analytics.shared.track(.usedLockedImageTransform)
-			mode = .cameraControl
-		}
-
-		if !isModeLocked {
-			Analytics.shared.track(.usedQuasimodalImageTransform)
-			mode = .cameraControl
-		}
+		releaseTool(for: .imageTransform)
 	}
 
 	@IBAction func enterEraser() {
-		isModeLocked = true
-		mode = .eraser
+		engageTool(for: .eraser)
 	}
 
 	@IBAction func exitEraser() {
-		if previousMode == .eraser {
-			Analytics.shared.track(.usedLockedEraser)
-			mode = .cameraControl
-		}
-
-		if !isModeLocked {
-			Analytics.shared.track(.usedQuasimodalEraser)
-			mode = .cameraControl
-		}
+		releaseTool(for: .eraser)
 	}
 
 	@IBAction func saveToCameraRoll() {
