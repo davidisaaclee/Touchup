@@ -344,13 +344,11 @@ class ViewController: UIViewController {
 		stageController.reload()
 
 		let now = Date()
-		DispatchQueue.global(qos: .background).async {
-			if let image = self.stageController.renderToImage(size: self.renderSize) {
-				self.tapeRecorder.insert(image,
-				                    at: now.timeIntervalSince(self.startedTapeRecorderAt))
-			} else {
-				self.tapeRecorder.update(for: now.timeIntervalSince(self.startedTapeRecorderAt))
-			}
+		if let image = self.stageController.renderToImage(size: self.renderSize) {
+			self.tapeRecorder.insert(image,
+			                         at: now.timeIntervalSince(self.startedTapeRecorderAt))
+		} else {
+			self.tapeRecorder.update(for: now.timeIntervalSince(self.startedTapeRecorderAt))
 		}
 	}
 
