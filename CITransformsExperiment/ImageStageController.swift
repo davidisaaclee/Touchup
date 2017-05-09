@@ -37,7 +37,7 @@ class ImageStageController: NSObject {
 		UITapGestureRecognizer()
 
 	var cameraTransform: CGAffineTransform =
-		CGAffineTransform(rotationAngle: CGFloat(M_PI_4)) {
+		CGAffineTransform(rotationAngle: CGFloat.pi / 4) {
 		didSet {
 //			reload()
 		}
