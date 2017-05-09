@@ -601,7 +601,7 @@ class ViewController: UIViewController {
 				}
 			}
 		} else {
-			guard let render = stageController.renderToUIImage() else {
+			guard let render = stageController.renderToUIImage().flatMap(UIImagePNGRepresentation) else {
 				fatalError("Implement me")
 			}
 
