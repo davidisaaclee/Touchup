@@ -3,3 +3,4 @@
 //
 
 #import <BuddyBuildSDK/BuddyBuildSDK.h>
+#import "UIImage+trimmedImage.h"
