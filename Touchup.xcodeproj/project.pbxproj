@@ -11,6 +11,7 @@
 		63250E401E6F3CF600A3C955 /* UIBezierPath+smooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */; };
 		63250E421E6F917400A3C955 /* EraserTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E411E6F917400A3C955 /* EraserTool.swift */; };
 		633C8AB91EC25EF6003EB9A6 /* UIImage+trimmedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 633C8AB81EC25EF6003EB9A6 /* UIImage+trimmedImage.m */; };
+		633D53D51EC3A7FF00DD57A7 /* Dictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 633D53D41EC3A7FF00DD57A7 /* Dictionary.swift */; };
 		634C33141E775D7E005AA13A /* ImageSequencer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634C33131E775D7E005AA13A /* ImageSequencer.swift */; };
 		634F26031E662A4F00028893 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26021E662A4F00028893 /* AppDelegate.swift */; };
 		634F26051E662A4F00028893 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 634F26041E662A4F00028893 /* ViewController.swift */; };
@@ -47,6 +48,7 @@
 		63250E411E6F917400A3C955 /* EraserTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EraserTool.swift; sourceTree = "<group>"; };
 		633C8AB71EC25EF6003EB9A6 /* UIImage+trimmedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+trimmedImage.h"; sourceTree = "<group>"; };
 		633C8AB81EC25EF6003EB9A6 /* UIImage+trimmedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+trimmedImage.m"; sourceTree = "<group>"; };
+		633D53D41EC3A7FF00DD57A7 /* Dictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary.swift; sourceTree = "<group>"; };
 		634C33131E775D7E005AA13A /* ImageSequencer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSequencer.swift; sourceTree = "<group>"; };
 		634F25FF1E662A4F00028893 /* Touchup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Touchup.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		634F26021E662A4F00028893 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				63C5A93A1E7866680079D380 /* History.swift */,
 				63C5A93C1E787D130079D380 /* Result.swift */,
 				63C5A93E1E78B22B0079D380 /* Tape.swift */,
+				633D53D41EC3A7FF00DD57A7 /* Dictionary.swift */,
 			);
 			name = Touchup;
 			path = CITransformsExperiment;
@@ -320,6 +323,7 @@
 			files = (
 				634F26051E662A4F00028893 /* ViewController.swift in Sources */,
 				634F26151E662A6500028893 /* ImageSourceRenderView.swift in Sources */,
+				633D53D51EC3A7FF00DD57A7 /* Dictionary.swift in Sources */,
 				63C5A93F1E78B22B0079D380 /* Tape.swift in Sources */,
 				63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */,
 				634C33141E775D7E005AA13A /* ImageSequencer.swift in Sources */,

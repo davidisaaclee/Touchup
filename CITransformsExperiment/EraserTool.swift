@@ -56,15 +56,15 @@ class EraserTool {
 
 		var c: Spline = .straight(on: delegate.eraserTool(self, locationFor: touch))
 
-		// if we have at least two points in the line, we can start to smooth.
-		if var b = points.last, let a = points.dropLast().last {
-			// calling the last three points (a, b, c), where c is the point about to be added
-			let ac = c.point - a.point
-			c.controlPoint1 = smoothFactor * ac + b.point
-			b.controlPoint2 = -smoothFactor * ac + b.point
-			points.removeLast()
-			points.append(b)
-		}
+//		// if we have at least two points in the line, we can start to smooth.
+//		if var b = points.last, let a = points.dropLast().last {
+//			// calling the last three points (a, b, c), where c is the point about to be added
+//			let ac = c.point - a.point
+//			c.controlPoint1 = smoothFactor * ac + b.point
+//			b.controlPoint2 = -smoothFactor * ac + b.point
+//			points.removeLast()
+//			points.append(b)
+//		}
 		points.append(c)
 
 		mode = .active(points)
