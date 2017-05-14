@@ -56,3 +56,27 @@ extension TouchSample {
 		maximumPossibleForce = touch.maximumPossibleForce
 	}
 }
+
+extension TouchSample: Equatable {
+	static func == (lhs: TouchSample, rhs: TouchSample) -> Bool {
+		return lhs.identifier == rhs.identifier
+			&& lhs.majorRadius == rhs.majorRadius
+			&& lhs.majorRadiusTolerance == rhs.majorRadiusTolerance
+			&& lhs.tapCount == rhs.tapCount
+			&& lhs.timestamp == rhs.timestamp
+			&& lhs.type == rhs.type
+			&& lhs.phase == rhs.phase
+			&& lhs.force == rhs.force
+			&& lhs.maximumPossibleForce == rhs.maximumPossibleForce
+			&& lhs.contextualLocation == rhs.contextualLocation
+	}
+}
+
+extension TouchSample: Hashable {
+	var hashValue: Int {
+		// original touch hash / timestamp / phase should be enough to identify
+		return "\(identifier.hashValue);\(timestamp.hashValue);\(phase.hashValue)".hashValue
+	}
+}
+
+
