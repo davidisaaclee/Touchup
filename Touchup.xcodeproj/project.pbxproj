@@ -133,6 +133,34 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		63025C721EC8E13B008EF995 /* Generic */ = {
+			isa = PBXGroup;
+			children = (
+				63025C731EC8E152008EF995 /* Extensions */,
+				63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */,
+				63C5A93C1E787D130079D380 /* Result.swift */,
+				63C5A93E1E78B22B0079D380 /* Tape.swift */,
+				63C5A93A1E7866680079D380 /* History.swift */,
+			);
+			name = Generic;
+			sourceTree = "<group>";
+		};
+		63025C731EC8E152008EF995 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				634C33131E775D7E005AA13A /* ImageSequencer.swift */,
+				63C5A9351E77B8030079D380 /* CIFilter.swift */,
+				633D53D41EC3A7FF00DD57A7 /* Dictionary.swift */,
+				633C8AB71EC25EF6003EB9A6 /* UIImage+trimmedImage.h */,
+				633C8AB81EC25EF6003EB9A6 /* UIImage+trimmedImage.m */,
+				63B481381E688F9300D1A795 /* UIImage+resize.swift */,
+				63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */,
+				637E45DF1E70823B00BBFE4C /* Vector+dot.swift */,
+				63EB14A91E71FEF900925D43 /* UIGestureRecognizer+cancel.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		634F25F61E662A4F00028893 = {
 			isa = PBXGroup;
 			children = (
@@ -154,32 +182,20 @@
 		634F26011E662A4F00028893 /* Touchup */ = {
 			isa = PBXGroup;
 			children = (
+				634F26061E662A4F00028893 /* Main.storyboard */,
 				634F26021E662A4F00028893 /* AppDelegate.swift */,
 				634F26041E662A4F00028893 /* ViewController.swift */,
-				634F26061E662A4F00028893 /* Main.storyboard */,
+				634F26141E662A6500028893 /* ImageSourceRenderView.swift */,
+				63BCF56D1E673C10006D46DD /* ImageStageController.swift */,
+				63250E411E6F917400A3C955 /* EraserTool.swift */,
+				637E45E11E70B80400BBFE4C /* Analytics.swift */,
+				6368915B1E774D180022D811 /* Models.swift */,
+				63025C721EC8E13B008EF995 /* Generic */,
+				63C5A9391E785FDF0079D380 /* Videos */,
 				634F26091E662A4F00028893 /* Assets.xcassets */,
 				634F260B1E662A4F00028893 /* LaunchScreen.storyboard */,
 				634F260E1E662A4F00028893 /* Info.plist */,
-				634F26141E662A6500028893 /* ImageSourceRenderView.swift */,
-				63BCF56B1E667D62006D46DD /* MultitouchGestureRecognizer.swift */,
-				63BCF56D1E673C10006D46DD /* ImageStageController.swift */,
-				633C8AB71EC25EF6003EB9A6 /* UIImage+trimmedImage.h */,
-				633C8AB81EC25EF6003EB9A6 /* UIImage+trimmedImage.m */,
-				63B481381E688F9300D1A795 /* UIImage+resize.swift */,
 				63D4B8831E6B4501003D4514 /* Touchup-Bridging-Header.h */,
-				63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */,
-				63250E411E6F917400A3C955 /* EraserTool.swift */,
-				637E45DF1E70823B00BBFE4C /* Vector+dot.swift */,
-				637E45E11E70B80400BBFE4C /* Analytics.swift */,
-				63EB14A91E71FEF900925D43 /* UIGestureRecognizer+cancel.swift */,
-				6368915B1E774D180022D811 /* Models.swift */,
-				634C33131E775D7E005AA13A /* ImageSequencer.swift */,
-				63C5A9351E77B8030079D380 /* CIFilter.swift */,
-				63C5A9391E785FDF0079D380 /* Videos */,
-				63C5A93A1E7866680079D380 /* History.swift */,
-				63C5A93C1E787D130079D380 /* Result.swift */,
-				63C5A93E1E78B22B0079D380 /* Tape.swift */,
-				633D53D41EC3A7FF00DD57A7 /* Dictionary.swift */,
 			);
 			name = Touchup;
 			path = CITransformsExperiment;
