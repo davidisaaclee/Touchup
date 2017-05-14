@@ -9,8 +9,7 @@ protocol EraserToolDelegate: class {
 	func eraserTool(_ eraserTool: EraserTool,
 	                didCommitWorkingPath path: CGPath)
 
-	func eraserTool(_ eraserTool: EraserTool,
-	                locationFor touch: UITouch) -> CGPoint
+	func coordinateSpaceForEraserTool(_ eraserTool: EraserTool) -> UICoordinateSpace
 }
 
 class EraserTool {
@@ -36,17 +35,19 @@ class EraserTool {
 
 	private let smoothFactor: CGFloat = 0.2
 
-	func begin(with touch: UITouch) {
+	func begin(with touchSample: TouchSample) {
 		guard let delegate = delegate else {
 			return
 		}
 
-		let location = delegate.eraserTool(self, locationFor: touch)
+//		let location = delegate.eraserTool(self, locationFor: touch)
+		let location =
+			touchSample.location(in: delegate.coordinateSpaceForEraserTool(self))
 		mode = .active([.straight(on: location)])
 		delegate.eraserTool(self, didBeginDrawingAt: location)
 	}
 
-	func change(with touch: UITouch) {
+	func change(with touchSample: TouchSample) {
 		guard
 			case var .active(points) = mode,
 			let delegate = delegate
@@ -54,7 +55,9 @@ class EraserTool {
 				return
 			}
 
-		var c: Spline = .straight(on: delegate.eraserTool(self, locationFor: touch))
+		let location =
+			touchSample.location(in: delegate.coordinateSpaceForEraserTool(self))
+		var c: Spline = .straight(on: location)
 
 //		// if we have at least two points in the line, we can start to smooth.
 //		if var b = points.last, let a = points.dropLast().last {

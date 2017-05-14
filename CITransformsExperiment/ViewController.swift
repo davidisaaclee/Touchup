@@ -478,13 +478,13 @@ class ViewController: UIViewController {
 
 		switch recognizer.state {
 		case .began:
-			eraserController.begin(with: recognizer.activeTouches.first!)
+			eraserController.begin(with: TouchSample(sampling: recognizer.activeTouches.first!))
 
 		case .ended:
 			eraserController.end()
 
 		case .changed:
-			eraserController.change(with: recognizer.activeTouches.first!)
+			eraserController.change(with: TouchSample(sampling: recognizer.activeTouches.first!))
 
 		default:
 			break
@@ -870,16 +870,16 @@ extension ViewController: UIGestureRecognizerDelegate {
 
 
 extension ViewController: EraserToolDelegate {
-	func eraserTool(_ eraserTool: EraserTool,
-	                locationFor touch: UITouch) -> CGPoint {
-		return stageLocation(of: touch)
+	func coordinateSpaceForEraserTool(_ eraserTool: EraserTool) -> UICoordinateSpace {
+		return renderView
+			.applying(stageController.renderViewToStageTransform)
 			.applying(model.imageTransform.inverted())
 	}
 
 	func eraserTool(_ eraserTool: EraserTool, didBeginDrawingAt point: CGPoint) {
 		var width: Float {
 			var widthConstant: CGFloat = 60
-			// need to aupply the 2d transforms to a 1d "distance"...
+			// need to apply the 2d transforms to a 1d "distance"...
 			let p1 = CGPoint(x: 0, y: 0)
 			let p2 = CGPoint(x: widthConstant, y: 0)
 
