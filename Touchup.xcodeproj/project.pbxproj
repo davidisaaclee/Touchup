@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		494F518DA341EF4D9C96C7F4 /* Pods_Touchup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78D4FBC5BCD2DE39CEF776D5 /* Pods_Touchup.framework */; };
 		63025C751EC8E1F7008EF995 /* ContextualPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63025C741EC8E1F7008EF995 /* ContextualPoint.swift */; };
+		63025C771EC8E2F9008EF995 /* TouchSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63025C761EC8E2F9008EF995 /* TouchSample.swift */; };
 		63250E401E6F3CF600A3C955 /* UIBezierPath+smooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */; };
 		63250E421E6F917400A3C955 /* EraserTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E411E6F917400A3C955 /* EraserTool.swift */; };
 		633C8AB91EC25EF6003EB9A6 /* UIImage+trimmedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 633C8AB81EC25EF6003EB9A6 /* UIImage+trimmedImage.m */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		63025C741EC8E1F7008EF995 /* ContextualPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextualPoint.swift; sourceTree = "<group>"; };
+		63025C761EC8E2F9008EF995 /* TouchSample.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchSample.swift; sourceTree = "<group>"; };
 		63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+smooth.swift"; sourceTree = "<group>"; };
 		63250E411E6F917400A3C955 /* EraserTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EraserTool.swift; sourceTree = "<group>"; };
 		633C8AB71EC25EF6003EB9A6 /* UIImage+trimmedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+trimmedImage.h"; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				63C5A93E1E78B22B0079D380 /* Tape.swift */,
 				63C5A93A1E7866680079D380 /* History.swift */,
 				63025C741EC8E1F7008EF995 /* ContextualPoint.swift */,
+				63025C761EC8E2F9008EF995 /* TouchSample.swift */,
 			);
 			name = Generic;
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 				63BCF56C1E667D62006D46DD /* MultitouchGestureRecognizer.swift in Sources */,
 				63C5A93B1E7866680079D380 /* History.swift in Sources */,
 				63B481391E688F9300D1A795 /* UIImage+resize.swift in Sources */,
+				63025C771EC8E2F9008EF995 /* TouchSample.swift in Sources */,
 				63EB14AA1E71FEF900925D43 /* UIGestureRecognizer+cancel.swift in Sources */,
 				637E45E21E70B80400BBFE4C /* Analytics.swift in Sources */,
 				63C5A93D1E787D130079D380 /* Result.swift in Sources */,
