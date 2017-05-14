@@ -2,6 +2,10 @@ import UIKit
 
 /// Represents a sampling of a `UITouch` object at a specific time.
 struct TouchSample {
+	/// A unique identifier for this touch. `TouchSample`s sampled from the same
+	/// `UITouch` will have equivalent `identifier`s.
+	let identifier: Int
+
 	/// The radius (in points) of the touch.
 	let majorRadius: CGFloat
 
@@ -31,6 +35,8 @@ struct TouchSample {
 	/// of `UITouch.location(in:)`.
 	fileprivate let contextualLocation: ContextualPoint
 
+	/// Converts the sampled touch location to the specified coordinate space.
+	/// This should replicate the behavior of `UITouch.location(in:)`.
 	func location(in coordinateSpace: UICoordinateSpace) -> CGPoint {
 		return contextualLocation.point(in: coordinateSpace)
 	}
@@ -38,6 +44,7 @@ struct TouchSample {
 
 extension TouchSample {
 	init(sampling touch: UITouch) {
+		identifier = touch.hashValue
 		contextualLocation = ContextualPoint(touch: touch)
 		majorRadius = touch.majorRadius
 		majorRadiusTolerance = touch.majorRadiusTolerance
@@ -49,5 +56,3 @@ extension TouchSample {
 		maximumPossibleForce = touch.maximumPossibleForce
 	}
 }
-
-
