@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		494F518DA341EF4D9C96C7F4 /* Pods_Touchup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 78D4FBC5BCD2DE39CEF776D5 /* Pods_Touchup.framework */; };
+		63025C751EC8E1F7008EF995 /* ContextualPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63025C741EC8E1F7008EF995 /* ContextualPoint.swift */; };
 		63250E401E6F3CF600A3C955 /* UIBezierPath+smooth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */; };
 		63250E421E6F917400A3C955 /* EraserTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63250E411E6F917400A3C955 /* EraserTool.swift */; };
 		633C8AB91EC25EF6003EB9A6 /* UIImage+trimmedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 633C8AB81EC25EF6003EB9A6 /* UIImage+trimmedImage.m */; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		63025C741EC8E1F7008EF995 /* ContextualPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContextualPoint.swift; sourceTree = "<group>"; };
 		63250E3F1E6F3CF600A3C955 /* UIBezierPath+smooth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIBezierPath+smooth.swift"; sourceTree = "<group>"; };
 		63250E411E6F917400A3C955 /* EraserTool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EraserTool.swift; sourceTree = "<group>"; };
 		633C8AB71EC25EF6003EB9A6 /* UIImage+trimmedImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+trimmedImage.h"; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				63C5A93C1E787D130079D380 /* Result.swift */,
 				63C5A93E1E78B22B0079D380 /* Tape.swift */,
 				63C5A93A1E7866680079D380 /* History.swift */,
+				63025C741EC8E1F7008EF995 /* ContextualPoint.swift */,
 			);
 			name = Generic;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				633D53D51EC3A7FF00DD57A7 /* Dictionary.swift in Sources */,
 				63C5A93F1E78B22B0079D380 /* Tape.swift in Sources */,
 				63BCF56E1E673C10006D46DD /* ImageStageController.swift in Sources */,
+				63025C751EC8E1F7008EF995 /* ContextualPoint.swift in Sources */,
 				634C33141E775D7E005AA13A /* ImageSequencer.swift in Sources */,
 				6368915C1E774D180022D811 /* Models.swift in Sources */,
 				63250E421E6F917400A3C955 /* EraserTool.swift in Sources */,
