@@ -471,20 +471,20 @@ class ViewController: UIViewController {
 	}
 
 	@objc private func handleEraser(using recognizer: MultitouchGestureRecognizer) {
-		func eraserPosition(of touch: UITouch) -> CGPoint {
-			return stageLocation(of: touch)
-				.applying(model.imageTransform.inverted())
-		}
-
 		switch recognizer.state {
 		case .began:
 			eraserController.begin(with: TouchSample(sampling: recognizer.activeTouches.first!))
+			recognizer.sampledTouchesQueue.removeAll()
 
 		case .ended:
 			eraserController.end()
+			recognizer.sampledTouchesQueue.removeAll()
 
 		case .changed:
-			eraserController.change(with: TouchSample(sampling: recognizer.activeTouches.first!))
+			recognizer.sampledTouchesQueue
+				.forEach { eraserController.change(with: $0) }
+//			eraserController.change(with: TouchSample(sampling: recognizer.activeTouches.first!))
+			recognizer.sampledTouchesQueue.removeAll()
 
 		default:
 			break
