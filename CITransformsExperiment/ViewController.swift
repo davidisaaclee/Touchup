@@ -474,17 +474,16 @@ class ViewController: UIViewController {
 		switch recognizer.state {
 		case .began:
 			eraserController.begin(with: TouchSample(sampling: recognizer.activeTouches.first!))
-			recognizer.sampledTouchesQueue.removeAll()
+			_ = recognizer.popAllSampledTouches()
 
 		case .ended:
 			eraserController.end()
-			recognizer.sampledTouchesQueue.removeAll()
+			_ = recognizer.popAllSampledTouches()
 
 		case .changed:
-			recognizer.sampledTouchesQueue
+			recognizer.popAllSampledTouches()
 				.forEach { eraserController.change(with: $0) }
 //			eraserController.change(with: TouchSample(sampling: recognizer.activeTouches.first!))
-			recognizer.sampledTouchesQueue.removeAll()
 
 		default:
 			break

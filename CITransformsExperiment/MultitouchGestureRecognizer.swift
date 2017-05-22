@@ -21,7 +21,13 @@ public class MultitouchGestureRecognizer: UIGestureRecognizer {
 		}
 	}
 
-	var sampledTouchesQueue: [TouchSample] = []
+	private var sampledTouchesQueue: [TouchSample] = []
+
+	func popAllSampledTouches() -> [TouchSample] {
+		let popped = sampledTouchesQueue
+		sampledTouchesQueue.removeAll()
+		return popped
+	}
 
 	public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
 		super.touchesBegan(touches, with: event)
