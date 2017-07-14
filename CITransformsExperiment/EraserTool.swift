@@ -6,8 +6,11 @@ protocol EraserToolDelegate: class {
 	                didBeginDrawingAt point: CGPoint)
 	func eraserTool(_ eraserTool: EraserTool,
 	                didUpdateWorkingPath path: CGPath)
+	// Doesn't necessarily mean eraser mark is done; just that the working path
+	// is being committed. :/
 	func eraserTool(_ eraserTool: EraserTool,
 	                didCommitWorkingPath path: CGPath)
+	func eraserToolDidFinishErasing(_ eraserTool: EraserTool)
 
 	func eraserTool(_ eraserTool: EraserTool,
 	                locationFor touch: UITouch) -> CGPoint
@@ -54,8 +57,7 @@ class EraserTool {
 				return
 			}
 
-		var c: Spline = .straight(on: delegate.eraserTool(self, locationFor: touch))
-
+		let c: Spline = .straight(on: delegate.eraserTool(self, locationFor: touch))
 //		// if we have at least two points in the line, we can start to smooth.
 //		if var b = points.last, let a = points.dropLast().last {
 //			// calling the last three points (a, b, c), where c is the point about to be added
@@ -66,6 +68,13 @@ class EraserTool {
 //			points.append(b)
 //		}
 		points.append(c)
+		
+		let maxPathLength = 20
+		if points.count > maxPathLength {
+			delegate.eraserTool(self, didCommitWorkingPath: makePath(for: points))
+			delegate.eraserTool(self, didBeginDrawingAt: points.last!.point)
+			points = [points.last!]
+		}
 
 		mode = .active(points)
 
@@ -81,6 +90,7 @@ class EraserTool {
 			}
 
 		delegate.eraserTool(self, didCommitWorkingPath: makePath(for: points))
+		delegate.eraserToolDidFinishErasing(self)
 		mode = .passive
 	}
 

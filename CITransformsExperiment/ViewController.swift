@@ -906,6 +906,10 @@ extension ViewController: EraserToolDelegate {
 		workingEraserMarkʹ.path = path
 		workspace.workingEraserMark = workingEraserMarkʹ
 	}
+	
+	func eraserToolDidFinishErasing(_ eraserTool: EraserTool) {
+		pushToHistory()
+	}
 
 	func eraserTool(_ eraserTool: EraserTool,
 	                didCommitWorkingPath path: CGPath) {
@@ -916,7 +920,5 @@ extension ViewController: EraserToolDelegate {
 		committedEraserMark.path = path
 		model.eraserMarks.append(committedEraserMark)
 		workspace.workingEraserMark = nil
-
-		pushToHistory()
 	}
 }
