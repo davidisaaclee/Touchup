@@ -166,6 +166,10 @@ class ViewController: UIViewController {
 	override var prefersStatusBarHidden: Bool {
 		return true
 	}
+	
+	override var canBecomeFirstResponder: Bool {
+		return true
+	}
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -209,6 +213,19 @@ class ViewController: UIViewController {
 			             object: nil,
 			             queue: nil,
 			             using: { _ in self.willEnterForeground() })
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		becomeFirstResponder()
+	}
+	
+	override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+		super.motionEnded(motion, with: event)
+		
+		if case .motionShake = motion {
+			askIfUserWantsToEraseEverything()
+		}
 	}
 
 	// note: expects `image` to be anchored at lower-left
@@ -342,6 +359,28 @@ class ViewController: UIViewController {
 		}
 
 		return result
+	}
+	
+	fileprivate func askIfUserWantsToEraseEverything() {
+		let alert = UIAlertController(title: nil,
+		                              message: nil,
+		                              preferredStyle: .actionSheet)
+		
+		alert.addAction(UIAlertAction(title: "Erase everything", style: .destructive, handler: { _ in
+			self.resetEverything()
+		}))
+		
+		alert.addAction(UIAlertAction(title: "Cancel",
+		                              style: .cancel,
+		                              handler: nil))
+		
+		present(alert, animated: true, completion: nil)
+	}
+	
+	fileprivate func resetEverything() {
+		self.model = Model()
+		self.workspace.workingEraserMark = nil
+		
 	}
 
 
