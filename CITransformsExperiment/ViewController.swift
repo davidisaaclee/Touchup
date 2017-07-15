@@ -250,10 +250,7 @@ class ViewController: UIViewController {
 	}
 
 	func reloadRenderView() {
-		guard let image = model.image?.image(at: self.currentTime) else {
-			// hm
-			return
-		}
+		let image = model.image?.image(at: self.currentTime) ?? CIImage()
 
 		stageController.cameraTransform = workspace.cameraTransform
 		stageController.backgroundImage =
