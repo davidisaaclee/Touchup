@@ -81,10 +81,10 @@ class ViewController: UIViewController {
 		MultitouchGestureRecognizer()
 
 	fileprivate let undoGestureRecognizer =
-		UITapGestureRecognizer()
+		UIScreenEdgePanGestureRecognizer()
 
 	fileprivate let redoGestureRecognizer =
-		UITapGestureRecognizer()
+		UIScreenEdgePanGestureRecognizer()
 
 
 	// MARK: Models
@@ -439,10 +439,10 @@ class ViewController: UIViewController {
 		switch recognizer {
 		case undoGestureRecognizer:
 			undo()
-
+			
 		case redoGestureRecognizer:
 			redo()
-
+			
 		default:
 			break
 		}
@@ -794,16 +794,14 @@ class ViewController: UIViewController {
 		undoGestureRecognizer
 			.addTarget(self,
 			           action: #selector(ViewController.handleHistoryGesture(recognizer:)))
-		undoGestureRecognizer.numberOfTapsRequired = 2
-		undoGestureRecognizer.numberOfTouchesRequired = 2
+		undoGestureRecognizer.edges = [.left]
 		undoGestureRecognizer.delegate = self
 		view.addGestureRecognizer(undoGestureRecognizer)
 
 		redoGestureRecognizer
 			.addTarget(self,
 			           action: #selector(ViewController.handleHistoryGesture(recognizer:)))
-		redoGestureRecognizer.numberOfTapsRequired = 2
-		redoGestureRecognizer.numberOfTouchesRequired = 3
+		redoGestureRecognizer.edges = [.right]
 		redoGestureRecognizer.delegate = self
 		view.addGestureRecognizer(redoGestureRecognizer)
 	}
@@ -890,7 +888,22 @@ extension ViewController: ImageStageControllerDelegate {
 }
 
 extension ViewController: UIGestureRecognizerDelegate {
-	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+	                       shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		switch (gestureRecognizer, otherGestureRecognizer) {
+		case (undoGestureRecognizer, _):
+			return true
+
+		case (redoGestureRecognizer, _):
+			return true
+
+		default:
+			return false
+		}
+	}
+	
+	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+	                       shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
 		switch (gestureRecognizer, otherGestureRecognizer) {
 		case (undoGestureRecognizer, _):
 			return true
