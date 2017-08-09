@@ -185,13 +185,7 @@ class ViewController: UIViewController {
 		renderView.isMultipleTouchEnabled = true
 
 		var startingWorkingImage: ImageSource {
-//			let videoPlayer =
-//				CIVideoPlayer(url: Bundle.main.url(forResource: "progress",
-//				                                   withExtension: "mp4")!)
-//			videoPlayer.play()
-//			return videoPlayer
-
-			return CIImage(image: #imageLiteral(resourceName: "yikes"))!
+			return CIImage()
 		}
 		setWorkingImage(startingWorkingImage)
 
